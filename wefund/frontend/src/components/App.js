@@ -8,16 +8,19 @@ import './css/bottom.css' ;
 import './css/events.css' ;
 import './css/evreg.css' ;
 import './css/login.css' ;
-
+import { Provider  } from "react-redux";
+import store from "../store";
 // Alert Options
 class App extends React.Component{
     render(){
         return (
-            <div>
-                <Nav/>
-                <Content/>
-                <Footer />
-            </div>
+            <Provider store={store}>
+                <Fragment>
+                    <Nav/>
+                    <Content/>
+                    <Footer />
+                </Fragment>
+            </Provider>
         );
     }
 }
