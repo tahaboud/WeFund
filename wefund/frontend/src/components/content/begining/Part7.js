@@ -7,7 +7,7 @@ class Part7 extends Component {
     return (
       <div>
         <center>
-          <div className="seven">
+          <div className="seven" id="donate">
             <center>
               <h3 style={{
                 textDecoration: 'underline'

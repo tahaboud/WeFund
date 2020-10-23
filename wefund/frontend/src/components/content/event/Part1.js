@@ -6,8 +6,8 @@ class Part1 extends Component {
   render() {
     return (
 
-      <div>
-        <div className="event1">
+      <div >
+        <div className="event1" id="mihrajan" >
           <div className="container">
             <div className="row">
               <div className="col-12">

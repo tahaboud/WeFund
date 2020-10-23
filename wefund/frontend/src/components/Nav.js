@@ -19,15 +19,15 @@ const Nav = () => {
         <a href="#" id="home">
           Home
         </a>
-        <a href="./about.html">About us
+        <a href="#dowbottomn" id="about">About us
         </a>
-        <a href="./events.html">
+        <a href="#mihrajan" id="event">
           Events
         </a>
-        <a href="./supporting.html">
+        <a href="#donate" id="supporting">
           Supporting us
         </a>
-        <a href="./contact.html">
+        <a href="#dowbottomn" id="contact">
           Contact us
         </a>
         <img src="../static/img/Group 729@2x.png" height={21} width={25}/>

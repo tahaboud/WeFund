@@ -38,11 +38,9 @@ class Content extends Component{
                  <Part6/>
                  <Part7/>
                  <Part8/>
-                 <Part9/>
-                 <Part10/>
-                 <Part11/>
-                 <Part12/>
-                 <Part13/>
+      
+                 <Part14/>
+               
                  
                
                 
