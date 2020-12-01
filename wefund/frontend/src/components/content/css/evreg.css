@@ -1,0 +1,28 @@
+.log1 { 
+ 
+ margin-bottom: 50px;
+}
+#evimg {
+position: relative;
+}
+#cmp {
+	position: absolute;
+	top:0px;
+	left:40px;
+}
+.log1 h5{
+	position: absolute;
+	top:220px;
+	color:white;
+	width:50%;
+	left:50px;
+}
+#in {
+	margin-top: 15px;
+	width: 40%;
+	background-color: white;
+	border:1px solid red;
+	color:red;
+	border-radius: 20px;
+	float:right;
+}

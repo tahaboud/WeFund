@@ -17,7 +17,6 @@ class App extends React.Component{
             <Provider store={store}>
                 <Fragment>
                     <Nav/>
-                    <Content/>
                     <Footer />
                 </Fragment>
             </Provider>

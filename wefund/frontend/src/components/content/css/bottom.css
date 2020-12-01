@@ -1,0 +1,40 @@
+.bottom{
+	background-color: #030C11;
+	height:180px;
+	width: 100%;
+	color:white;
+}
+#links {
+margin-left: 10px; 
+ }
+ #email { 
+ margin-top: 20px;
+ background-color: #6A6975;
+ border-color: #95989A;
+ color:white; 
+font-family:  'Noto Sans JP', sans-serif;}
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: white;
+}
+.bottom1{
+	margin-top: 2px;
+	background-color: #030C11;
+	height:180px;
+	width: 100%;
+	color:white;
+}
+.whiteline { 
+width: 100%;
+border: 1px solid white;
+ }

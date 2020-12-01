@@ -7,21 +7,7 @@ import Part4    from './begining/Part4';
 import Part5    from './begining/Part5';
 import Part6    from './begining/Part6';
 import Part7    from './begining/Part7';
-import Part8    from './signUp/Part1';
-import Part9    from './signUp/Part2';
-import Part10   from './signUp/Part3';
-import Part11   from './signUp/Part4';
-import Part12   from './signUp/Part5';
-import Part13   from './signUp/Part6';
-import Part14   from './event/Part1';
-import Part15   from './event/Part2';
-import Part16   from './event/Part3';
-
-
-
-
-
-class Content extends Component{
+class Begining extends Component{
     state={
         users:[]
     }
@@ -54,4 +40,4 @@ class Content extends Component{
         );
     }
 }
-export default Content;
+export default Begining;

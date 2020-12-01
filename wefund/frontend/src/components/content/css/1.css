@@ -1,0 +1,139 @@
+
+nav a{
+	color:black;
+	font-size: 20px;
+	font-family:  'Noto Sans JP', sans-serif;
+
+}
+#home { 
+	text-decoration: underline;}
+ nav button { 
+
+background-color: white; 
+border: 0px solid white;
+}
+.lang{ margin-right: 50px;
+margin-left: 30px;}
+#ar {
+	
+	font-size: 19px;
+}
+#en { 
+font-size: 19px; 
+}
+.second { 
+	margin-top: 30px;
+	 }
+.second p{
+	color:black
+}
+
+
+ #apply { 
+ 	margin-top: 30px;
+ 	margin-left: 70px;
+ 	font-family:  'Noto Sans JP', sans-serif;
+ 	
+ 	float:left;
+ background-color: #030C11;
+ border:0.5px solid #707070;
+ color:white;
+ font-size: 18px; }
+
+ .col-9 p { 
+ margin-top: 30px; 
+margin-left: 50px;
+width: 70%;
+font-size: 25px;
+ line-height: 30px;}
+ .col-3 { 
+ 	margin-top: 30px;
+ position: relative;
+
+ left:0;
+ float: left; }
+ .image1 { float:left; position:absolute;margin-left:0px; }
+ .image2 {  margin-top: -50px; margin-left:100px;position:relative; }
+ .image3{ margin-top: 110px; margin-left:-280px;position: relative;  }
+ .three {
+  	margin-top: 70px;
+  }
+  .three h5 { 
+  	font-family:  'Noto Sans JP', sans-serif;
+   }
+   .three img { 
+   margin-top: 20px;
+   margin-bottom: 10px; }
+   .four { 
+   margin-top: 40px;
+   margin-left: 40px;
+    }
+   #circle { 
+   margin-left: 70px;
+   margin-top:-30px; }
+   #rec { 
+   margin-top: 30px; }
+   .right1 h4 {
+   	margin-top: 10px;
+   }
+   #cb { 
+   margin-right: 70px; 
+margin-top: -60px;}
+.right1 { 
+margin-top: 30px; }
+.col-2 h4 { 
+text-align: center;
+text-decoration: underline; }
+.col-2 p{ 
+opacity: 0.75; 
+margin-bottom: 100px;}
+.right2 { 
+margin-top: 80px; }
+#s { 
+margin-top: 10px; }
+#s1 { 
+margin-top: 70px; }
+.five { 
+margin-top: 50px; }
+#view { 
+width:90%;
+height: 35px;
+text-align: center;
+border:1.5px solid red;
+background-color: white;
+color:red;
+border-radius: 20px; 
+font-family:  'Noto Sans JP', sans-serif;
+font-size: 17px;}
+#A1 { 
+	width:10px;
+	height: 350px;
+	border-radius: 30px;
+	margin-left: 20px;
+	background-color: black;
+ }
+ .six{
+ 	margin-top: 50px;
+ }
+ #A1 p { 
+ margin-top:220px;
+ color:white; 
+font-family:  'Noto Sans JP', sans-serif;}
+.seven { 
+margin-top: 50px;
+ }
+.col-7 h3 {
+margin-top: 50px;
+/*background-image: url("../img/Rectangle 211.png");*/
+
+background-size: cover;
+
+width: 50%; }
+.col-7 p { 
+
+width: 80%;
+color:black;
+font-size: 17px; 
+font-family:  'Noto Sans JP', sans-serif;}
+
+

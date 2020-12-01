@@ -1,6 +1,16 @@
+{/* User:Amar 
+
+  *In this part i m aiming to create the navbar but also the content of the app
+  *i've used router in the same component
+  * but for the login,event,content(the first page) are an external components so no worry things
+  are organized
+*/}
 import React, {Component, component} from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import login    from './content/signUp/Part1';
+import event   from './content/event/Part1';
+import home from './content/begining';
+import suportus from './content/supportus';
 const Nav = () => {
   // const users=this.state.users
   return (
@@ -29,7 +39,20 @@ const Nav = () => {
         </nav>
       </div>
           <Switch>
+              {/* First way */}
+              <Route exact path="/" component={home}  render={() => {
+                    return (
+                      <Redirect to="/" /> 
+                    )
+                }}/>
+              {/* Second way
+                  <Route exact path="/" component={content}>
+                      <Redirect to="/" />
+                  </Route>
+               */}  
               <Route exact path="/login" component={login}/>
+              <Route exact path="/event" component={event}/>
+              <Route exact path="/support" component={suportus}/>
           </Switch>
     </Router>
     
