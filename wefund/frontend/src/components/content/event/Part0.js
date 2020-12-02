@@ -7,7 +7,6 @@ class Part0 extends Component {
   state = {}
   render() {
     return (
-
       <div >
         <div className="event1" id="mihrajan" >
           <div className="container">

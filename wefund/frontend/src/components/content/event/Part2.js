@@ -1,5 +1,6 @@
 import React, {Component, component} from 'react';
 
+
 class Part2 extends Component {
   state = {}
 
@@ -92,14 +93,16 @@ class Part2 extends Component {
                           by clicking Confirm you are agreeing to our terms and conditions!</span>
                       </label>
                     </div>
-                    <button className="btn btn-danger" id="in">
-                      Confirm</button>
+
+                 
+
                   </center>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
 
     );
