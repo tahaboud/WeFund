@@ -8,7 +8,7 @@
 import React, {Component, component} from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import login    from './content/signUp/Part1';
-import event   from './content/event/Part1';
+import event   from './content/event/MultiStepFormEvent';
 import home from './content/begining';
 import suportus from './content/supportus';
 const Nav = () => {

@@ -29,11 +29,13 @@
     "webpack-cli": "^4.1.0"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.1",
     "axios": "^0.21.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hash-router": "^0.2.0",
+    "react-hooks-helper": "^1.6.0",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",

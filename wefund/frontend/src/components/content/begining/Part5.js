@@ -6,17 +6,16 @@ class Part5 extends Component {
   render() {
     return (
       <div>
-
-        <div class="five">
-          <div class="container">
-            <div class="row">
-              <div class="col-3">
+        <div className="five">
+          <div className="container">
+            <div className="row">
+              <div className="col-3">
                 <h3>
                   Our Events
                 </h3>
               </div>
-              <div class="col-5"></div>
-              <div class="col-3">
+              <div className="col-5"/>
+              <div className="col-3">
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique
                   pellentesque nisl nec mollis.
@@ -29,6 +28,7 @@ class Part5 extends Component {
           </div>
         </div>
       </div>
+
     );
   }
 

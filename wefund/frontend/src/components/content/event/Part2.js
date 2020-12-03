@@ -2,10 +2,14 @@ import React, {Component, component} from 'react';
 
 class Part2 extends Component {
   state = {}
-
+  continue=e=>{
+    e.preventDefault();
+    this.props.nextStep();
+  }
   render() {
+    const { values, handleChange } = this.props;
     return (
-
+      
       <div>
         <div classname="event1">
           <div className="container">
@@ -46,6 +50,8 @@ class Part2 extends Component {
                           placeholder="first name"
                           name="fname"
                           aria-label="Username"
+                          onChange={handleChange('firstName')}
+                          defaultValue={values.firstName}
                           aria-describedby="basic-addon1"/>
                         <input
                           type="text"
@@ -92,7 +98,7 @@ class Part2 extends Component {
                           by clicking Confirm you are agreeing to our terms and conditions!</span>
                       </label>
                     </div>
-                    <button className="btn btn-danger" id="in">
+                    <button className="btn btn-danger" id="in" onClick={this.continue}>
                       Confirm</button>
                   </center>
                 </div>
