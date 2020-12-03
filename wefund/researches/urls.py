@@ -1,7 +1,10 @@
 from django.urls import path
-from .api import RegisterResearchAPI
+from .api import UserResearchAPI, AdminResearchAPI
 
 
 urlpatterns = [
-    path("register/", RegisterResearchAPI.as_view({'post': 'create'}))
+    path("",
+         UserResearchAPI.as_view({'post': 'create', "get": "list", "put": "update"})),
+    path(
+        "<pk>/", AdminResearchAPI.as_view({"post": "update", "get": "retrieve"}))
 ]

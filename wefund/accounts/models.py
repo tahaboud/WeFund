@@ -7,6 +7,12 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 
 
+def upload_location(instance, filename):
+    file_path = "accounts/{user_id}/{filename}".format(
+        user_id=str(instance.id), filename=filename)
+    return file_path
+
+
 class MyAccountManager(BaseUserManager):
 
     def create_user(self, first_name, last_name, email, password=None):
@@ -39,6 +45,7 @@ class MyAccountManager(BaseUserManager):
         user.is_active = True
         user.is_admin = True
         user.is_staff = True
+        user.is_validated = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
@@ -52,6 +59,7 @@ class MyAccountManager(BaseUserManager):
         )
         user.is_active = True
         user.is_admin = True
+        user.is_validated = True
         user.save(using=self._db)
         return user
 
@@ -59,15 +67,18 @@ class MyAccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(
-        max_length=50, blank=False, null=True, unique=False)
+        max_length=50, blank=False, null=False, unique=False)
     date_joined = models.DateTimeField(
         verbose_name="date joined", auto_now_add=True)
     is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30, blank=False, null=False)
+    last_name = models.CharField(max_length=30, blank=False, null=False)
+    is_validated = models.BooleanField(default=False)
+    last_login = models.DateTimeField(
+        verbose_name="last login", auto_now=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
@@ -87,12 +98,13 @@ class Account(AbstractBaseUser):
 class Researcher(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    id_card_number = models.IntegerField(blank=True, null=True)
-    id_card_copy = models.ImageField(blank=False, null=True)
-    date_of_birth = models.DateField(blank=False, null=True)
-    degree = models.CharField(blank=False, null=True, max_length=100)
-    organisation = models.CharField(blank=False, null=True, max_length=100)
-    cv = models.FileField(blank=False, null=True)
+    id_card_number = models.CharField(max_length=50, blank=False, null=False)
+    id_card_copy = models.ImageField(
+        upload_to=upload_location, blank=False, null=False)
+    date_of_birth = models.DateField(blank=False, null=False)
+    degree = models.CharField(blank=False, null=False, max_length=100)
+    organisation = models.CharField(blank=False, null=False, max_length=100)
+    cv = models.FileField(blank=False, null=False)
 
     def __str__(self):
         return self.user.username

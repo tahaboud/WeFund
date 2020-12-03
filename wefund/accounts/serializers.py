@@ -2,18 +2,16 @@ from rest_framework import serializers
 from .models import Account, Researcher
 from django.contrib.auth import authenticate
 
-# USER SERIALIZER
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ("id", "username", "email", "is_admin")
+        fields = ("id", "username", "email",
+                  "is_admin", "first_name", "last_name", "is_validated")
+        read_only_fields = ("id", "username", "is_validated")
 
-# REGISTER SERIALIZER
 
-
-class RegisterSerializer(serializers.ModelSerializer):
+class RegisterUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
@@ -25,8 +23,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             validated_data["first_name"], validated_data["last_name"], validated_data["email"], validated_data["password"])
 
         return user
-
-# LOGIN SERIALIZER
 
 
 class LoginSerializer(serializers.Serializer):
@@ -54,12 +50,57 @@ class RegisterAdminSerializer(serializers.ModelSerializer):
         return user
 
 
-# REGISTER RESEARCHER SERIALIZER
-
-
-class RegisterResearcherSerializer(serializers.ModelSerializer):
+class ResearcherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Researcher
-        fields = ["id_card_number", "id_card_copy",
-                  "date_of_birth", "degree", "organisation", "cv"]
+        fields = ("id_card_number", "id_card_copy",
+                  "date_of_birth", "degree", "organisation", "cv")
+
+    def validate(self, validated_data):
+        try:
+            int(validated_data["id_card_number"])
+
+        except ValueError:
+            raise serializers.ValidationError(
+                {"Id card number": "Please ensure that the id card number is only numbers"})
+
+
+class AdminUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ("id", "username", "email", "first_name",
+                  "last_name", "is_admin", "is_validated")
+        read_only_fields = ("id", "username", "email",
+                            "first_name", "last_name")
+
+
+class AdminResearcherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Researcher
+        fields = ("id_card_number", "id_card_copy",
+                  "date_of_birth", "degree", "organisation", "cv")
+        read_only_fields = ("id_card_number", "id_card_copy",
+                            "date_of_birth", "degree", "organisation", "cv")
+
+
+class ResetPasswordSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField()
+    password2 = serializers.CharField()
+
+    class Meta:
+        model = Account
+        fields = ("password1", "password2")
+
+
+class SendEmailSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+
+    class Meta:
+        model = Account
+        fields = ("email",)
+
+
+class CheckTokenSerializer(serializers.Serializer):
+    pk = serializers.CharField()
+    token = serializers.CharField()

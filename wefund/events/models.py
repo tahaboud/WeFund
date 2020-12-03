@@ -1,19 +1,27 @@
 from django.db import models
 
-# Create your models here.
+
+def upload_location(instance, filename):
+    file_path = "accounts/{event_id}/{filename}".format(
+        event_id=str(instance.id), filename=filename)
+    return file_path
 
 
 class Events(models.Model):
     name = models.CharField(max_length=100, unique=True,
                             blank=False, null=False)
-    image = models.ImageField(null=True)
+    image = models.ImageField(
+        upload_to=upload_location, blank=False, null=False)
     description = models.CharField(max_length=100, blank=False, null=False)
-    spots = models.IntegerField(blank=False, null=False)
+    spots = models.CharField(max_length=100, blank=False, null=False)
     is_free = models.BooleanField()
-    price = models.IntegerField(blank=False, null=False)
+    price = models.CharField(max_length=100, blank=False, null=False)
     category = models.CharField(max_length=100, blank=False, null=False)
     is_online = models.BooleanField()
     location = models.CharField(max_length=100, blank=False, null=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Attendants(models.Model):
@@ -21,11 +29,11 @@ class Attendants(models.Model):
     last_name = models.CharField(max_length=100, blank=False, null=False)
     email = models.EmailField(
         max_length=100, blank=False, null=False)
-    phone_number = models.IntegerField(blank=False, null=False)
-    id_number = models.IntegerField(blank=False, null=False)
+    phone_number = models.CharField(max_length=50, blank=False, null=False)
+    id_number = models.CharField(max_length=50, blank=False, null=False)
     is_accepeted = models.BooleanField(default=False)
     event = models.ForeignKey(
-        Events, on_delete=models.CASCADE, null=True, blank=True)
+        Events, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
@@ -36,3 +44,6 @@ class Attendants(models.Model):
             models.UniqueConstraint(
                 fields=["event", "phone_number"], name="unique_booking2"),
         ]
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
