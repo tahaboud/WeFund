@@ -64,7 +64,7 @@ class Part1 extends Component {
                   adipiscing elit. In tristique pellentesque nisl nec mollis.Lorem ipsum dolor sit
                   amet, consectetur adipiscing elit. In tristique pellentesque nisl nec mollis.
                 </p>
-                <button class="btn btn-danger" id="btnevent" onClick={this.continue}> Register </button>
+                <button className="btn btn-danger" id="btnevent" onClick={this.continue}> Register </button>
               </div>
               <div className="col-3">
                 <img src="../static/img/opacev.png" id="opacev"/>

@@ -2,7 +2,10 @@ import React, {Component, component} from 'react';
 
 class Part3 extends Component {
   state = {}
-
+  continue=e=>{
+    e.preventDefault();
+    this.props.nextStep();
+  }
   render() {
     const { values, handleChange } = this.props;
     return (

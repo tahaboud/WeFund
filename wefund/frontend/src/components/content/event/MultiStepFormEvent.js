@@ -27,10 +27,10 @@ export class MultiStepFormEvent extends Component {
       step: step + 1
     })
   }
-  //handle fields change
+  // Handle fields change
   handleChange = input => e => {
-    this.setState({[input]: e.target.value});
-  }
+    this.setState({ [input]: e.target.value });
+  };
   render() {
     const {step} = this.state;
     const {

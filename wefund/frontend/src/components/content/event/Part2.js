@@ -11,7 +11,7 @@ class Part2 extends Component {
     return (
       
       <div>
-        <div classname="event1">
+        <div className="event1">
           <div className="container">
             <div className="row">
               <div className="col-6">
@@ -87,7 +87,7 @@ class Part2 extends Component {
                       aria-describedby="basic-addon1"/>
                     <div className="spinner">
                       <label>
-                        <input type="checkbox" onclick="$(this).attr('disabled','disabled');"/>
+                        <input type="checkbox" onClick="$(this).attr('disabled','disabled');"/>
                         <span className="checkmark">
                           <span>&nbsp;</span>
                         </span>
