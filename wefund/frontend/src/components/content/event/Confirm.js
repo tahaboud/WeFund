@@ -38,7 +38,31 @@ export class Confirm extends Component {
               <ListItemText primary="Last Name" secondary={lastName}/>
             </ListItem>
             <ListItem>
-              <ListItemText primary="Email" secondary={email}/>
+              <ListItemText primary="Mobile" secondary={mobile}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Natioanl Card Id" secondary={natioanlCardId}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Title Document" secondary={titleDocument}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Date Document" secondary={dateDocument}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Source Document" secondary={sourceDocument}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Description Document" secondary={descriptionDocument}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Attach Document" secondary={attachDocument}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Ccp" secondary={ccp}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="visaId" secondary={visaId}/>
             </ListItem>
           </List>
           <br/>

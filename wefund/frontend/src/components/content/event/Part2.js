@@ -59,6 +59,8 @@ class Part2 extends Component {
                           placeholder="last name"
                           name="lname"
                           aria-label="Password"
+                          onChange={handleChange('lastName')}
+                          defaultValue={values.lastName}
                           aria-describedby="basic-addon1"/>
                       </div>
                     </div>
@@ -69,6 +71,8 @@ class Part2 extends Component {
                         placeholder="Email"
                         name="email"
                         aria-label="email"
+                        onChange={handleChange('email')}
+                        defaultValue={values.email}
                         aria-describedby="basic-addon1"/></div>
                     <div className="input-group mb-3">
                       <input
@@ -77,13 +81,17 @@ class Part2 extends Component {
                         placeholder="Mobile"
                         name="mobile"
                         aria-label="mobile"
+                        onChange={handleChange('mobile')}
+                        defaultValue={values.mobile}
                         aria-describedby="basic-addon1"/></div>
                     <input
                       type="text"
                       className="form-control"
                       placeholder="National Card id "
                       name="id"
-                      aria-label="confirm password"
+                      aria-label="National Card id"
+                      onChange={handleChange('natioanlCardId')}
+                      defaultValue={values.natioanlCardId}
                       aria-describedby="basic-addon1"/>
                     <div className="spinner">
                       <label>

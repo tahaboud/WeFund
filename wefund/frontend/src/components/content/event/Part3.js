@@ -34,15 +34,19 @@ class Part3 extends Component {
                     type="text"
                     className="form-control"
                     placeholder="title"
-                    name="title"
-                    aria-label="Username"
+                    name="titleDocument"
+                    aria-label="titleDocument"
+                    onChange={handleChange('titleDocument')}
+                    defaultValue={values.titleDocument}
                     aria-describedby="basic-addon1"/>
                   <input
                     type="date"
                     className="form-control"
                     placeholder="date"
                     name="date"
-                    aria-label="confirm password"
+                    aria-label="dateDocument"
+                    onChange={handleChange('dateDocument')}
+                    defaultValue={values.dateDocument}
                     aria-describedby="basic-addon1"/>
                 </div>
                 <div className="input-group mb-3">
@@ -51,7 +55,9 @@ class Part3 extends Component {
                     className="form-control"
                     placeholder="Source"
                     name="Source"
-                    aria-label="Password"
+                    aria-label="Source"
+                    onChange={handleChange('sourceDocument')}
+                    defaultValue={values.sourceDocument}
                     aria-describedby="basic-addon1"/>
                 </div>
               </div>
@@ -60,8 +66,10 @@ class Part3 extends Component {
                   className="form-control"
                   placeholder="Description"
                   name="descrip"
-                  aria-label="email"
+                  aria-label="descriptionDocument"
                   aria-describedby="basic-addon1"
+                  onChange={handleChange('descriptionDocument')}
+                  defaultValue={values.descriptionDocument}
                   defaultValue={" Description"}/></div>
               <form className="md-form">
                 <div className="file-field big">
@@ -73,7 +81,10 @@ class Part3 extends Component {
                     type="file"
                     style={{
                     marginBottom: 10
-                  }}/>
+                  }}
+                  onChange={handleChange('attachDocument')}
+                  defaultValue={values.attachDocument}
+                  />
                 </div>
               </form>
               <button className="btn btn-danger" id="nx"  onClick={this.continue}>

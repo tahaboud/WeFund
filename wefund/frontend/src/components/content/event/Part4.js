@@ -56,7 +56,9 @@ class Part4 extends Component {
                       <input
                         type="text"
                         className="form-control"
-                        defaultValue="04365 6464 659641 | 76"/>
+                        onChange={handleChange('ccp')}
+                        defaultValue={values.ccp}
+                        />
                     </div>
                     <div className="input-group mb-3">
                       <div className="input-group-prepend">
@@ -66,7 +68,8 @@ class Part4 extends Component {
                       <input
                         type="text"
                         className="form-control"
-                        defaultValue="19565 6464 546 54574 | 265"/>
+                        onChange={handleChange('visaId')}
+                        defaultValue={values.visaId}/>
                     </div>
                     <button
                       className="btn btn-danger"
