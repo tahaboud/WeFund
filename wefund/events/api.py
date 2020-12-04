@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, viewsets, serializers
+from rest_framework import generics, permissions, viewsets, serializers, status
 from rest_framework.response import Response
 from .models import Events, Attendants
 from rest_framework.decorators import permission_classes, api_view
@@ -32,6 +32,19 @@ class EventAPI(viewsets.ModelViewSet):
             "Event": EventSerializer(event, context=self.get_serializer_context()).data,
         })
 
+
+class EventDetailAPI(viewsets.ModelViewSet):
+    serializer_class = EventSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    def list(self, request, pk):
+        try:
+            event = Events.objects.get(pk=pk)
+            serializer = EventSerializer(event)
+            return Response(serializer.data)
+        except Events.DoesNotExist:
+            return Response({"Event": "Event does not exist"})
+
     def destroy(self, request, pk=None):
         try:
             event = Events.objects.get(pk=pk)
@@ -39,6 +52,14 @@ class EventAPI(viewsets.ModelViewSet):
             return Response({"Event": "Event deleted seccefully"})
         except Events.DoesNotExist:
             return Response({"Event": "Event does not exist"})
+
+    def update(self, request, pk=None):
+        event = Events.objects.get(pk=pk)
+        serializer = EventSerializer(event, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AttendantsAPI(viewsets.ModelViewSet):
