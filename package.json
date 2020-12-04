@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./wefund/frontend/src/index.js -o ./wefund/frontend/static/frontend/",
+    "dev": "webpack --mode development --watch ./wefund/frontend/src/index.js -o ./wefund/frontend/static/frontend/",
     "build": "webpack --mode production ./wefund/frontend/src/index.js -o ./wefund/frontend/static/frontend/"
   },
   "repository": {

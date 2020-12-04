@@ -9,6 +9,7 @@ verify_ssl = true
 djangorestframework = "*"
 django-rest-knox = "*"
 pillow = "*"
+django-rest-resetpassword = "*"
 
 [requires]
 python_version = "*"
