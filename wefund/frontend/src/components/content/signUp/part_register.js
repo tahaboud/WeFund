@@ -1,117 +1,117 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { register } from "../../../actions/auth";
-import { createMessage } from "../../../actions/messages";
-import {BrowserRouter as Router,Link,Route,Switch,} from 'react-router-dom';
+import React, {Component} from 'react'
+import Part0 from './Part0';
+import Part2 from './Part2';
+import Part3 from './Part3';
+import Part4 from './Part4';
+import Part5 from './Part5';
+import Part6 from './Part6';
 
-class PartRegister extends Component {
+export class MultiStepFormEvent extends Component {
   state = {
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    password2: "",
+    step: 1,
+    firstName: '',
+    lastName: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    password2: '',
+    email: '',
+    mobile: '',
+    natioanlCardId: '',
+    titleDocument: '',
+    dateDocument: '',
+    sourceDocument: '',
+    descriptionDocument: '',
+    attachDocument: '',
+    ccp: '',
+    visaId: ''
+  }
+  // Proceed to next step
+  nextStep = () => {
+    const {step} = this.state;
+    this.setState({
+      step: step + 1
+    })
+  }
+  // Handle fields change
+  handleChange = input => e => {
+    this.setState({[input]: e.target.value});
   };
-  static propTypes = {
-    register: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool,
-  };
-  onSubmit = (e) => {
-    alert();
-    e.preventDefault();
-   
-    const { first_name,last_name, email, password, password2 } = this.state;
-  
-      const newUser = {
-        first_name,
-        last_name,
-        email,
-        password,
-        password2,
-      };
-      this.props.register(newUser);
-    
-  };
-  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
   render() {
-    const {  first_name,last_name, email, password, password2 } = this.state;
-    return (
-      <form onSubmit={this.onSubmit}>
-                  
-                
-      <div id="login">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="first name"
-            name="first_name"
-            onChange={this.onChange}
-            value={first_name}
-            aria-label="Username"
-            aria-describedby="basic-addon1"/>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="last name"
-            name="last_name"
-            onChange={this.onChange}
-            value={last_name}
-            aria-label="Password"
-            aria-describedby="basic-addon1"/>
-        </div>
-      </div>
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Email"
-          name="email"
-          aria-label="email"
-          onChange={this.onChange}
-          value={email}
-          aria-describedby="basic-addon1"/></div>
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Password"
-          name="password"
-          aria-label="password"
-          onChange={this.onChange}
-          value={password}
-          aria-describedby="basic-addon1"/></div>
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Confirm Password"
-        name="password2"
-        aria-label="confirm password"
-        onChange={this.onChange}
-         value={password}
-        aria-describedby="basic-addon1"/>
-      <div className="spinner">
-        <label>
-          <input type="checkbox" onclick="$(this).attr('disabled','disabled');"/>
-          <span className="checkmark">
-            <span>&nbsp;</span>
-          </span>
-          <span style={{
-            width: '100%'
-          }}>
-            by clicking Sign Up you are agreeing to our terms and conditions!</span>
-        </label>
-      </div>
-      <button className="btn btn-danger" id="in">
-        Sign Up</button>
-      </form>
-
-    );
+    const {step} = this.state;
+    const {
+      firstName,
+      lastName,
+      first_name,
+      last_name,
+      email,
+      password,
+      password2,
+      mobile,
+      natioanlCardId,
+      titleDocument,
+      dateDocument,
+      sourceDocument,
+      descriptionDocument,
+      attachDocument,
+      ccp,
+      visaId
+    } = this.state;
+    const values = {
+      firstName,
+      lastName,
+      first_name,
+      last_name,
+      email,
+      password,
+      password2,
+      mobile,
+      natioanlCardId,
+      titleDocument,
+      dateDocument,
+      sourceDocument,
+      descriptionDocument,
+      attachDocument,
+      ccp,
+      visaId
+    }
+    switch (step) {
+      case 1:
+        return (
+          <div>
+            <Part0
+              nextStep={this.nextStep}
+              handleChange={this.handleChange}
+              values={values}/>
+          </div>
+        )
+      case 2:
+        return (
+          <div>
+            <Part2
+              nextStep={this.nextStep}
+              handleChange={this.handleChange}
+              values={values}/>
+          </div>
+        )
+      case 3:
+        return (<Part3
+          nextStep={this.nextStep}
+          handleChange={this.handleChange}
+          values={values}/>)
+      case 4:
+        return (<Part4
+          nextStep={this.nextStep}
+          handleChange={this.handleChange}
+          values={values}/>)
+      case 5:
+        return (<Part5 nextStep={this.nextStep} prevStep={this.prevStep} values={values}/>);
+      case 6:
+        return (<Part6 nextStep={this.nextStep} prevStep={this.prevStep} values={values}/>);
+    }
 
   }
 }
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
-export default connect(mapStateToProps, { register})(PartRegister);
+
+export default MultiStepFormEvent;

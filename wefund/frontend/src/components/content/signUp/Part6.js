@@ -2,18 +2,19 @@ import React, {Component, component} from 'react';
 
 class Part6 extends Component {
   state = {}
-
+  continue=e=>{
+    e.preventDefault();
+    this.props.nextStep();
+  }
   render() {
     return (
 
-      <div>
-        <div className="container">
-          <div className="row">
+
+  
           
-            
-            <div className="col-md-12 offset-sm-4">
+            <div>
               <center>
-                <h4 id="upload">
+                <h4 id="upload" > 
                   Now Upload your search files and documents
                 </h4>
                 <div id="login">
@@ -70,14 +71,13 @@ class Part6 extends Component {
                     </div>
                   </div>
                 </form>
-                <button className="btn btn-danger" id="nx">
+                <button className="btn btn-danger" id="nx" onClick={this.continue}>
                   Next
                 </button>
               </center>
             </div>
-          </div>
-        </div>
-      </div>
+ 
+   
 
     );
 

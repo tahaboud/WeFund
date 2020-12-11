@@ -4,9 +4,31 @@ import AppBar from '@material-ui/core/AppBar';
 import {ThemeProvider as MuiThemeProvider} from '@material-ui/core/styles';
 import {List, ListItem, ListItemText} from '@material-ui/core/';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 export class Confirm extends Component {
   state = {}
+  save = e => {
+
+    e.preventDefault();
+
+    alert("Your data has been submited" + this.props.values.firstName)
+
+    const user = {
+      first_name: this.props.values.firstName,
+      last_name: this.props.values.lastName,
+      email: this.props.values.email,
+      phone_number: this.props.values.phone_number,
+      id_number: 5
+    };
+
+    axios.post("/api/events/1/subs/", {user})
+    .catch(res => {
+      console.log(res);
+      console.log(res.data);
+    })
+  
+  }
   render() {
 
     const {
@@ -67,7 +89,7 @@ export class Confirm extends Component {
           </List>
           <br/>
 
-          <Button color="primary" variant="contained" onClick={this.continue}>Confirm & Continue</Button>
+          <Button color="primary" variant="contained" onClick={this.save}>Confirm & Continue</Button>
         </Dialog>
       </>
     </MuiThemeProvider>

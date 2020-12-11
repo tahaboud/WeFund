@@ -2,7 +2,10 @@ import React, {Component, component} from 'react';
 
 class Part3 extends Component {
   state = {}
-
+  continue=e=>{
+    e.preventDefault();
+    this.props.nextStep();
+  }
   render() {
     return (
 
@@ -41,7 +44,7 @@ class Part3 extends Component {
                   aria-label="Supporting"
                   aria-describedby="basic-addon1"/>
               </div>
-              <button id="s-two" className="btn btn-danger">
+              <button id="s-two" className="btn btn-danger" onClick={this.continue}>
                 Next
               </button>
             </div>

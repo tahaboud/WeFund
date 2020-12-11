@@ -2,7 +2,10 @@ import React, {Component, component} from 'react';
 
 class Part2 extends Component {
   state = {}
-
+  continue=e=>{
+    e.preventDefault();
+    this.props.nextStep();
+  }
   render() {
     return (
 
@@ -70,6 +73,7 @@ class Part2 extends Component {
                     <span className="input-group-text" id="inputGroupFileAddon02">Upload</span>
                   </div>
                 </div>
+                <button className="btn btn-danger" id="btnevent" onClick={this.continue}> Next </button>
               </div>
             </div>
             <div className="col-6">
@@ -77,6 +81,7 @@ class Part2 extends Component {
                 <img src height={120} width={120} id="uploa"/>
               </div>
             </div>
+           
           </div>
         </div>
       </div>
