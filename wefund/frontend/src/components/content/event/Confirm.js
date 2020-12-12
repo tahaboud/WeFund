@@ -12,7 +12,7 @@ export class Confirm extends Component {
 
     e.preventDefault();
 
-    alert("Your data has been submited" + this.props.values.firstName)
+    alert("Your data has been submited succefully" + this.props.values.firstName)
 
     const user = {
       first_name: this.props.values.firstName,
