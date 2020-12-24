@@ -13,7 +13,11 @@ export class Confirm extends Component {
     e.preventDefault();
 
     alert("Your data has been submited succefully" + this.props.values.firstName)
-
+    const config={
+     
+        "Content-Type":"application/json"
+      
+    }
     const user = {
       first_name: this.props.values.firstName,
       last_name: this.props.values.lastName,
@@ -22,10 +26,9 @@ export class Confirm extends Component {
       id_number: 5
     };
 
-    axios.post("/api/events/1/subs/", {user})
+    axios.post("/api/events/1/subs/",user,config)
     .catch(res => {
-      console.log(res);
-      console.log(res.data);
+      console.log(res.response.data);
     })
   
   }
