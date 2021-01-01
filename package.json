@@ -23,13 +23,22 @@
     "@babel/preset-react": "^7.12.1",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "css-loader": "^5.0.0",
+    "css-loader": "^5.0.1",
+    "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.2.0",
     "webpack-cli": "^4.1.0"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.1",
+    "@ckeditor/ckeditor5-build-classic": "^24.0.0",
+    "@ckeditor/ckeditor5-react": "^3.0.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.0",
     "buffer": "^6.0.3",
     "prop-types": "^15.7.2",
@@ -42,7 +51,6 @@
     "react-step-builder": "^2.0.4",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0",
-    "style-loader": "^2.0.0"
+    "redux-thunk": "^2.3.0"
   }
 }
