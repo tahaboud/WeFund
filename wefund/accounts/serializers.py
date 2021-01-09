@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Account, Researcher
 from django.contrib.auth import authenticate
+from drf_recaptcha.fields import ReCaptchaV2Field
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -12,10 +13,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
+    recaptcha = ReCaptchaV2Field()
 
     class Meta:
         model = Account
-        fields = "__all__"
+        fields = ("first_name", "last_name", "email", "password", "recaptcha")
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
@@ -28,6 +30,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+    recaptcha = ReCaptchaV2Field()
 
     def validate(self, data):
         user = authenticate(**data)
@@ -60,6 +63,7 @@ class ResearcherSerializer(serializers.ModelSerializer):
     def validate(self, validated_data):
         try:
             int(validated_data["id_card_number"])
+            return validated_data
 
         except ValueError:
             raise serializers.ValidationError(
@@ -95,10 +99,11 @@ class ResetPasswordSerializer(serializers.ModelSerializer):
 
 class SendEmailSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
+    recaptcha = ReCaptchaV2Field()
 
     class Meta:
         model = Account
-        fields = ("email",)
+        fields = ("email", "recaptcha")
 
 
 class CheckTokenSerializer(serializers.Serializer):

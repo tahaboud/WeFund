@@ -12,7 +12,7 @@ urlpatterns = [
                                    "post": "update", "delete": "destroy"})),
     path("researcher/",
          ResearcherAPI.as_view({"get": "list", "post": "create", "put": "update"})),
-    path("admin/register", RegisterAdminAPI.as_view()),
+    path("admin/register/", RegisterAdminAPI.as_view()),
     path("admin/users/<pk>/",
          AdminAPI.as_view({"get": "retrieve", "post": "update"})),
     path("admin/users/", AdminAPI.as_view({"get": "list"})),

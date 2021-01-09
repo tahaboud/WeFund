@@ -1,30 +1,71 @@
-import React, { Component, Fragment } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import Nav from './Nav';
-import Content from './content/Content';
-import Footer from './Footer';
-import AdminLte from './admin_lte/App';
-import './css/1.css' ;
-import './css/bottom.css' ;
-import './css/events.css' ;
-import './css/evreg.css' ;
-import './css/login.css' ;
-
-import { Provider  } from "react-redux";
+// Import Router
+import { Switch, Route, BrowserRouter } from "react-router-dom";
+// Import Redux
+import { Provider, useDispatch } from "react-redux";
 import store from "../store";
-// Alert Options
-class App extends React.Component{
-    render(){
-        return (
-            <Provider store={store}>
-                <Fragment>
-                  
-                   {/** <Nav/>
-                    <Footer />*/} 
-                    <AdminLte/>
-                </Fragment>
-            </Provider>
-        );
+import { loadUser } from "../actions/authAction";
+// Import Pages
+import Home from "./pages/Home";
+import SignInUp from "./pages/SignInUp";
+import AboutUs from "./pages/AboutUs";
+import Events from "./pages/Events";
+import Support from "./pages/Support";
+import Contact from "./pages/Contact";
+import ThankYou from "./pages/ThankYou";
+import EmailConfirmed from "./pages/EmailConfirmed";
+import RequestReset from "./pages/RequestReset";
+import ResetPassword from "./pages/ResetPassword";
+
+function App() {
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (token) {
+      dispatch(loadUser());
     }
+  }, []);
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/login">
+          <SignInUp />
+        </Route>
+        <Route exact path="/about">
+          <AboutUs />
+        </Route>
+        <Route exact path="/event">
+          <Events />
+        </Route>
+        <Route exact path="/support">
+          <Support />
+        </Route>
+        <Route exact path="/contact">
+          <Contact />
+        </Route>
+        <Route exact path="/thankyou">
+          <ThankYou />
+        </Route>
+        <Route exact path="/user/confirm-email/:id/:token">
+          <EmailConfirmed />
+        </Route>
+        <Route exact path="/reset-password">
+          <RequestReset />
+        </Route>
+        <Route exact path="/user/reset-password/:id/:token">
+          <ResetPassword />
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  );
 }
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("app")
+);

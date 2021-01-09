@@ -10,6 +10,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils import timezone
+import requests
 
 
 class IsSuperUser(permissions.BasePermission):
@@ -35,7 +36,7 @@ class RegisterUserAPI(viewsets.ModelViewSet):
             email_subject = "Activate your account"
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = generate_token.make_token(user)
-            message = render_to_string("accounts/email_message.html", {
+            message = render_to_string("accounts/Register_email_message.html", {
                 "user": user.first_name,
                 "domain": current_site,
                 "uid": uid,
@@ -50,9 +51,10 @@ class RegisterUserAPI(viewsets.ModelViewSet):
             email_message.content_subtype = "html"
             email_message.send(fail_silently=True)
             return Response({
-                "user": "Email verification sent"
+                "user": "Email verification sent",
+                "email": user.email
             })
-        return Response(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ActivateUserAPI(viewsets.ModelViewSet):
@@ -203,7 +205,7 @@ class PasswordResetRequestAPI(viewsets.ModelViewSet):
                 email_subject = "Reset your password"
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = generate_token.make_token(user)
-                message = render_to_string("accounts/email_message.html", {
+                message = render_to_string("accounts/Reset_email_message.html", {
                     "user": user,
                     "domain": current_site,
                     "uid": uid,
@@ -223,7 +225,7 @@ class PasswordResetRequestAPI(viewsets.ModelViewSet):
                 })
             return Response(serializer.errors)
         except Account.DoesNotExist:
-            return Response({"user": "user does not exist"})
+            return Response({"user": "user does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserPasswordUpdateAPI(viewsets.ModelViewSet):
@@ -244,7 +246,7 @@ class UserPasswordUpdateAPI(viewsets.ModelViewSet):
                     raise serializers.ValidationError("Password do not match")
                 else:
                     user.set_password(request.data["password1"])
-                    # user.last_login = timezone.now()
+                    user.last_login = timezone.now()
                     user.save()
                     return Response({"Activation": "Password reset is succeful"})
             return Response(serializer.errors)
@@ -269,4 +271,4 @@ class CheckTokenAPI(viewsets.ModelViewSet):
                 return Response({"token": "Token is valid"})
 
             return Response({"token": "Token is not valid"}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        return Response(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
