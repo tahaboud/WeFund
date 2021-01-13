@@ -6,6 +6,9 @@ import { login } from "../../../actions/authAction";
 import { loginValidator } from "../validators/authValidator";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Link } from "react-router-dom";
+// Import Redux
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
 
 const Login = () => {
   const recaptchaRef = React.createRef();
@@ -113,4 +116,9 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated
+  }
+};
+export default connect(mapStateToProps, {login})(Login);

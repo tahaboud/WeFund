@@ -32,7 +32,7 @@
   },
   "browser": {
     "crypto": false
-},
+  },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^24.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.0",
@@ -43,6 +43,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "@types/react-redux": "^7.1.15",
     "axios": "^0.21.1",
     "buffer": "^6.0.3",
     "crypto": "^1.0.1",
@@ -50,9 +51,11 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-dropdown-modal": "^1.2.5",
     "react-google-recaptcha": "^2.1.0",
     "react-hash-router": "^0.2.0",
     "react-hooks-helper": "^1.6.0",
+    "react-recaptcha": "^2.3.10",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-step-builder": "^2.0.4",
@@ -60,6 +63,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "use-selector": "^3.0.1",
     "util": "^0.12.3",
     "validator": "^13.5.2"
   }

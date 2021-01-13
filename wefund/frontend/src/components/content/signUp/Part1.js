@@ -30,9 +30,9 @@ const Part1 = () => {
         </div>
         <div className="col-6">
           <div className="log2">
-            <center>
+            <div >
               <h6>check application now!</h6>
-            </center>
+            </div>
             <button
               className="btn btn-light"
               onClick={() => {
