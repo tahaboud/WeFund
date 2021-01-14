@@ -4,6 +4,7 @@ import Part2 from './Part2';
 import Part3 from './Part3';
 import Part4 from './Part4';
 import Confirm from './Confirm';
+import "./stylesPagination.css";
 export class MultiStepFormEvent extends Component {
   state = {
     step: 1,

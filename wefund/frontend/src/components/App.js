@@ -19,18 +19,18 @@ import RequestReset from "./pages/RequestReset";
 import ResetPassword from "./pages/ResetPassword";
 //Import Admin Lte
 import AdminLte from './admin_lte/App';
+//Import css pagination
 function App() {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const {user} = useSelector((state) => state.auth);
-  //console.log(user)
+  
   useEffect(() => {
     if (token) {
       dispatch(loadUser());
     }
   }, []);
   if (user.user) {
-    console.log(user)
     if (user.user.is_admin === true) 
       return (
         <div><AdminLte/></div>

@@ -21,7 +21,7 @@ export const getEvents = () => (dispatch, getState) => {
 // ADD LEAD
 export const addEvent = (event) => (dispatch, getState) => {
   axios
-    .post('/api/events/', event, tokenConfig(getState))
+    .post('/api/events/', event, tokenConfig1(getState))
     .then((res) => {
       dispatch(createMessage({ addEvent: 'Event Added'}));
       dispatch({
