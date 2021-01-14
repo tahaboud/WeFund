@@ -7,7 +7,7 @@ import {ADD_EVENT,GET_EVENTS} from './types';
 // GET LEADS
 export const getEvents = () => (dispatch, getState) => {
   axios
-    .get('/api/events/',tokenConfig(getState))
+    .get('/api/events/')
     .then((res) => {
       dispatch({
         type: GET_EVENTS,

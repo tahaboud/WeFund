@@ -5,7 +5,7 @@ import Content from './Content/ParentLayout';
 import Footer from './Footer';
 //all include css and js for the admin lte
 
-import "./dist/css/adminlte.min.css";
+import "./assets/css/adminlte.min.css";
 import "./plugins/daterangepicker/daterangepicker.css";
 
 

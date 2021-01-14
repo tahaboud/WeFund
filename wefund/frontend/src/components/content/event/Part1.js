@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 class Part1 extends Component {
   state = {}
   continue=e=>{
+    alert()
     e.preventDefault();
     this.props.nextStep();
   }
@@ -17,7 +18,7 @@ componentDidMount() {
     this.props.getEvents();
 }
   render() {
-    const { values, handleChange } = this.props;
+    const { values, handleChange,nextStep } = this.props;
     return (
 
       <div >

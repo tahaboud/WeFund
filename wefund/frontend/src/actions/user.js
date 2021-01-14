@@ -7,7 +7,7 @@ import {GET_USERS} from './types';
 // GET USERS
 export const getUsers = () => (dispatch, getState) => {
   axios
-    .get('/api/account/user/', tokenConfig(getState))
+    .get('api/account/admin/users/', tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_USERS,
