@@ -2,6 +2,7 @@ import { GET_EVENTS, DELETE_LEAD, ADD_EVENT, CLEAR_LEADS } from '../actions/type
 
 const initialState = {
   events: [],
+
 };
 
 export default function (state = initialState, action) {
@@ -10,6 +11,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         events: action.payload,
+
       };
 
     case ADD_EVENT:

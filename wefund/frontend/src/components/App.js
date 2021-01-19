@@ -27,10 +27,12 @@ function App() {
   
   useEffect(() => {
     if (token) {
+      
       dispatch(loadUser());
     }
   }, []);
   if (user.user) {
+
     if (user.user.is_admin === true) 
       return (
         <div><AdminLte/></div>

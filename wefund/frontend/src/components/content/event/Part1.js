@@ -14,6 +14,10 @@ const Part1 = (props) => {
     e.preventDefault();
     props.nextStep();
   }
+  //search Bar
+  const [searchString,
+    setsearchString] = useState("");
+
   //Starting our redux
   const dispatch = useDispatch();
   const {events} = useSelector((state) => state.event);
@@ -21,17 +25,30 @@ const Part1 = (props) => {
     dispatch(getEvents());
 
   }, []);
-
-  // Get current events
+  // Get current events and some configuration of the pagination constante
   const {values, handleChange, nextStep} = props;
   const [currentPage,
     setCurrentPage] = useState(1);
   const [eventsPerPage] = useState(2);
   const indexOfLastPost = currentPage * eventsPerPage;
   const indexOfFirstPost = indexOfLastPost - eventsPerPage;
-  const currentevents = events
-    .slice(indexOfFirstPost, indexOfLastPost);
-  // Change page
+  const currentevents = events.slice(indexOfFirstPost, indexOfLastPost);
+  // Search Bar map
+  let currentevents1 =currentevents;
+  let events1=events;
+  if (searchString !="") {
+     currentevents1 = events.filter(function (l) {
+      return l
+        .name
+        .toLowerCase()
+        .match(searchString);
+    });
+    events1=currentevents;
+  }
+
+  
+
+
   const paginate = pageNumber => setCurrentPage(pageNumber);
   return (
     <div>
@@ -56,17 +73,24 @@ const Part1 = (props) => {
             <div className="col-2"><img src="../static/img/Group 742@2x.png" width={200} height={90}/>
             </div>
             <div className="col-8">
-              <input type="text" name="search-event" id="search-event"/>
+              <input
+                type="text"
+                value={searchString}
+                onChange={e => setsearchString(e.target.value)}
+                name="search-event"
+                id="search-event"/>
               <input type="submit" defaultValue="Search !" id="sube"/>
+
             </div>
           </div>
         </div>
       </div>
       {/**Event Componennt */}
-      <Events events={currentevents} continue={continue_step1}/>
+
+      <Events events={currentevents1} continue={continue_step1}/>
       <Pagination
         postsPerPage={eventsPerPage}
-        totalPosts={events.length}
+        totalPosts={events1.length}
         paginate={paginate}/>
     </div>
 
