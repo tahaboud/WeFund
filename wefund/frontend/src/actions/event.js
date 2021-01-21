@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
 
 
-import {ADD_EVENT,GET_EVENTS} from './types';
+import {ADD_EVENT,GET_EVENTS,GET_EVENT_ATTENDANCES} from './types';
 
 // GET LEADS
 export const getEvents = () => (dispatch, getState) => {
@@ -16,8 +16,18 @@ export const getEvents = () => (dispatch, getState) => {
     })
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
-
-
+// GET LEADS
+export const getEventAttendence = (event_id) => (dispatch, getState) => {
+  axios
+    .get("/api/events/"+event_id+"/subs/",tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_EVENT_ATTENDANCES,
+        payload: res.data,
+      });
+    })
+    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+};
 // ADD LEAD
 export const addEvent = (event) => (dispatch, getState) => {
   axios

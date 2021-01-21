@@ -10,8 +10,9 @@ import Pagination from './Part1/Pagination';
 
 const Part1 = (props) => {
 
-  const continue_step1 = e => {
+  const continue_step1 = id=>e => {
     e.preventDefault();
+    localStorage.setItem('event_id', id);
     props.nextStep();
   }
   //search Bar

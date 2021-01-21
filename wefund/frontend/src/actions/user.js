@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from './messages';
 
-
 import {GET_USERS} from './types';
-
 // GET USERS
 export const getUsers = () => (dispatch, getState) => {
   axios
@@ -16,21 +14,40 @@ export const getUsers = () => (dispatch, getState) => {
     })
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
-export const tokenConfig = (getState) => {
-    // Get token from state
-    const token = getState().auth.token;
-  
-    // Headers
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-  
-    // If token, add to headers config
-    if (token) {
-      config.headers["Authorization"] = `Token ${token}`;
-    }
-  
-    return config;
+export const tokenConfig1 = (getState) => {
+  // Get token from state
+  const token = getState().auth.token;
+
+  // Headers
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data/json",
+    },
   };
+
+  // If token, add to headers config
+  if (token) {
+    config.headers["Authorization"] = `Token ${token}`;
+  }
+
+  return config;
+};
+// Setup config with token - helper function
+export const tokenConfig = (getState) => {
+  // Get token from state
+  const token = getState().auth.token;
+
+  // Headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  // If token, add to headers config
+  if (token) {
+    config.headers["Authorization"] = `Token ${token}`;
+  }
+
+  return config;
+};

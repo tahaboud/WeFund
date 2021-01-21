@@ -3,6 +3,15 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import CheckIcon from '@material-ui/icons/Check';
+import { connect } from 'react-redux';
+import { getEventAttendence } from '../../../../../actions/event';
+import PropTypes from 'prop-types';
 
 class EditEventComponent extends Component {
 
@@ -20,9 +29,9 @@ class EditEventComponent extends Component {
     }
 
     componentDidMount() {
-        this.loadUser();
+        //alert(window.localStorage.getItem("userId"))
+        const values=this.props.getEventAttendence(window.localStorage.getItem("userId"));
     }
-
     loadUser() {
        /* ApiService.fetchUserById(window.localStorage.getItem("userId"))
             .then((res) => {
@@ -54,22 +63,39 @@ class EditEventComponent extends Component {
     render() {
         return (
             <div>
-                <Typography variant="h4" style={style}>Edit User</Typography>
-                <form>
+                <Typography variant="h4" style={style}>List of all attendances</Typography>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="right">First name</TableCell>
+                            <TableCell align="right">Last name</TableCell>
+                            <TableCell align="right">Email</TableCell>
+                            <TableCell align="right">Phone number</TableCell>
+                            <TableCell align="right">Id number</TableCell>
+                            <TableCell align="right">Payement status</TableCell>
+                            <TableCell align="right">Send Email</TableCell>
+                       
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {this.props.event_attends.map((event_attend) => (
+                            <TableRow key={event.id}>
+                                 {/* <TableCell component="th" scope="row">
+                                    {/* {this.state.users.id}
+                                </TableCell>*/}
+                                <TableCell align="right">{event_attend.first_name}</TableCell>
+                                <TableCell align="right">{event_attend.last_name}</TableCell>
+                                <TableCell align="right">{event_attend.email}</TableCell>
+                                <TableCell align="right">{event_attend.phone_number}</TableCell>
+                                <TableCell align="right">{event_attend.id_number}</TableCell>
+                                <TableCell align="right"></TableCell>
+                               <TableCell align="right"><CheckIcon /></TableCell>
+                                {/* <TableCell align="right" onClick={() => this.deleteUser(row.id)}><DeleteIcon /></TableCell>*/}
 
-                        <TextField type="text" placeholder="username" fullWidth margin="normal" name="username" readonly="true" value={this.state.username}/>
-
-                        <TextField placeholder="First Name" fullWidth margin="normal" name="firstName" value={this.state.firstName} onChange={this.onChange}/>
-
-                        <TextField placeholder="Last name" fullWidth margin="normal" name="lastName" value={this.state.lastName} onChange={this.onChange}/>
-
-                        <TextField type="number" placeholder="age" fullWidth margin="normal" name="age" value={this.state.age} onChange={this.onChange}/>
-
-                        <TextField type="number" placeholder="salary" fullWidth margin="normal" name="salary" value={this.state.salary} onChange={this.onChange}/>
-
-                        <Button variant="contained" color="primary" onClick={this.saveUser}>Save</Button>
-
-                </form>
+                            </TableRow>
+                           ))}
+                    </TableBody>
+                </Table>
             </div>
         );
     }
@@ -80,5 +106,10 @@ const style ={
     justifyContent: 'center'
 }
 
-export default EditEventComponent;
+const mapStateToProps = (state) => ({
+    
+    event_attends: state.event.event_attends,
+  });
+export default connect(mapStateToProps, { getEventAttendence })(EditEventComponent);
+
 

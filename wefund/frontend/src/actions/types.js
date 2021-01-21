@@ -1,5 +1,6 @@
 export const GET_LEADS = "GET_LEADS";
 export const GET_EVENTS = "GET_EVENTS";
+export const GET_EVENT_ATTENDANCES="GET_EVENT_ATTENDANCES";
 export const GET_USERS = "GET_USERS";
 export const DELETE_LEAD = "DELETE_LEAD";
 export const ADD_LEAD = "ADD_LEAD";
@@ -15,3 +16,4 @@ export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const CLEAR_LEADS = "CLEAR_LEADS";
+

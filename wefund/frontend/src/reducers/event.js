@@ -1,8 +1,8 @@
-import { GET_EVENTS, DELETE_LEAD, ADD_EVENT, CLEAR_LEADS } from '../actions/types.js';
+import { GET_EVENTS, DELETE_LEAD, ADD_EVENT, CLEAR_LEADS,GET_EVENT_ATTENDANCES } from '../actions/types.js';
 
 const initialState = {
   events: [],
-
+  event_attends:[]
 };
 
 export default function (state = initialState, action) {
@@ -13,6 +13,12 @@ export default function (state = initialState, action) {
         events: action.payload,
 
       };
+      case GET_EVENT_ATTENDANCES:
+        return {
+          ...state,
+          event_attends: action.payload,
+  
+        };
 
     case ADD_EVENT:
       return {

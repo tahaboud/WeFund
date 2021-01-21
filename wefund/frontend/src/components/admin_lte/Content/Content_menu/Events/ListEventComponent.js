@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DetailsIcon from '@material-ui/icons/Details';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { getEvents } from '../../../../../actions/event';
@@ -60,12 +61,11 @@ class ListEventComponent extends Component {
                     <TableHead>
                         <TableRow>
                             <TableCell align="right">Event name</TableCell>
+                            <TableCell align="right">Description</TableCell>
                             <TableCell align="right">Price</TableCell>
                             <TableCell align="right">Category</TableCell>
-                            <TableCell align="right">Date</TableCell>
                             <TableCell align="right">subscription</TableCell>
-
-
+                            <TableCell align="right">List of all attendance</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -75,14 +75,13 @@ class ListEventComponent extends Component {
                                     {/* {this.state.users.id}
                                 </TableCell>*/}
                                 <TableCell align="right">{event.name}</TableCell>
+                                <TableCell align="right">{event.description}</TableCell>
                                 <TableCell align="right">{event.price}</TableCell>
                                 <TableCell align="right">{event.category}</TableCell>
-                                <TableCell align="right">{event.date}</TableCell>
                                 <TableCell align="right">{event.category}</TableCell>
                                 
-         
-                                {/*<TableCell align="right" onClick={() => this.editUser(row.id)}><CreateIcon /></TableCell>
-                                <TableCell align="right" onClick={() => this.deleteUser(row.id)}><DeleteIcon /></TableCell>*/}
+                               <TableCell align="right" onClick={() => this.editUser(event.id)}><DetailsIcon /></TableCell>
+                                {/* <TableCell align="right" onClick={() => this.deleteUser(row.id)}><DeleteIcon /></TableCell>*/}
 
                             </TableRow>
                            ))}

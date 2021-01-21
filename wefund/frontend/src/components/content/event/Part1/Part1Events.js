@@ -5,7 +5,8 @@ const Events = ({events:events, continue:next }) => {
     <div className="events">
       <div className="container">
         {events.map((event) => (
-            <div className="row">
+         
+            <div className="row" >
 
               <div className="col-3">
                 <img src="../static/img/opacev.png" id="opacev"/>
@@ -20,12 +21,13 @@ const Events = ({events:events, continue:next }) => {
                 <p>
                   {event.description}
                 </p>
-                <button className="btn btn-danger" id="btnevent" onClick={next}>
+                <button className="btn btn-danger" id="btnevent" key={event.id}  onClick={next(event.id)}>
                   Register
                 </button>
               </div>
 
             </div>
+            
           ))}
       </div>
     </div>
