@@ -85,8 +85,10 @@ class LoginAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
+        is_researcher = hasattr(user, "researcher")
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "is_researcher": is_researcher,
             "token": AuthToken.objects.create(user)[1]
         })
 
@@ -160,14 +162,15 @@ class ResearcherAPI(viewsets.ModelViewSet):
 
 
 class AdminAPI(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAdminUser)
+    permission_classes = (permissions.IsAdminUser,)
 
     def list(self, request):
         users = Account.objects.all()
         researchers = Researcher.objects.all()
-        serializerUser = AdminUserSerializer(users)
-        serializerResearcher = AdminResearcherSerializer(researchers)
-        return Response(serializerUser.data + serializerResearcher.data)
+        serializerUser = AdminUserSerializer(users, many=True)
+        serializerResearcher = AdminResearcherSerializer(
+            researchers, many=True)
+        return Response({"users": serializerUser.data, "researchers": serializerResearcher.data})
 
     def retrieve(self, request, pk=None):
         try:
@@ -175,7 +178,7 @@ class AdminAPI(viewsets.ModelViewSet):
             researcher = Researcher.objects.get(user=user)
             serializerUser = AdminUserSerializer(user)
             serializerResearcher = AdminResearcherSerializer(researcher)
-            return Response(serializerUser.data + serializerResearcher.data)
+            return Response({"user": serializerUser.data, "researcher": serializerResearcher.data})
         except Account.DoesNotExist:
             raise serializers.ValidationError({"User": "User does not exist"})
         except Researcher.DoesNotExist:

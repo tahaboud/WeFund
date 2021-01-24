@@ -30,6 +30,7 @@ const Login = () => {
   };
   const onRecaptcha = (value) => {
     setRecaptcha(value);
+    console.log(value);
     setChecked(true);
   };
   const onExpired = () => {

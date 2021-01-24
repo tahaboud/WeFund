@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Nav from "../content/Nav";
 import Part1 from "../content/begining/Part1";
 import Part2 from "../content/begining/Part2";
@@ -10,6 +11,7 @@ import Part7 from "../content/begining/Part7";
 import Footer from "../content/Footer";
 
 const Home = () => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <div>
       <Nav />

@@ -9,7 +9,7 @@ import logoImg from "../../../static/img/logoimage.png";
 import logoutImg from "../../../static/img/Group 729@2x.png";
 
 const Nav = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const onSignOut = (e) => {
     e.preventDefault();
@@ -50,6 +50,11 @@ const Nav = () => {
         <Link to={"/contact"} className="nav-link">
           Contact us
         </Link>
+        {isAuthenticated && (
+          <Link to="/profile" className="nav-link">
+            {user.User ? user.User.first_name : ""}
+          </Link>
+        )}
         {isAuthenticated && (
           <Link to="/" onClick={onSignOut}>
             <img src={logoutImg} height={21} width={25} />

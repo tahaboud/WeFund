@@ -17,6 +17,7 @@ import ThankYou from "./pages/ThankYou";
 import EmailConfirmed from "./pages/EmailConfirmed";
 import RequestReset from "./pages/RequestReset";
 import ResetPassword from "./pages/ResetPassword";
+import ZoomMeeting from "./pages/ZoomMeeting";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -30,7 +31,8 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Home />
+          {/* <Home /> */}
+          <ZoomMeeting />
         </Route>
         <Route exact path="/login">
           <SignInUp />

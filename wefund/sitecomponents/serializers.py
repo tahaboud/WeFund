@@ -42,3 +42,14 @@ class DonationSerializer(serializers.ModelSerializer):
         except ValueError:
             raise serializers.ValidationError(
                 {"price": "please enter a valid price"})
+
+
+class ZoomSerializer(serializers.Serializer):
+    role = serializers.BooleanField()
+
+    def validate(self, validated_data):
+        if not isinstance(validated_data["role"], bool):
+            raise serializers.ValidationError(
+                {"role": "This field must be a boolean"})
+
+        return validated_data

@@ -32,7 +32,7 @@
   },
   "browser": {
     "crypto": false
-},
+  },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^24.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.0",
@@ -43,6 +43,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "@zoomus/websdk": "^1.8.6",
     "axios": "^0.21.1",
     "buffer": "^6.0.3",
     "crypto": "^1.0.1",
@@ -60,6 +61,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "styled-components": "^5.2.1",
     "util": "^0.12.3",
     "validator": "^13.5.2"
   }

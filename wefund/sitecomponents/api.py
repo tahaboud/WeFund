@@ -1,7 +1,26 @@
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.response import Response
 from .models import WeFund, Adds, Donation
-from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer
+from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer
+import hashlib
+import hmac
+import base64
+import time
+
+
+def generateSignature(role):
+    ts = int(round(time.time() * 1000)) - 30000
+    msg = "Pvr06z3zRNueKolA69kBCA" + str(2715966816) + str(ts) + str(role)
+    message = base64.b64encode(bytes(msg, 'utf-8'))
+    secret = bytes("MmmN7VIVwkphdx3TSWsRoaMEwJPYtYiVLycb", 'utf-8')
+    hash = hmac.new(secret, message, hashlib.sha256)
+    hash = base64.b64encode(hash.digest())
+    hash = hash.decode("utf-8")
+    tmpString = "%s.%s.%s.%s.%s" % (
+        "Pvr06z3zRNueKolA69kBCA", str(2715966816), str(ts), str(role), hash)
+    signature = base64.b64encode(bytes(tmpString, "utf-8"))
+    signature = signature.decode("utf-8")
+    return signature.rstrip("=")
 
 
 class IsSuperUser(permissions.BasePermission):
@@ -93,3 +112,21 @@ class DonationAPI(viewsets.ModelViewSet):
         donations = Donation.objects.all()
         serializer = DonationSerializer(donations)
         return Response(serializer.data)
+
+
+class AdminGetSignatureAPI(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAdminUser,)
+
+    def list(self, request):
+        serializer = ZoomSerializer(data=request.data)
+        if serializer.is_valid():
+            signature = generateSignature(role=int(serializer.data["role"]))
+            return Response({"signature": signature})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserGetSignatureAPI(viewsets.ModelViewSet):
+
+    def list(self, request):
+        signature = generateSignature(role=0)
+        return Response({"signature": signature})
