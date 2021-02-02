@@ -12,6 +12,7 @@ class EventSerializer(serializers.ModelSerializer):
         try:
             int(validated_data["spots"])
             int(validated_data["price"])
+            return  validated_data
         except ValueError:
             raise serializers.ValidationError(
                 {"Price / Spots": "Please ensure that price and spots are numerical values"})
@@ -44,6 +45,7 @@ class AttendantsSerializer(serializers.ModelSerializer):
         try:
             int(validated_data["phone_number"])
             int(validated_data["id_number"])
+            return  validated_data
         except ValueError:
             raise serializers.ValidationError(
                 {"Phone number / Id number": "Please ensure that Phone number and Id number are numerical values"})

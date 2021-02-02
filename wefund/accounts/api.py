@@ -10,6 +10,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils import timezone
+import requests
 
 
 class IsSuperUser(permissions.BasePermission):
@@ -35,7 +36,7 @@ class RegisterUserAPI(viewsets.ModelViewSet):
             email_subject = "Activate your account"
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = generate_token.make_token(user)
-            message = render_to_string("accounts/email_message.html", {
+            message = render_to_string("accounts/Register_email_message.html", {
                 "user": user.first_name,
                 "domain": current_site,
                 "uid": uid,
@@ -48,11 +49,12 @@ class RegisterUserAPI(viewsets.ModelViewSet):
                 [user.email],
             )
             email_message.content_subtype = "html"
-            email_message.send(fail_silently=True)
+            email_message.send(fail_silently=False)
             return Response({
-                "user": "Email verification sent"
+                "user": "Email verification sent",
+                "email": user.email
             })
-        return Response(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ActivateUserAPI(viewsets.ModelViewSet):
@@ -83,8 +85,10 @@ class LoginAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
+        is_researcher = hasattr(user, "researcher")
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "is_researcher": is_researcher,
             "token": AuthToken.objects.create(user)[1]
         })
 
@@ -158,14 +162,15 @@ class ResearcherAPI(viewsets.ModelViewSet):
 
 
 class AdminAPI(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAdminUser)
+    permission_classes = (permissions.IsAdminUser,)
 
     def list(self, request):
         users = Account.objects.all()
         researchers = Researcher.objects.all()
-        serializerUser = AdminUserSerializer(users)
-        serializerResearcher = AdminResearcherSerializer(researchers)
-        return Response(serializerUser.data + serializerResearcher.data)
+        serializerUser = AdminUserSerializer(users, many=True)
+        serializerResearcher = AdminResearcherSerializer(
+            researchers, many=True)
+        return Response({"users": serializerUser.data, "researchers": serializerResearcher.data})
 
     def retrieve(self, request, pk=None):
         try:
@@ -173,7 +178,7 @@ class AdminAPI(viewsets.ModelViewSet):
             researcher = Researcher.objects.get(user=user)
             serializerUser = AdminUserSerializer(user)
             serializerResearcher = AdminResearcherSerializer(researcher)
-            return Response(serializerUser.data + serializerResearcher.data)
+            return Response({"user": serializerUser.data, "researcher": serializerResearcher.data})
         except Account.DoesNotExist:
             raise serializers.ValidationError({"User": "User does not exist"})
         except Researcher.DoesNotExist:
@@ -183,9 +188,31 @@ class AdminAPI(viewsets.ModelViewSet):
 
     def update(self, request, pk):
         user = Account.objects.get(pk=pk)
+        new = False
+        if not user.is_validated:
+            new = True
         serializer = AdminUserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            if new:
+                try:
+                    if request.data["is_validated"] == True:
+                        current_site = "127.0.0.1:8000"
+                        email_subject = "Account Validated"
+                        message = render_to_string("accounts/userValidated.html", {
+                            "user": user.first_name,
+                        })
+                        email_message = EmailMessage(
+                            email_subject,
+                            message,
+                            settings.EMAIL_HOST_USER,
+                            [user.email],
+                        )
+                        email_message.content_subtype = "html"
+                        email_message.send(fail_silently=False)
+
+                except KeyError:
+                    pass
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -203,7 +230,7 @@ class PasswordResetRequestAPI(viewsets.ModelViewSet):
                 email_subject = "Reset your password"
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = generate_token.make_token(user)
-                message = render_to_string("accounts/email_message.html", {
+                message = render_to_string("accounts/Reset_email_message.html", {
                     "user": user,
                     "domain": current_site,
                     "uid": uid,
@@ -223,7 +250,7 @@ class PasswordResetRequestAPI(viewsets.ModelViewSet):
                 })
             return Response(serializer.errors)
         except Account.DoesNotExist:
-            return Response({"user": "user does not exist"})
+            return Response({"user": "user does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserPasswordUpdateAPI(viewsets.ModelViewSet):
@@ -244,9 +271,9 @@ class UserPasswordUpdateAPI(viewsets.ModelViewSet):
                     raise serializers.ValidationError("Password do not match")
                 else:
                     user.set_password(request.data["password1"])
-                    # user.last_login = timezone.now()
+                    user.last_login = timezone.now()
                     user.save()
-                    return Response({"Activation": "Password reset is succeful"})
+                    return Response({"Activation": "Password reset is succesful"})
             return Response(serializer.errors)
 
         return Response({"user": "Account password failed to reset"}, status=status.HTTP_400_BAD_REQUEST)
@@ -269,4 +296,4 @@ class CheckTokenAPI(viewsets.ModelViewSet):
                 return Response({"token": "Token is valid"})
 
             return Response({"token": "Token is not valid"}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        return Response(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

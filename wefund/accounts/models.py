@@ -5,11 +5,19 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.dispatch import receiver
+import os
 
 
-def upload_location(instance, filename):
-    file_path = "accounts/{user_id}/{filename}".format(
-        user_id=str(instance.id), filename=filename)
+def upload_location_id(instance, filename):
+    file_path = "researcher/id/{user_id}/{filename}".format(
+        user_id=str(instance.user.id), filename=filename)
+    return file_path
+
+
+def upload_location_cv(instance, filename):
+    file_path = "researcher/cv/{user_id}/{filename}".format(
+        user_id=str(instance.user.id), filename=filename)
     return file_path
 
 
@@ -71,7 +79,7 @@ class Account(AbstractBaseUser):
     date_joined = models.DateTimeField(
         verbose_name="date joined", auto_now_add=True)
     is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     first_name = models.CharField(max_length=30, blank=False, null=False)
@@ -100,11 +108,58 @@ class Researcher(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     id_card_number = models.CharField(max_length=50, blank=False, null=False)
     id_card_copy = models.ImageField(
-        upload_to=upload_location, blank=False, null=False)
+        upload_to=upload_location_id, blank=False, null=False)
     date_of_birth = models.DateField(blank=False, null=False)
     degree = models.CharField(blank=False, null=False, max_length=100)
     organisation = models.CharField(blank=False, null=False, max_length=100)
-    cv = models.FileField(blank=False, null=False)
+    cv = models.FileField(upload_to=upload_location_cv,
+                          blank=False, null=False)
 
     def __str__(self):
         return self.user.username
+
+
+@receiver(models.signals.post_delete, sender=Researcher)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+
+    if instance.id_card_copy:
+        if os.path.isfile(instance.id_card_copy.path):
+            os.remove(instance.id_card_copy.path)
+
+    if instance.cv:
+        if os.path.isfile(instance.cv.path):
+            os.remove(instance.cv.path)
+
+
+@receiver(models.signals.pre_save, sender=Researcher)
+def auto_delete_id_file_on_change(sender, instance, **kwargs):
+
+    if not instance.pk:
+        return False
+
+    try:
+        id_old_file = Researcher.objects.get(pk=instance.pk).id_card_copy
+    except Researcher.DoesNotExist:
+        return False
+
+    id_new_file = instance.id_card_copy
+    if not id_old_file == id_new_file:
+        if os.path.isfile(id_old_file.path):
+            os.remove(id_old_file.path)
+
+
+@receiver(models.signals.pre_save, sender=Researcher)
+def auto_delete_cv_file_on_change(sender, instance, **kwargs):
+
+    if not instance.pk:
+        return False
+
+    try:
+        cv_old_file = Researcher.objects.get(pk=instance.pk).cv
+    except Researcher.DoesNotExist:
+        return False
+
+    cv_new_file = instance.cv
+    if not cv_old_file == cv_new_file:
+        if os.path.isfile(cv_old_file.path):
+            os.remove(cv_old_file.path)
