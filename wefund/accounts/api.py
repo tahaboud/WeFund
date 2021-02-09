@@ -187,7 +187,7 @@ class AdminAPI(viewsets.ModelViewSet):
             return Response(serializerUser.data)
 
     def update(self, request, pk):
-        user = Account.objects.get(pk=pk)
+        user = Researcher.objects.get(pk=pk).user
         new = False
         if not user.is_validated:
             new = True
