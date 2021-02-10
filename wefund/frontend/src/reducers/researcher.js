@@ -9,14 +9,14 @@ export default function (state = initialState, action) {
     case GET_RESEARCHER:
       return {
         ...state,
-        events: action.payload,
+        researcher: action.payload,
 
       };
 
     case ADD_RESEARCHER:
       return {
         ...state,
-        events: [...state.events, action.payload],
+        researcher: [...state.events, action.payload],
       };
 
     default:

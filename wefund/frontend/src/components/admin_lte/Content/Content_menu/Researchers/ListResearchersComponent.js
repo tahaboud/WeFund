@@ -36,7 +36,7 @@ class ListResearchersComponent extends Component {
   componentDidMount() {
     this
       .props
-      .getUsers();
+      .getResearchers();
 
   }
 
@@ -69,8 +69,8 @@ class ListResearchersComponent extends Component {
   }
 
   render() {
-    console.log(JSON.stringify(this.props.researcher) + "ss")
-    if (typeof(this.props.users) !== 'undefined' && this.props.users != null) 
+    console.log(JSON.stringify(this.props.researchers) + "ss")
+    if (typeof(this.props.researchers) !== 'undefined' && this.props.researchers != null) 
      {
         return (
             <div>
@@ -94,7 +94,7 @@ class ListResearchersComponent extends Component {
                 </TableHead>
                    <TableBody>
       
-                           {this.props.users.map((user) => (
+                           {/*this.props.users.map((user) => (
                                   <TableRow key={user.id}>
                                       <TableCell component="th" scope="row">
                                            {user.id}
@@ -107,7 +107,7 @@ class ListResearchersComponent extends Component {
                                       <TableCell align="right">{user.is_validated}</TableCell>
       
                                   </TableRow>
-                                  ))}
+                           ))*/}
                           </TableBody>
       
               </Table>
@@ -117,7 +117,7 @@ class ListResearchersComponent extends Component {
      }else
     return (
       <div>
-        <Typography variant="h4" style={style}>Users</Typography>
+        <Typography variant="h4" style={style}>Researchers</Typography>
         {/*  <Button variant="contained" color="primary" onClick={() => this.addUser()}>
                     Add User
         </Button>*/}
@@ -167,5 +167,5 @@ const style = {
   justifyContent: 'center'
 }
 
-const mapStateToProps = (state) => ({users: state.researche.researcher.researcher});
+const mapStateToProps = (state) => ({researchers: state.researcher});
 export default connect(mapStateToProps, {getResearchers})(ListResearchersComponent);
