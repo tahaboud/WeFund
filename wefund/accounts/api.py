@@ -49,7 +49,7 @@ class RegisterUserAPI(viewsets.ModelViewSet):
                 [user.email],
             )
             email_message.content_subtype = "html"
-            email_message.send(fail_silently=True)
+            email_message.send(fail_silently=False)
             return Response({
                 "user": "Email verification sent",
                 "email": user.email
@@ -188,9 +188,32 @@ class AdminAPI(viewsets.ModelViewSet):
 
     def update(self, request, pk):
         user = Account.objects.get(pk=pk)
+        new=False
+        if not user.is_validated:
+            new = True
         serializer = AdminUserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            if new:
+                try:
+                    if request.data["is_validated"] == True:
+                        print("hihihih")
+                        current_site = "127.0.0.1:8000"
+                        email_subject = "Account Validated"
+                        message = render_to_string("accounts/userValidated.html", {
+                            "user": user.first_name,
+                        })
+                        email_message = EmailMessage(
+                            email_subject,
+                            message,
+                            settings.EMAIL_HOST_USER,
+                            [user.email],
+                        )
+                        email_message.content_subtype = "html"
+                        email_message.send(fail_silently=False)
+
+                except KeyError:
+                    pass
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

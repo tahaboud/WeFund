@@ -11,7 +11,7 @@ const Zoom = ({ username, submitted }) => {
   const dispatch = useDispatch();
   const role = 1;
   useEffect(() => {
-    dispatch(getUserSignature());
+    dispatch(getAdminSignature({role: true}));
     ZoomMtg.setZoomJSLib("https://source.zoom.us/1.8.6/lib", "/av");
     ZoomMtg.preLoadWasm();
     ZoomMtg.prepareJssdk();

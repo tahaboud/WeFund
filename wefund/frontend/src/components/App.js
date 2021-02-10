@@ -24,15 +24,13 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (token) {
-      dispatch(loadUser());
-    }
-  }, []);
+      dispatch(loadUser());}})
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          {/* <Home /> */}
-          <ZoomMeeting />
+          <Home />
+          {/* <ZoomMeeting /> */}
         </Route>
         <Route exact path="/login">
           <SignInUp />

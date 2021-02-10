@@ -133,11 +133,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # EMAIL SENDING
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "wefund.dummy@gmail.com"
-EMAIL_HOST_PASSWORD = "zuspxnfffskphfet"
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "mail.wefundssr.org"
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
+EMAIL_PORT = 26
+EMAIL_HOST_USER = "wefund@wefundssr.org"
+EMAIL_HOST_PASSWORD = "6wYje7k*fQY1"
+
 
 # RECAPTCH SECRET KEY
 DRF_RECAPTCHA_SECRET_KEY = "6Lf2wyQaAAAAACFp0xEGBSXw8YPT_J521iNW5Vg2"
