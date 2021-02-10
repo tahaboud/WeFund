@@ -35,7 +35,7 @@ class EventAPI(viewsets.ModelViewSet):
 
 class EventDetailAPI(viewsets.ModelViewSet):
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser | ReadOnly]
 
     def list(self, request, pk):
         try:

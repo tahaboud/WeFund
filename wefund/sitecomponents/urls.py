@@ -1,5 +1,5 @@
 from django.urls import path
-from .api import WeFundAPI, DonationAPI, AddsAPI, AdminWeFundAPI
+from .api import WeFundAPI, DonationAPI, AddsAPI, AdminWeFundAPI, AdminGetSignatureAPI, UserGetSignatureAPI
 
 
 urlpatterns = [
@@ -9,4 +9,6 @@ urlpatterns = [
     path("donation/", DonationAPI.as_view({"post": "create", "get": "list"})),
     path("adds/", AddsAPI.as_view({"post": "create",
                                    "get": "list", "put": "update", "delete": "destroy"})),
+    path("admin/getsign/", AdminGetSignatureAPI.as_view({"post": "list"})),
+    path("getsign/", UserGetSignatureAPI.as_view({"post": "list"})),
 ]

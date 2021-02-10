@@ -11,12 +11,14 @@ import Home from "./pages/Home";
 import SignInUp from "./pages/SignInUp";
 import AboutUs from "./pages/AboutUs";
 import Events from "./pages/Events";
+import Profile from "./pages/Profile";
 import Support from "./pages/Support";
 import Contact from "./pages/Contact";
 import ThankYou from "./pages/ThankYou";
 import EmailConfirmed from "./pages/EmailConfirmed";
 import RequestReset from "./pages/RequestReset";
 import ResetPassword from "./pages/ResetPassword";
+import Zoom from './pages/ZoomMeeting';
 //Import Admin Lte
 import AdminLte from './admin_lte/App';
 //Import css pagination
@@ -27,8 +29,9 @@ function App() {
   
   useEffect(() => {
     if (token) {
-      
+    
       dispatch(loadUser());
+      console.log(user);
     }
   }, []);
   if (user.user) {
@@ -80,6 +83,12 @@ function App() {
           </Route>
           <Route exact path="/user/reset-password/:id/:token">
             <ResetPassword/>
+          </Route>
+          <Route exact path="/zoom">
+            <Zoom/>
+          </Route>
+          <Route exact path="/profile">
+            <Profile/>
           </Route>
         </Switch>
       </BrowserRouter>

@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { getEvents } from '../../../../../actions/event';
 import PropTypes from 'prop-types';
+import CheckIcon from '@material-ui/icons/Check';
 
 class ListEventComponent extends Component {
 
@@ -25,6 +26,7 @@ class ListEventComponent extends Component {
         }
  
         this.editUser = this.editUser.bind(this);
+        this.createZoom = this.createZoom.bind(this);
         this.addUser = this.addUser.bind(this);
        
     }
@@ -41,6 +43,10 @@ class ListEventComponent extends Component {
     editUser(id) {
         window.localStorage.setItem("userId", id);
         this.props.history.push('/edit-user');
+    }
+    createZoom(id){
+        window.localStorage.setItem("userId", id);
+        this.props.history.push('/create-zoom');
     }
 
     addUser() {
@@ -65,6 +71,7 @@ class ListEventComponent extends Component {
                             <TableCell align="right">Price</TableCell>
                             <TableCell align="right">Category</TableCell>
                             <TableCell align="right">subscription</TableCell>
+                            <TableCell align="right">Create Zoom meeting</TableCell>
                             <TableCell align="right">List of all attendance</TableCell>
                         </TableRow>
                     </TableHead>
@@ -79,8 +86,8 @@ class ListEventComponent extends Component {
                                 <TableCell align="right">{event.price}</TableCell>
                                 <TableCell align="right">{event.category}</TableCell>
                                 <TableCell align="right">{event.category}</TableCell>
-                                
-                               <TableCell align="right" onClick={() => this.editUser(event.id)}><DetailsIcon /></TableCell>
+                                <TableCell align="right" onClick={() => this.createZoom(event.id)}><CheckIcon /></TableCell>
+                                <TableCell align="right" onClick={() => this.editUser(event.id)}><DetailsIcon /></TableCell>
                                 {/* <TableCell align="right" onClick={() => this.deleteUser(row.id)}><DeleteIcon /></TableCell>*/}
 
                             </TableRow>

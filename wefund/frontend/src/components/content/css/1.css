@@ -1,3 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
+#zmmtg-root {
+  width: 1px !important;
+}
+
 nav a {
   color: black;
   font-size: 20px;

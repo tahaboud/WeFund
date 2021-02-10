@@ -6,5 +6,6 @@ urlpatterns = [
     path("",
          UserResearchAPI.as_view({'post': 'create', "get": "list", "put": "update"})),
     path(
-        "<pk>/", AdminResearchAPI.as_view({"post": "update", "get": "retrieve"}))
+        "admin/<pk>/", AdminResearchAPI.as_view({"post": "update", "get": "retrieve"})),
+    path("admin/", AdminResearchAPI.as_view({"get": "list"}))
 ]

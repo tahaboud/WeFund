@@ -49,7 +49,7 @@ class RegisterUserAPI(viewsets.ModelViewSet):
                 [user.email],
             )
             email_message.content_subtype = "html"
-            email_message.send(fail_silently=True)
+            email_message.send(fail_silently=False)
             return Response({
                 "user": "Email verification sent",
                 "email": user.email
@@ -85,8 +85,10 @@ class LoginAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
+        is_researcher = hasattr(user, "researcher")
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "is_researcher": is_researcher,
             "token": AuthToken.objects.create(user)[1]
         })
 
@@ -166,8 +168,9 @@ class AdminAPI(viewsets.ModelViewSet):
         users = Account.objects.all()
         researchers = Researcher.objects.all()
         serializerUser = AdminUserSerializer(users, many=True)
-        serializerResearcher = AdminResearcherSerializer(researchers, many=True)
-        return Response({'users':serializerUser.data ,'researchers': serializerResearcher.data})
+        serializerResearcher = AdminResearcherSerializer(
+            researchers, many=True)
+        return Response({"users": serializerUser.data, "researchers": serializerResearcher.data})
 
     def retrieve(self, request, pk=None):
         try:
@@ -175,7 +178,7 @@ class AdminAPI(viewsets.ModelViewSet):
             researcher = Researcher.objects.get(user=user)
             serializerUser = AdminUserSerializer(user)
             serializerResearcher = AdminResearcherSerializer(researcher)
-            return Response({'user':serializerUser.data ,'researcher': serializerResearcher.data})
+            return Response({"user": serializerUser.data, "researcher": serializerResearcher.data})
         except Account.DoesNotExist:
             raise serializers.ValidationError({"User": "User does not exist"})
         except Researcher.DoesNotExist:
@@ -184,10 +187,32 @@ class AdminAPI(viewsets.ModelViewSet):
             return Response(serializerUser.data)
 
     def update(self, request, pk):
-        user = Account.objects.get(pk=pk)
+        user = Researcher.objects.get(pk=pk).user
+        new = False
+        if not user.is_validated:
+            new = True
         serializer = AdminUserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            if new:
+                try:
+                    if request.data["is_validated"] == True:
+                        current_site = "127.0.0.1:8000"
+                        email_subject = "Account Validated"
+                        message = render_to_string("accounts/userValidated.html", {
+                            "user": user.first_name,
+                        })
+                        email_message = EmailMessage(
+                            email_subject,
+                            message,
+                            settings.EMAIL_HOST_USER,
+                            [user.email],
+                        )
+                        email_message.content_subtype = "html"
+                        email_message.send(fail_silently=False)
+
+                except KeyError:
+                    pass
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -248,7 +273,7 @@ class UserPasswordUpdateAPI(viewsets.ModelViewSet):
                     user.set_password(request.data["password1"])
                     user.last_login = timezone.now()
                     user.save()
-                    return Response({"Activation": "Password reset is succeful"})
+                    return Response({"Activation": "Password reset is succesful"})
             return Response(serializer.errors)
 
         return Response({"user": "Account password failed to reset"}, status=status.HTTP_400_BAD_REQUEST)
