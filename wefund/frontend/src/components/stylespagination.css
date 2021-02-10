@@ -1,0 +1,119 @@
+  /* -----------------------------------------------------------
+      common
+  ----------------------------------------------------------- */
+  #root {
+    padding: 20px 0;
+  }
+  .mb-0 {
+    margin-bottom: 0px !important;
+  }
+  .mb-5 {
+    margin-bottom: 5px !important;
+  }
+  .mb-10 {
+    margin-bottom: 10px !important;
+  }
+  .mb-15 {
+    margin-bottom: 15px !important;
+  }
+  .mb-20 {
+    margin-bottom: 20px !important;
+  }
+  
+  /* -----------------------------------------------------------
+      pagination
+  ----------------------------------------------------------- */
+  .pagination > li > button,
+  .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    outline: 0;
+  }
+  .pagination > li > button:hover,
+  .pagination > li > span:hover,
+  .pagination > li > button:focus,
+  .pagination > li > span:focus {
+    z-index: 2;
+    color: #23527c;
+    background-color: #eee;
+    border-color: #ddd;
+  }
+  .pagination > li > button.active,
+  .pagination > li > span.active,
+  .pagination > li > button.active:hover,
+  .pagination > li > span.active:hover,
+  .pagination > li > button.active:focus,
+  .pagination > li > span.active:focus {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+  }
+  .pagination > li > span:disabled,
+  .pagination > li > span:disabled:hover,
+  .pagination > li > span:disabled:focus,
+  .pagination > li > button:disabled,
+  .pagination > li > button:disabled:hover,
+  .pagination > li > button:disabled:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+  }
+  .box_pagination_info {
+    font-size: 12px;
+    color: #666;
+    padding-top: 9px;
+  }
+  .box_pagination .pagination {
+    margin-top: 10px;
+  }
+  .box_change_pagelimit {
+    text-align: right;
+  }
+  .box_change_pagelimit .form-control {
+    display: inline-block;
+    vertical-align: middle;
+    width: 70px;
+    margin: 0 5px;
+  }
+  
+  /* -----------------------------------------------------------
+      box_search
+  ----------------------------------------------------------- */
+  .box_search .search_wrp {
+    position: relative;
+  }
+  .box_search .search_wrp input[type="text"] {
+    padding-right: 35px;
+  }
+  .box_search .search_wrp .btn_clear {
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    z-index: 2;
+  }
+  

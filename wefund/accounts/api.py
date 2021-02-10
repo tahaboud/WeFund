@@ -187,8 +187,13 @@ class AdminAPI(viewsets.ModelViewSet):
             return Response(serializerUser.data)
 
     def update(self, request, pk):
+<<<<<<< HEAD
         user = Account.objects.get(pk=pk)
         new=False
+=======
+        user = Researcher.objects.get(pk=pk).user
+        new = False
+>>>>>>> 11f3d95493d5e3bb703820f3188c4bba136129a1
         if not user.is_validated:
             new = True
         serializer = AdminUserSerializer(user, data=request.data)
@@ -197,7 +202,10 @@ class AdminAPI(viewsets.ModelViewSet):
             if new:
                 try:
                     if request.data["is_validated"] == True:
+<<<<<<< HEAD
                         print("hihihih")
+=======
+>>>>>>> 11f3d95493d5e3bb703820f3188c4bba136129a1
                         current_site = "127.0.0.1:8000"
                         email_subject = "Account Validated"
                         message = render_to_string("accounts/userValidated.html", {
@@ -274,7 +282,7 @@ class UserPasswordUpdateAPI(viewsets.ModelViewSet):
                     user.set_password(request.data["password1"])
                     user.last_login = timezone.now()
                     user.save()
-                    return Response({"Activation": "Password reset is succeful"})
+                    return Response({"Activation": "Password reset is succesful"})
             return Response(serializer.errors)
 
         return Response({"user": "Account password failed to reset"}, status=status.HTTP_400_BAD_REQUEST)

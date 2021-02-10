@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../content/Nav";
-import Part1 from "../content/event/Part1";
+import MultiStepFormEvent from "../content/event/MultiStepFormEvent";
 import Footer from "../content/Footer";
 import "../content/css/events.css";
 
@@ -8,7 +8,7 @@ const Events = () => {
   return (
     <div>
       <Nav />
-      <Part1 />
+      <MultiStepFormEvent />
       <Footer />
     </div>
   );

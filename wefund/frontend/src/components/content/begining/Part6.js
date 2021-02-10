@@ -1,26 +1,37 @@
-import React from "react";
-// Import Images
+import React, {useState, useEffect} from 'react';
+import {Provider, useDispatch, useSelector} from "react-redux";
+import {getEvents} from '../../../actions/event';
+import Events from './Events/Events';
 import component8 from "../../../../static/img/Component 8.png";
 
-const Part6 = () => {
+const Part6 = (props) => {
+  //Part for getting the event
+  const dispatch = useDispatch();
+  const {events} = useSelector((state) => state.event);
+  useEffect(() => {
+    dispatch(getEvents());
+
+  }, []);
   return (
     <div>
       <div className="six">
         <div className="container">
           <div className="row">
             <div className="col-1"></div>
-            <div className="col-3" id="A1">
-              <img src={component8} height={70} width={70} />
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div className="col-3" id="A1">
-              <img src={component8} height={70} width={70} />
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div className="col-3" id="A1">
-              <img src={component8} height={70} width={70} />
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
+            {events.map((event) => (
+
+              <div className="col-3">
+                <img src="../static/img/opacev.png" id="opacev"/>
+                <div className="img-2">
+                  <img src="../static/img/Component 8.png" width={70} height={70}/></div>
+                <img src={"http://localhost:8000" + event.image} id="imgevent"/>
+                <p>
+                  {event.description}
+                </p>
+              </div>
+
+            ))}
+
           </div>
         </div>
       </div>

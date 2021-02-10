@@ -4,6 +4,7 @@ import Part2 from './Part2';
 import Part3 from './Part3';
 import Part4 from './Part4';
 import Confirm from './Confirm';
+
 export class MultiStepFormEvent extends Component {
   state = {
     step: 1,
@@ -24,6 +25,7 @@ export class MultiStepFormEvent extends Component {
   nextStep = () => {
     const {step} = this.state;
     this.setState({
+     
       step: step + 1
     })
   }

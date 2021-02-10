@@ -2,13 +2,8 @@ from rest_framework import generics, permissions, viewsets, serializers, status
 from rest_framework.response import Response
 from knox.models import AuthToken
 from .models import Research
+from accounts.models import Account
 from .serializers import UserResearchSerializer, AdminResearchSerializer
-
-
-class IsSuperUser(permissions.BasePermission):
-
-    def has_permission(self, request, view):
-        return request.user and request.user.is_superuser
 
 
 class UserResearchAPI(viewsets.ModelViewSet):
@@ -52,10 +47,27 @@ class AdminResearchAPI(viewsets.ModelViewSet):
     serializer_class = AdminResearchSerializer
     permission_classes = [permissions.IsAdminUser, ]
 
-    def retrieve(self, request, pk):
-        research = Research.objects.get(pk=pk)
-        serializer = AdminResearchSerializer(research)
+    def list(self, request):
+        users = Account.objects.all()
+        researches = []
+        for user in users:
+            if hasattr(user, "researcher"):
+                if hasattr(user.researcher, "research"):
+                    researches.append(user.researcher.research)
+        serializer = self.serializer_class(researches, many=True)
         return Response(serializer.data)
+
+    def retrieve(self, request, pk):
+        user = Account.objects.get(pk=pk)
+        if hasattr(user, "researcher"):
+            if hasattr(user, "research"):
+                research = user.researcher.research
+                serializer = AdminResearchSerializer(research)
+                return Response(serializer.data)
+            raise serializers.ValidationError(
+                {"response": "this user does not have a research"})
+        raise serializers.ValidationError(
+            {"response": "this user is not a researcher"})
 
     def update(self, request, pk):
         research = Research.objects.get(pk=pk)

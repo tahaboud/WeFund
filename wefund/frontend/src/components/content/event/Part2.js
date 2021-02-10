@@ -1,6 +1,46 @@
-import React from "react";
+import React, {useState, useEffect} from 'react';
+import Button from '@material-ui/core/Button';
+import axios from 'axios';
+const Part2 = (props) => {
+  //Declaring hooks
+  const init = {
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    id_number: ''
+  }
+  const [values,
+    setValues] = useState(init);
+  //Hnadle Change
+  const handleChange = (event) => {
+    
+    setValues({...values, [event.target.name]: event.target.value});
+  }
+  //Save Methode
+  const save = e => {
+    e.preventDefault();
+    alert("Your attendant was submited please follow and continue your payment:" );
+    const event_id=localStorage.getItem('event_id');
+    const config={
+        "Content-Type":"application/json"
+    }
+    const user =  JSON.stringify(values)
+    const user2={
+      first_name:values.first_name,
+      last_name:values.last_name,
+      email:values.email,
+      phone_number:values.phone_number,
+      id_number:values.id_number
 
-const Part2 = () => {
+  };
+
+    axios.post("/api/events/"+event_id+"/subs/",user2,config)
+    .catch(res => {
+      console.log(res.response.data);
+    })
+  
+  }
   return (
     <div>
       <div className="event1">
@@ -46,7 +86,9 @@ const Part2 = () => {
                         type="text"
                         className="form-control"
                         placeholder="first name"
-                        name="fname"
+                        name="first_name"
+                        value={values.first_name}
+                        onChange={handleChange}
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                       />
@@ -54,7 +96,9 @@ const Part2 = () => {
                         type="text"
                         className="form-control"
                         placeholder="last name"
-                        name="lname"
+                        name="last_name"
+                        value={values.last_name}
+                        onChange={handleChange}
                         aria-label="Password"
                         aria-describedby="basic-addon1"
                       />
@@ -66,6 +110,8 @@ const Part2 = () => {
                       className="form-control"
                       placeholder="Email"
                       name="email"
+                      value={values.email}
+                      onChange={handleChange}
                       aria-label="email"
                       aria-describedby="basic-addon1"
                     />
@@ -75,7 +121,9 @@ const Part2 = () => {
                       type="text"
                       className="form-control"
                       placeholder="Mobile"
-                      name="mobile"
+                      name="phone_number"
+                      value={values.phone_number}
+                      onChange={handleChange}
                       aria-label="mobile"
                       aria-describedby="basic-addon1"
                     />
@@ -84,7 +132,9 @@ const Part2 = () => {
                     type="text"
                     className="form-control"
                     placeholder="National Card id "
-                    name="id"
+                    name="id_number"
+                    value={values.id_number}
+                    onChange={handleChange}
                     aria-label="National Card id"
                     aria-describedby="basic-addon1"
                   />
@@ -107,9 +157,7 @@ const Part2 = () => {
                       </span>
                     </label>
                   </div>
-                  <button className="btn btn-danger" id="in">
-                    Confirm
-                  </button>
+                  <Button color="primary" variant="contained" onClick={save}>Confirm & Continue</Button>
                 </center>
               </div>
             </div>
