@@ -166,11 +166,24 @@ class AdminAPI(viewsets.ModelViewSet):
 
     def list(self, request):
         users = Account.objects.all()
-        researchers = Researcher.objects.all()
-        serializerUser = AdminUserSerializer(users, many=True)
-        serializerResearcher = AdminResearcherSerializer(
+        result = []
+        fullUserData = []
+        for user in users:
+            fullUserData = []
+            userData = AdminUserSerializer(user)
+            fullUserData.append(userData.data)
+            if hasattr(user, "researcher"):
+                researcher = Researcher.objects.get(user=user)
+                researcherData = AdminResearcherSerializer(researcher)
+                fullUserData.append(researcherData.data)
+            else:
+                fullUserData.append("This user is not a researcher")
+            result.append(fullUserData)
+        return Response(result)
+
+        serializerResearcher = AdminUserResearcherSerializer(
             researchers, many=True)
-        return Response({"users": serializerUser.data, "researchers": serializerResearcher.data})
+        return Response(serializerResearcher.data)
 
     def retrieve(self, request, pk=None):
         try:

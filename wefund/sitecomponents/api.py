@@ -1,11 +1,16 @@
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.response import Response
 from .models import WeFund, Adds, Donation
-from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer
+from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer, PaypalSerializer
 import hashlib
 import hmac
 import base64
 import time
+import paypalrestsdk
+from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
+from paypalcheckoutsdk.orders import OrdersCreateRequest
+from paypalhttp import HttpError
+import json
 
 
 def generateSignature(role):
@@ -130,3 +135,61 @@ class UserGetSignatureAPI(viewsets.ModelViewSet):
     def list(self, request):
         signature = generateSignature(role=0)
         return Response({"signature": signature})
+
+
+class PaypalAPI(viewsets.ModelViewSet):
+
+    def list(self, request):
+        client_id = "AdVeDZo5bjY4piJOV_Chxp-rtdDj9WckOmEQUWHluPxMMhzcxVHLnAUdO3wfWLA4YVE5TTDdisOZEHBj"
+        client_secret = "EBO2BuhwDYkR3J6TThhTKIbxXTOp_OU6jWydmQ2spS8qr2AmhG9WROFE9i-EDS02zcci21xn-mQ5qLLK"
+
+        serializer = PaypalSerializer(data=request.data)
+        if serializer.is_valid():
+            paypalrestsdk.configure({
+                "mode": "sandbox",  # sandbox or live
+                "client_id": client_id,
+                "client_secret": client_secret})
+            payment = paypalrestsdk.Payment({
+                "intent": "sale",
+                "payer": {
+                    "payment_method": "paypal"},
+                "redirect_urls": {
+                    "return_url": "http://127.0.0.1:8000/payment/execute",
+                    "cancel_url": "http://127.0.0.1:8000/"},
+                "transactions": [{
+                    "item_list": {
+                        "items": [{
+                            "name": serializer.data["name"],
+                            "sku": serializer.data["name"],
+                            "price": serializer.data["price"],
+                            "currency": "USD",
+                            "quantity": serializer.data["quantity"]}]},
+                    "amount": {
+                        "total": int(serializer.data["price"])*int(serializer.data["quantity"]),
+                        "currency": "USD"}}]})
+            if payment.create():
+                for link in payment.links:
+                    if link.rel == "approval_url":
+                        approval_url = str(link.href)
+                return Response({"URL": approval_url})
+            else:
+                return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ExecutePaymentAPI(viewsets.ModelViewSet):
+
+    def list(self, request, pay_id, payer_id):
+        client_id = "AdVeDZo5bjY4piJOV_Chxp-rtdDj9WckOmEQUWHluPxMMhzcxVHLnAUdO3wfWLA4YVE5TTDdisOZEHBj"
+        client_secret = "EBO2BuhwDYkR3J6TThhTKIbxXTOp_OU6jWydmQ2spS8qr2AmhG9WROFE9i-EDS02zcci21xn-mQ5qLLK"
+
+        paypalrestsdk.configure({
+            "mode": "sandbox",  # sandbox or live
+            "client_id": client_id,
+            "client_secret": client_secret})
+        payment = paypalrestsdk.Payment.find(pay_id)
+
+        if payment.execute({"payer_id": payer_id}):
+            return Response({"response": "Payment execute successfully"})
+        else:
+            return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)

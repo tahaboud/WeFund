@@ -6,6 +6,7 @@ from .api import ResearcherFileAPI
 
 urlpatterns = [
     path('', include('frontend.urls')),
+    path('payment/execute/', include('frontend.urls')),
     path('api/admin/', admin.site.urls),
     path('api/account/', include("accounts.urls")),
     path('api/research/', include("researches.urls")),
