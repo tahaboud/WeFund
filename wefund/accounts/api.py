@@ -171,13 +171,14 @@ class AdminAPI(viewsets.ModelViewSet):
         for user in users:
             fullUserData = []
             userData = AdminUserSerializer(user)
-            fullUserData.append(userData.data)
+            fullUserData.append({"user": userData.data})
             if hasattr(user, "researcher"):
                 researcher = Researcher.objects.get(user=user)
                 researcherData = AdminResearcherSerializer(researcher)
-                fullUserData.append(researcherData.data)
+                fullUserData.append({"researcher": researcherData.data})
             else:
-                fullUserData.append("This user is not a researcher")
+                fullUserData.append(
+                    {"researcher": "This user is not a researcher"})
             result.append(fullUserData)
         return Response(result)
 
