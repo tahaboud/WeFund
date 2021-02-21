@@ -167,18 +167,17 @@ class AdminAPI(viewsets.ModelViewSet):
     def list(self, request):
         users = Account.objects.all()
         result = []
-        fullUserData = []
         for user in users:
-            fullUserData = []
+            fullUserData = {}
             userData = AdminUserSerializer(user)
-            fullUserData.append({"user": userData.data})
+            fullUserData.update({"user": userData.data})
             if hasattr(user, "researcher"):
                 researcher = Researcher.objects.get(user=user)
                 researcherData = AdminResearcherSerializer(researcher)
-                fullUserData.append({"researcher": researcherData.data})
+                fullUserData.update({"researcher": researcherData.data})
             else:
-                fullUserData.append(
-                    {"researcher": "This user is not a researcher"})
+                fullUserData.update({"researcher":
+                                     "This user is not a researcher"})
             result.append(fullUserData)
         return Response(result)
 
