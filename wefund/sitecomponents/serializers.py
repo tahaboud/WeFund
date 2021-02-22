@@ -1,4 +1,4 @@
-from .models import WeFund, Adds, Donation
+from .models import WeFund, Adds, Donation, ContactUs
 from rest_framework import serializers
 
 
@@ -67,3 +67,10 @@ class PaypalSerializer(serializers.Serializer):
         except ValueError:
             raise serializers.ValidationError(
                 {"price": "please enter a valid price"})
+
+
+class ContactUsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ContactUs
+        fields = ("name", "email", "message")

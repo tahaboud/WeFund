@@ -181,10 +181,6 @@ class AdminAPI(viewsets.ModelViewSet):
             result.append(fullUserData)
         return Response(result)
 
-        serializerResearcher = AdminUserResearcherSerializer(
-            researchers, many=True)
-        return Response(serializerResearcher.data)
-
     def retrieve(self, request, pk=None):
         try:
             user = Account.objects.get(pk=pk)

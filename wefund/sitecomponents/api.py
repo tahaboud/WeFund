@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.response import Response
-from .models import WeFund, Adds, Donation
-from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer, PaypalSerializer
+from .models import WeFund, Adds, Donation, ContactUs
+from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer, PaypalSerializer, ContactUsSerializer
 import hashlib
 import hmac
 import base64
@@ -36,6 +36,11 @@ class IsSuperUser(permissions.BasePermission):
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         return view.action == "list" or request.user.is_admin
+
+
+class CreateOnly(permissions.IsAdminUser):
+    def has_permission(self, request, view):
+        return view.action == "create"
 
 
 class AdminWeFundAPI(viewsets.ModelViewSet):
@@ -193,3 +198,19 @@ class ExecutePaymentAPI(viewsets.ModelViewSet):
             return Response({"response": "Payment execute successfully"})
         else:
             return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ContactUsAPI(viewsets.ModelViewSet):
+    permission_classes = (CreateOnly,)
+
+    def list(self, request):
+        messages = ContactUs.objects.all()
+        serializer = ContactUsSerializer(messages, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = ContactUsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
