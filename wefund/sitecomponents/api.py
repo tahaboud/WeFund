@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.response import Response
-from .models import WeFund, Adds, Donation, ContactUs
-from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer, PaypalSerializer, ContactUsSerializer
+from .models import WeFund, Adds, Donation, ContactUs, AboutUs
+from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer, PaypalSerializer, ContactUsSerializer, AboutUsSerializer
 import hashlib
 import hmac
 import base64
@@ -35,7 +35,10 @@ class IsSuperUser(permissions.BasePermission):
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
-        return view.action == "list" or request.user.is_admin
+        if request.user.is_anonymous:
+            return view.action == "list"
+        else:
+            return view.action == "list" or request.user.is_admin
 
 
 class CreateOnly(permissions.IsAdminUser):
@@ -72,9 +75,12 @@ class WeFundAPI(viewsets.ModelViewSet):
     serializer_class = WeFundSerializer
 
     def retrieve(self, request):
-        components = WeFund.objects.get(pk=1)
-        serializer = WeFundSerializer(components)
-        return Response(serializer.data)
+        try:
+            components = WeFund.objects.get(pk=1)
+            serializer = WeFundSerializer(components)
+            return Response(serializer.data)
+        except WeFund.DoesNotExist:
+            return Response({"response": "The super user did not create an instance yet"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AddsAPI(viewsets.ModelViewSet):
@@ -214,3 +220,37 @@ class ContactUsAPI(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AboutUsAPI(viewsets.ModelViewSet):
+    permission_classes = (IsAdminOrReadOnly,)
+
+    def list(self, request):
+        try:
+            aboutContent = AboutUs.objects.get(pk=1)
+            serializer = AboutUsSerializer(aboutContent)
+            return Response(serializer.data)
+        except AboutUs.DoesNotExist:
+            return Response({"error": "Admin has not created about us content yet"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, request):
+        try:
+            AboutUs.objects.get(pk=1)
+            return Response({"error": "There is already an about us content you can only update it"}, status=status.HTTP_400_BAD_REQUEST)
+        except AboutUs.DoesNotExist:
+            serializer = AboutUsSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request):
+        try:
+            aboutContent = AboutUs.objects.get(pk=1)
+            serializer = AboutUsSerializer(aboutContent, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except AboutUs.DoesNotExist:
+            return Response({"error": "Admin has not created about us content yet"}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,5 +1,5 @@
 from django.urls import path
-from .api import WeFundAPI, DonationAPI, AddsAPI, AdminWeFundAPI, AdminGetSignatureAPI, UserGetSignatureAPI, PaypalAPI, ExecutePaymentAPI, ContactUsAPI
+from .api import WeFundAPI, DonationAPI, AddsAPI, AdminWeFundAPI, AdminGetSignatureAPI, UserGetSignatureAPI, PaypalAPI, ExecutePaymentAPI, ContactUsAPI, AboutUsAPI
 
 
 urlpatterns = [
@@ -15,4 +15,6 @@ urlpatterns = [
     path("paypal/<pay_id>/<payer_id>/",
          ExecutePaymentAPI.as_view({"post": "list"})),
     path("contact/", ContactUsAPI.as_view({"post": "create", "get": "list"})),
+    path("about/", AboutUsAPI.as_view({"post": "create",
+                                       "get": "list", "put": "update", "delete": "destroy"}))
 ]

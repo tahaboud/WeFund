@@ -30,7 +30,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
-    # recaptcha = ReCaptchaV2Field()
+    recaptcha = ReCaptchaV2Field()
 
     def validate(self, data):
         user = authenticate(**data)

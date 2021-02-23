@@ -1,4 +1,4 @@
-from .models import WeFund, Adds, Donation, ContactUs
+from .models import WeFund, Adds, Donation, ContactUs, AboutUs
 from rest_framework import serializers
 
 
@@ -73,4 +73,11 @@ class ContactUsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContactUs
-        fields = ("name", "email", "message")
+        fields = ("id", "name", "email", "message")
+
+
+class AboutUsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AboutUs
+        fields = ("id", "content",)

@@ -38,3 +38,7 @@ class ContactUs(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     email = models.EmailField(blank=False, null=False)
     message = models.TextField(max_length=5000, blank=False, null=False)
+
+
+class AboutUs(models.Model):
+    content = models.TextField(max_length=5000)
