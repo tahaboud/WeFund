@@ -41,9 +41,11 @@ class IsAdminOrReadOnly(permissions.BasePermission):
             return view.action == "list" or request.user.is_admin
 
 
-class CreateOnly(permissions.IsAdminUser):
+class IsAdminOrCreateOnly(permissions.IsAdminUser):
     def has_permission(self, request, view):
-        return view.action == "create"
+        if request.user.is_anonymous:
+            return view.action == "create"
+        return view.action == "create" or request.user.is_admin
 
 
 class AdminWeFundAPI(viewsets.ModelViewSet):
@@ -207,7 +209,7 @@ class ExecutePaymentAPI(viewsets.ModelViewSet):
 
 
 class ContactUsAPI(viewsets.ModelViewSet):
-    permission_classes = (CreateOnly,)
+    permission_classes = (IsAdminOrCreateOnly,)
 
     def list(self, request):
         messages = ContactUs.objects.all()
