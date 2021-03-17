@@ -60,7 +60,7 @@ class AdminResearchAPI(viewsets.ModelViewSet):
     def retrieve(self, request, pk):
         user = Account.objects.get(pk=pk)
         if hasattr(user, "researcher"):
-            if hasattr(user, "research"):
+            if hasattr(user.researcher, "research"):
                 research = user.researcher.research
                 serializer = AdminResearchSerializer(research)
                 return Response(serializer.data)
