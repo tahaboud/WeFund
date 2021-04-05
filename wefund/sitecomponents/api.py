@@ -1,16 +1,11 @@
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.response import Response
-from .models import WeFund, Adds, Donation, ContactUs, AboutUs
-from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer, PaypalSerializer, ContactUsSerializer, AboutUsSerializer
+from .models import WeFund, Adds, Donation
+from .serializers import WeFundSerializer, AddsSerializer, DonationSerializer, AdminWeFundSerializer, ZoomSerializer
 import hashlib
 import hmac
 import base64
 import time
-import paypalrestsdk
-from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
-from paypalcheckoutsdk.orders import OrdersCreateRequest
-from paypalhttp import HttpError
-import json
 
 
 def generateSignature(role):
@@ -35,17 +30,7 @@ class IsSuperUser(permissions.BasePermission):
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.user.is_anonymous:
-            return view.action == "list"
-        else:
-            return view.action == "list" or request.user.is_admin
-
-
-class IsAdminOrCreateOnly(permissions.IsAdminUser):
-    def has_permission(self, request, view):
-        if request.user.is_anonymous:
-            return view.action == "create"
-        return view.action == "create" or request.user.is_admin
+        return view.action == "list" or request.user.is_admin
 
 
 class AdminWeFundAPI(viewsets.ModelViewSet):
@@ -77,12 +62,9 @@ class WeFundAPI(viewsets.ModelViewSet):
     serializer_class = WeFundSerializer
 
     def retrieve(self, request):
-        try:
-            components = WeFund.objects.get(pk=1)
-            serializer = WeFundSerializer(components)
-            return Response(serializer.data)
-        except WeFund.DoesNotExist:
-            return Response({"response": "The super user did not create an instance yet"}, status=status.HTTP_400_BAD_REQUEST)
+        components = WeFund.objects.get(pk=1)
+        serializer = WeFundSerializer(components)
+        return Response(serializer.data)
 
 
 class AddsAPI(viewsets.ModelViewSet):
@@ -148,111 +130,3 @@ class UserGetSignatureAPI(viewsets.ModelViewSet):
     def list(self, request):
         signature = generateSignature(role=0)
         return Response({"signature": signature})
-
-
-class PaypalAPI(viewsets.ModelViewSet):
-
-    def list(self, request):
-        client_id = "AdVeDZo5bjY4piJOV_Chxp-rtdDj9WckOmEQUWHluPxMMhzcxVHLnAUdO3wfWLA4YVE5TTDdisOZEHBj"
-        client_secret = "EBO2BuhwDYkR3J6TThhTKIbxXTOp_OU6jWydmQ2spS8qr2AmhG9WROFE9i-EDS02zcci21xn-mQ5qLLK"
-
-        serializer = PaypalSerializer(data=request.data)
-        if serializer.is_valid():
-            paypalrestsdk.configure({
-                "mode": "sandbox",  # sandbox or live
-                "client_id": client_id,
-                "client_secret": client_secret})
-            payment = paypalrestsdk.Payment({
-                "intent": "sale",
-                "payer": {
-                    "payment_method": "paypal"},
-                "redirect_urls": {
-                    "return_url": "http://127.0.0.1:8000/payment/execute",
-                    "cancel_url": "http://127.0.0.1:8000/"},
-                "transactions": [{
-                    "item_list": {
-                        "items": [{
-                            "name": serializer.data["name"],
-                            "sku": serializer.data["name"],
-                            "price": serializer.data["price"],
-                            "currency": "USD",
-                            "quantity": serializer.data["quantity"]}]},
-                    "amount": {
-                        "total": int(serializer.data["price"])*int(serializer.data["quantity"]),
-                        "currency": "USD"}}]})
-            if payment.create():
-                for link in payment.links:
-                    if link.rel == "approval_url":
-                        approval_url = str(link.href)
-                return Response({"URL": approval_url})
-            else:
-                return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ExecutePaymentAPI(viewsets.ModelViewSet):
-
-    def list(self, request, pay_id, payer_id):
-        client_id = "AdVeDZo5bjY4piJOV_Chxp-rtdDj9WckOmEQUWHluPxMMhzcxVHLnAUdO3wfWLA4YVE5TTDdisOZEHBj"
-        client_secret = "EBO2BuhwDYkR3J6TThhTKIbxXTOp_OU6jWydmQ2spS8qr2AmhG9WROFE9i-EDS02zcci21xn-mQ5qLLK"
-
-        paypalrestsdk.configure({
-            "mode": "sandbox",  # sandbox or live
-            "client_id": client_id,
-            "client_secret": client_secret})
-        payment = paypalrestsdk.Payment.find(pay_id)
-
-        if payment.execute({"payer_id": payer_id}):
-            return Response({"response": "Payment execute successfully"})
-        else:
-            return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ContactUsAPI(viewsets.ModelViewSet):
-    permission_classes = (IsAdminOrCreateOnly,)
-
-    def list(self, request):
-        messages = ContactUs.objects.all()
-        serializer = ContactUsSerializer(messages, many=True)
-        return Response(serializer.data)
-
-    def create(self, request):
-        serializer = ContactUsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class AboutUsAPI(viewsets.ModelViewSet):
-    permission_classes = (IsAdminOrReadOnly,)
-
-    def list(self, request):
-        try:
-            aboutContent = AboutUs.objects.get(pk=1)
-            serializer = AboutUsSerializer(aboutContent)
-            return Response(serializer.data)
-        except AboutUs.DoesNotExist:
-            return Response({"error": "Admin has not created about us content yet"}, status=status.HTTP_400_BAD_REQUEST)
-
-    def create(self, request):
-        try:
-            AboutUs.objects.get(pk=1)
-            return Response({"error": "There is already an about us content you can only update it"}, status=status.HTTP_400_BAD_REQUEST)
-        except AboutUs.DoesNotExist:
-            serializer = AboutUsSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def update(self, request):
-        try:
-            aboutContent = AboutUs.objects.get(pk=1)
-            serializer = AboutUsSerializer(aboutContent, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except AboutUs.DoesNotExist:
-            return Response({"error": "Admin has not created about us content yet"}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,4 @@
-from .models import WeFund, Adds, Donation, ContactUs, AboutUs
+from .models import WeFund, Adds, Donation
 from rest_framework import serializers
 
 
@@ -53,31 +53,3 @@ class ZoomSerializer(serializers.Serializer):
                 {"role": "This field must be a boolean"})
 
         return validated_data
-
-
-class PaypalSerializer(serializers.Serializer):
-    name = serializers.CharField()
-    price = serializers.CharField()
-    quantity = serializers.IntegerField()
-
-    def validate(self, validated_data):
-        try:
-            int(validated_data["price"])
-            return validated_data
-        except ValueError:
-            raise serializers.ValidationError(
-                {"price": "please enter a valid price"})
-
-
-class ContactUsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ContactUs
-        fields = ("id", "name", "email", "message")
-
-
-class AboutUsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = AboutUs
-        fields = ("id", "content",)

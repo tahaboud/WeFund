@@ -1,0 +1,23 @@
+.first { 
+    background-color: #FECE07;
+    width: 90%;
+    height:60%;
+    margin-top: 10px; 
+    padding-top: 40px;
+    padding-bottom: 66px;
+    border-radius: 30px;
+    margin-left: 65px;
+    
+    }
+    .first p { 
+        font-size: 41px;
+        width: 40%;
+        
+        overflow: hidden;
+        float:auto;
+        color:white;
+        opacity: 0.8;
+        margin-top: 30px;
+        margin-left: 70px;
+        font-family:  'Noto Sans JP', sans-serif;
+     }
