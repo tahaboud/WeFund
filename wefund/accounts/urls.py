@@ -25,5 +25,5 @@ urlpatterns = [
     path("password-reset/<pk>/<token>/",
          UserPasswordUpdateAPI.as_view({"post": "update"})),
     path("check/", CheckTokenAPI.as_view({"post": "list"})),
-    
+
 ]

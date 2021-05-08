@@ -1,14 +1,15 @@
 import React from "react";
 import Nav from "../content/Nav";
-import MultiStepFormEvent from "../content/event/MultiStepFormEvent";
+import Event from "../content/event/Event";
 import Footer from "../content/Footer";
-import "../content/css/events.css";
+import { CssBaseline } from "@material-ui/core";
 
 const Events = () => {
   return (
     <div>
       <Nav />
-      <MultiStepFormEvent />
+      <CssBaseline />
+      <Event />
       <Footer />
     </div>
   );

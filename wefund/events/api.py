@@ -55,7 +55,7 @@ class EventDetailAPI(viewsets.ModelViewSet):
 
     def update(self, request, pk=None):
         event = Events.objects.get(pk=pk)
-        serializer = EventSerializer(event, data=request.data)
+        serializer = EventSerializer(event, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -19,9 +19,9 @@ class Research(models.Model):
     ]
 
     USER_LOOKING_FOR = [
-        ("INV", "investements"),
+        ("INV", "Investments"),
         ("RAC", "ResearchTeams/Academic/Collaborators"),
-        ("FAG", "FundingAndGrants")
+        ("FAG", "Funding And Grants")
     ]
 
     USER_INTERESTED_IN = [
@@ -36,7 +36,7 @@ class Research(models.Model):
     interested_in = models.CharField(max_length=4, choices=USER_INTERESTED_IN)
     title = models.CharField(max_length=100, blank=False, null=False)
     organization = models.CharField(max_length=100, blank=False, null=False)
-    papers = ContentTypeRestrictedFileField(upload_to='uploads/', content_types=[
+    papers = ContentTypeRestrictedFileField(upload_to=upload_location_paper, content_types=[
                                             'application/pdf', "image/*"], max_upload_size=5242880, blank=False, null=False)
     description = models.CharField(max_length=500, blank=False, null=False)
     admin_review = models.CharField(

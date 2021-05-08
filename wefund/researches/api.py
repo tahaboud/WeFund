@@ -4,6 +4,7 @@ from knox.models import AuthToken
 from .models import Research
 from accounts.models import Account
 from .serializers import UserResearchSerializer, AdminResearchSerializer
+from accounts.serializers import UserSerializer
 
 
 class UserResearchAPI(viewsets.ModelViewSet):
@@ -20,9 +21,9 @@ class UserResearchAPI(viewsets.ModelViewSet):
                 serializer = UserResearchSerializer(research)
                 return Response(serializer.data)
             raise serializers.ValidationError(
-                {"user": "this user does not have a research"})
+                {"data": "this user does not have a research"})
         raise serializers.ValidationError(
-            {"user": "this user is not a researcher"})
+            {"data": "this user is not a researcher"})
 
     def perform_create(self, serializer):
         if hasattr(self.request.user, "researcher"):
@@ -36,7 +37,8 @@ class UserResearchAPI(viewsets.ModelViewSet):
 
     def update(self, request):
         research = Research.objects.get(researcher=request.user.researcher)
-        serializer = UserResearchSerializer(research, data=request.data)
+        serializer = UserResearchSerializer(
+            research, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

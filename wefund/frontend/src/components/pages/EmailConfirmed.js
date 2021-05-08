@@ -7,6 +7,7 @@ import { confirmEmail } from "../../actions/authAction";
 // Import Components
 import Nav from "../content/Nav";
 import Footer from "../content/Footer";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const EmailConfirmed = () => {
   const dispatch = useDispatch();
@@ -20,11 +21,13 @@ const EmailConfirmed = () => {
   }, []);
   return isLoading ? (
     <div className="mt-5 mb-5">
+      <CssBaseline />
       <h1 className="text-center">Please wait ...</h1>
     </div>
   ) : errors ? (
     <>
       <Nav />
+      <CssBaseline />
       <div className="mt-5 mb-5">
         <h1 className="text-center">{errors.user}</h1>
       </div>
@@ -33,6 +36,7 @@ const EmailConfirmed = () => {
   ) : (
     <>
       <Nav />
+      <CssBaseline />
       <div className="mt-5 mb-5">
         <h1 className="text-center">
           Email Confirmed, Please Sign in <Link to="/login">here</Link>

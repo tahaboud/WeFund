@@ -9,88 +9,82 @@ import { loadUser } from "../actions/authAction";
 // Import Pages
 import Home from "./pages/Home";
 import SignInUp from "./pages/SignInUp";
-import AboutUs from "./pages/AboutUs";
 import Events from "./pages/Events";
 import Profile from "./pages/Profile";
-import Support from "./pages/Support";
-import Contact from "./pages/Contact";
 import ThankYou from "./pages/ThankYou";
 import EmailConfirmed from "./pages/EmailConfirmed";
-import RequestReset from "./pages/RequestReset";
 import ResetPassword from "./pages/ResetPassword";
 import Zoom from "./pages/ZoomMeeting";
-//Import Admin Lte
-import AdminLte from "./admin_lte/App";
+import Register from "./pages/Register";
+import Admin from "./pages/Admin";
+import CompleteRegistration from "./pages/CompleteRegistration";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
+
 //Import css pagination
 function App() {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   useEffect(() => {
     if (token) {
       dispatch(loadUser());
-      console.log(user);
     }
   }, []);
-  if (user.user) {
-    if (user.user.is_admin === true)
-      return (
-        <div>
-          <AdminLte />
-        </div>
-      );
-  }
-  if (user.User) {
-    console.log(user);
-    if (user.User.is_admin === true)
-      return (
-        <div>
-          <AdminLte />
-        </div>
-      );
-  }
-  //else
+  const theme = createMuiTheme({
+    palette: {
+      type: "dark",
+    },
+  });
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route exact path="/login">
-          <SignInUp />
-        </Route>
-        <Route exact path="/about">
-          <AboutUs />
-        </Route>
-        <Route exact path="/event">
-          <Events />
-        </Route>
-        <Route exact path="/support">
-          <Support />
-        </Route>
-        <Route exact path="/contact">
-          <Contact />
-        </Route>
-        <Route exact path="/thankyou">
-          <ThankYou />
-        </Route>
-        <Route exact path="/user/confirm-email/:id/:token">
-          <EmailConfirmed />
-        </Route>
-        <Route exact path="/reset-password">
-          <RequestReset />
-        </Route>
-        <Route exact path="/user/reset-password/:id/:token">
-          <ResetPassword />
-        </Route>
-        <Route exact path="/zoom">
-          <Zoom />
-        </Route>
-        <Route exact path="/profile">
-          <Profile />
-        </Route>
-      </Switch>
+      <ThemeProvider theme={theme}>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/login">
+            {isAuthenticated ? <Redirect to="/profile" /> : <SignInUp />}
+          </Route>
+          <Route exact path="/event">
+            <Events />
+          </Route>
+          <Route exact path="/thankyou">
+            <ThankYou />
+          </Route>
+          <Route exact path="/user/confirm-email/:id/:token">
+            <EmailConfirmed />
+          </Route>
+          <Route exact path="/user/reset-password/:id/:token">
+            <ResetPassword />
+          </Route>
+          <Route exact path="/zoom">
+            <Zoom />
+          </Route>
+          <Route exact path="/profile">
+            {isAuthenticated ? <Profile /> : <Redirect to="/login" />}
+          </Route>
+          <Route exact path="/signup">
+            {!isAuthenticated ? <Register /> : <Redirect to="/profile" />}
+          </Route>
+          <Route exact path="/admin">
+            {isAuthenticated &&
+              user &&
+              (user.user.is_admin ? <Admin /> : <Redirect to="/" />)}
+          </Route>
+          <Route exact path="/register">
+            {isAuthenticated ? (
+              user && !user.is_researcher ? (
+                <CompleteRegistration />
+              ) : (
+                <Redirect to="/profile" />
+              )
+            ) : (
+              <Redirect to="/login" />
+            )}
+          </Route>
+        </Switch>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getResearcher } from "./researcherAction";
 
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
@@ -43,6 +44,9 @@ export const login = (email, password, recaptcha) => (dispatch) => {
         type: "LOGIN_SUCCESS",
         payload: res.data,
       });
+      if (res.data.user.is_researcher) {
+        dispatch(getResearcher());
+      }
     })
     .catch((err) => {
       dispatch({
@@ -216,6 +220,24 @@ export const resetPassword = ({ password1, password2, pk, token }) => (
     })
     .catch((err) => {
       dispatch({ type: "PASSWORD_RESET_FAIL", payload: err.response.data });
+    });
+};
+
+export const updateUser = ({ first_name, last_name }) => (
+  dispatch,
+  getState
+) => {
+  dispatch({ type: "USER_LOADING" });
+
+  const body = JSON.stringify({ first_name, last_name });
+
+  axios
+    .post("/api/account/user/", body, tokenConfig(getState))
+    .then((res) => {
+      dispatch({ type: "USER_UPDATE_SUCCESS", payload: res.data });
+    })
+    .catch((err) => {
+      dispatch({ type: "USER_UPDATE_FAIL", payload: err.response.data });
     });
 };
 

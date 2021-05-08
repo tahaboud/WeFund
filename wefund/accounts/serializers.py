@@ -8,8 +8,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ("id", "username", "email",
-                  "is_admin", "first_name", "last_name", "is_validated")
-        read_only_fields = ("id", "username", "is_validated")
+                  "is_admin", "first_name", "last_name", "is_validated", "last_login")
+        read_only_fields = (
+            "id", "username", "is_validated", "email", "is_admin", "last_login")
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -30,13 +31,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
-    # recaptcha = ReCaptchaV2Field()
+    recaptcha = ReCaptchaV2Field()
 
     def validate(self, data):
         user = authenticate(**data)
         if user and user.is_active:
             return user
-
         raise serializers.ValidationError("Incorrect Credentials")
 
 
@@ -70,6 +70,15 @@ class ResearcherSerializer(serializers.ModelSerializer):
                 {"Id card number": "Please ensure that the id card number is only numbers"})
 
 
+class ValidatedResearcherSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Researcher
+        fields = ("id_card_number", "id_card_copy",
+                  "date_of_birth", "degree", "organisation", "cv")
+        read_only_fields = ("id_card_number", "id_card_copy", "date_of_birth")
+
+
 class AdminUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
@@ -82,9 +91,9 @@ class AdminUserSerializer(serializers.ModelSerializer):
 class AdminResearcherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Researcher
-        fields = ("id_card_number", "id_card_copy",
+        fields = ("id", "id_card_number", "id_card_copy",
                   "date_of_birth", "degree", "organisation", "cv")
-        read_only_fields = ("id_card_number", "id_card_copy",
+        read_only_fields = ("id", "id_card_number", "id_card_copy",
                             "date_of_birth", "degree", "organisation", "cv")
 
 

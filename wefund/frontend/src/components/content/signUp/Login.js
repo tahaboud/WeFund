@@ -1,45 +1,98 @@
 import React, { useState, useEffect } from "react";
 // Import Redux
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../../actions/authAction";
+import {
+  login,
+  freeAuth,
+  requestResetPassword,
+} from "../../../actions/authAction";
 // Import Validation
-import { loginValidator } from "../validators/authValidator";
+import {
+  loginValidator,
+  requestResetValidator,
+} from "../validators/authValidator";
 import ReCAPTCHA from "react-google-recaptcha";
-import { Link } from "react-router-dom";
-// Import Redux
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import styled from "styled-components";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+  createStyles,
+} from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { useHistory } from "react-router";
 
 const Login = () => {
   const recaptchaRef = React.createRef();
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(freeAuth());
+  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [recaptcha, setRecaptcha] = useState("");
+  const [resetRecaptcha, setResetRecaptcha] = useState("");
   const [loginErrors, setLoginErrors] = useState(null);
   const [checked, setChecked] = useState(false);
-  const { errors, isLoading } = useSelector((state) => state.auth);
+  const [resetChecked, setResetChecked] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const { errors, isLoading, data, user } = useSelector((state) => state.auth);
   useEffect(() => {
     setLoginErrors(errors);
     recaptchaRef.current.reset();
+    setChecked(false);
   }, [errors]);
+  useEffect(() => {
+    if (data) {
+      if (data.user === "Reset password email sent") {
+        setDialogOpen(false);
+        setSnackbarOpen(true);
+      }
+    }
+  }, [data]);
   const onChange = (e) => {
     switch (e.target.name) {
       case "email":
         return setEmail(e.target.value);
       case "password":
         return setPassword(e.target.value);
+      case "resetEmail":
+        return setResetEmail(e.target.value);
     }
   };
   const onRecaptcha = (value) => {
     setRecaptcha(value);
     setChecked(true);
   };
+  const onResetRecaptcha = (value) => {
+    setResetRecaptcha(value);
+    setResetChecked(true);
+  };
   const onExpired = () => {
     setRecaptcha("");
     setChecked(false);
   };
-  const submit = (e) => {
+  const onResetExpired = () => {
+    setResetRecaptcha("");
+    setResetChecked(false);
+  };
+  const onsubmit = (e) => {
     e.preventDefault();
     const { isValid, validationErrors } = loginValidator(email, password);
     if (isValid) {
@@ -48,77 +101,228 @@ const Login = () => {
       setLoginErrors(validationErrors);
     }
   };
+  const onReset = () => {
+    const { isValid, validationErrors } = requestResetValidator(resetEmail);
+    if (isValid) {
+      dispatch(requestResetPassword(resetEmail, resetRecaptcha));
+    } else {
+      setLoginErrors(validationErrors);
+    }
+  };
+  const useStyles = makeStyles((theme) =>
+    createStyles({
+      paper: {
+        marginTop: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: theme.spacing(6),
+      },
+      avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+      },
+      form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+      },
+      submit: {
+        margin: theme.spacing(3, 0, 2),
+      },
+      link: {
+        color: "white",
+        cursor: "pointer",
+      },
+      buttonProgress: {
+        color: "#3F51B5",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: -12,
+        marginLeft: -12,
+      },
+      wrapper: {
+        position: "relative",
+      },
+      alert: {
+        marginTop: theme.spacing(2),
+        textAlign: "center",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    })
+  );
+  const classes = useStyles();
+  const history = useHistory();
   return (
-    <div>
-      <form noValidate className="needs-validation" onSubmit={submit}>
-        <div>
-          <div id="login">
-            <div className="input-group mb-3">
-              <input
-                type="email"
-                name="email"
-                className={`form-control ${
-                  loginErrors &&
-                  (loginErrors.email || loginErrors.non_field_errors
-                    ? "is-invalid"
-                    : "")
-                }`}
-                placeholder="Email"
-                onChange={onChange}
-              />
-              {loginErrors && (
-                <div className="invalid-feedback">
-                  {loginErrors.email || loginErrors.non_field_errors}
-                </div>
-              )}
-            </div>
-            <div className="input-group mb-3">
-              <input
-                type="password"
-                name="password"
-                className={`form-control ${
-                  loginErrors &&
-                  (loginErrors.password || loginErrors.non_field_errors
-                    ? "is-invalid"
-                    : "")
-                }`}
-                placeholder="Password"
-                onChange={onChange}
-              />
-              {loginErrors && (
-                <div className="invalid-feedback">
-                  {loginErrors.password || loginErrors.non_field_errors}
-                </div>
-              )}
-            </div>
-          </div>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert variant="filled" severity="success" className={classes.alert}>
+          Reset Password Was Sent Succefully
+        </Alert>
+      </Snackbar>
+
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form className={classes.form} noValidate onSubmit={onsubmit}>
+          <StyledTextField
+            id="email"
+            type="email"
+            fullWidth
+            label="Email Address"
+            variant="outlined"
+            name="email"
+            error={
+              loginErrors && (loginErrors.email || loginErrors.non_field_errors)
+                ? true
+                : false
+            }
+            helperText={
+              loginErrors
+                ? loginErrors.email || loginErrors.non_field_errors
+                : ""
+            }
+            required
+            autoFocus
+            onChange={onChange}
+          />
+          <StyledTextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            onChange={onChange}
+            error={
+              loginErrors &&
+              (loginErrors.password || loginErrors.non_field_errors)
+                ? true
+                : false
+            }
+            helperText={
+              loginErrors
+                ? loginErrors.password || loginErrors.non_field_errors
+                : ""
+            }
+            autoComplete="current-password"
+          />
           <ReCAPTCHA
             sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
             ref={recaptchaRef}
             onChange={onRecaptcha}
             onExpired={onExpired}
+            theme="dark"
           />
-          <button
-            type="submit"
-            className="btn btn-danger"
-            id="in"
-            disabled={isLoading || !checked}
+          <div className={classes.wrapper}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={!checked || isLoading}
+            >
+              Sign In
+            </Button>
+            {isLoading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+          </div>
+          <Grid container>
+            <Grid item xs>
+              <Link
+                onClick={() => setDialogOpen(true)}
+                variant="body2"
+                className={classes.link}
+              >
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link
+                onClick={() => history.push("/signup")}
+                variant="body2"
+                className={classes.link}
+              >
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <Dialog
+        open={dialogOpen}
+        className={classes.dialog}
+        fullWidth
+        onClose={() => setDialogOpen(false)}
+      >
+        <DialogTitle>Reset Password</DialogTitle>
+        <StyledTextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="resetEmail"
+          label="Email"
+          type="text"
+          onChange={onChange}
+          error={loginErrors && loginErrors.user ? true : false}
+          helperText={loginErrors ? loginErrors.user : ""}
+        />
+        <ReCAPTCHA
+          sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
+          ref={recaptchaRef}
+          onChange={onResetRecaptcha}
+          onExpired={onResetExpired}
+          theme="dark"
+        />
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={() => setDialogOpen(false)}
+            color="secondary"
+            variant="contained"
           >
-            Sign in
-          </button>
-          <p className="text-center mt-2 mb-2" style={{ color: "black" }}>
-            Did you forget your password? Reset it
-            <Link to="/reset-password"> here</Link>
-          </p>
-        </div>
-      </form>
-    </div>
+            Cancel
+          </Button>
+          <Button
+            autoFocus
+            onClick={onReset}
+            color="primary"
+            variant="contained"
+            disabled={!resetChecked || isLoading}
+          >
+            Request Reset
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isAuthenticated: state.auth.isAuthenticated
+const StyledTextField = styled(TextField)`
+  label.Mui-focused {
+    color: white;
   }
-};
-export default connect(mapStateToProps, {login})(Login);
+  .MuiOutlinedInput-input {
+    &:focus {
+      outline: none !important;
+    }
+  }
+`;
+
+export default Login;

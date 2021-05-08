@@ -1,21 +1,17 @@
 import { combineReducers } from "redux";
 import auth from "./authReducer";
-import event from "./event";
-import user from "./user";
-import errors from "./errors";
-import messages from "./messages";
-import researcher from "./researcher";
-import research from "./research";
+import events from "./eventsReducer";
+import researcher from "./researcherReducer";
+import research from "./researchReducer";
 import zoom from "./zoomReducer";
+import admin from "./adminReducer";
+
 export default combineReducers({
   auth,
-  event,
-  user,
-  errors,
-  messages,
+  admin,
+  events,
   researcher,
   research,
   zoom,
 });
 //export type RootState = ReturnType<typeof rootReducer>
-

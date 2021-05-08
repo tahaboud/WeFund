@@ -1,0 +1,73 @@
+import React from "react";
+// Import Images
+import book from "../../../../static/img/book.png";
+import presentation from "../../../../static/img/presentation.png";
+import support from "../../../../static/img/support.jpg";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { Grid, Paper } from "@material-ui/core";
+
+const Part4 = () => {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      margin: 10,
+      minHeight: "40vh",
+      height: "40vh",
+      alignItems: "center",
+    },
+    media: {
+      objectFit: "cover",
+      maxWidth: "50%",
+      width: "100%",
+      height: "100%",
+    },
+    cardContent: {
+      width: "50%",
+    },
+    action: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+  }));
+  const classes = useStyles();
+  return (
+    <Card className={classes.root} elevation={0}>
+      <CardContent className={classes.cardContent}>
+        <Typography gutterBottom variant="h4" component="h2">
+          Become a supporter, and enjoy our special benifits
+        </Typography>
+        <Typography variant="body1" color="textSecondary" component="p">
+          You can now donate to support a new raising business project or
+          research supported by WeFund. Where you can enjoy our orientation
+          services for researchers to find best oppertunities arounf the globe.
+        </Typography>
+        <CardActions classeName={classes.action}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Donate
+          </Button>
+        </CardActions>
+      </CardContent>
+      <CardMedia
+        component="img"
+        alt="Contemplative Reptile"
+        height="140"
+        image={support}
+        title="Contemplative Reptile"
+        className={classes.media}
+      />
+    </Card>
+  );
+};
+
+export default Part4;

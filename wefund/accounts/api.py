@@ -2,7 +2,7 @@ from rest_framework import generics, permissions, viewsets, serializers, status
 from rest_framework.response import Response
 from knox.models import AuthToken
 from .models import Researcher, Account
-from .serializers import UserSerializer, RegisterUserSerializer, LoginSerializer, RegisterAdminSerializer, ResearcherSerializer, AdminResearcherSerializer, AdminUserSerializer, ResetPasswordSerializer, SendEmailSerializer, CheckTokenSerializer
+from .serializers import UserSerializer, RegisterUserSerializer, LoginSerializer, RegisterAdminSerializer, ResearcherSerializer, AdminResearcherSerializer, AdminUserSerializer, ResetPasswordSerializer, SendEmailSerializer, CheckTokenSerializer, ValidatedResearcherSerializer
 from django.core.mail import EmailMessage
 from .utils import generate_token
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -101,14 +101,14 @@ class UserAPI(viewsets.ModelViewSet):
 
     def retrieve(self, request):
         user = self.request.user
-        return Response({"User": UserSerializer(user).data, "is_researcher": hasattr(request.user, "researcher")})
+        return Response({"user": UserSerializer(user).data, "is_researcher": hasattr(request.user, "researcher")})
 
     def update(self, request):
         user = request.user
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response({"user": serializer.data, "is_researcher": hasattr(request.user, "researcher")})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request):
@@ -153,8 +153,15 @@ class ResearcherAPI(viewsets.ModelViewSet):
 
     def update(self, request):
         researcher = Researcher.objects.get(user=request.user)
+        if request.user.is_validated:
+            serializer = ValidatedResearcherSerializer(
+                researcher, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer = ResearcherSerializer(
-            researcher, data=request.data)
+            researcher, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -166,11 +173,20 @@ class AdminAPI(viewsets.ModelViewSet):
 
     def list(self, request):
         users = Account.objects.all()
-        researchers = Researcher.objects.all()
-        serializerUser = AdminUserSerializer(users, many=True)
-        serializerResearcher = AdminResearcherSerializer(
-            researchers, many=True)
-        return Response({"users": serializerUser.data, "researchers": serializerResearcher.data})
+        result = []
+        for user in users:
+            fullUserData = {}
+            userData = AdminUserSerializer(user)
+            fullUserData.update({"user": userData.data})
+            if hasattr(user, "researcher"):
+                researcher = Researcher.objects.get(user=user)
+                researcherData = AdminResearcherSerializer(researcher)
+                fullUserData.update({"researcher": researcherData.data})
+            else:
+                fullUserData.update({"researcher":
+                                     "This user is not a researcher"})
+            result.append(fullUserData)
+        return Response(result)
 
     def retrieve(self, request, pk=None):
         try:
@@ -187,34 +203,37 @@ class AdminAPI(viewsets.ModelViewSet):
             return Response(serializerUser.data)
 
     def update(self, request, pk):
-        user = Researcher.objects.get(pk=pk).user
-        new = False
-        if not user.is_validated:
-            new = True
-        serializer = AdminUserSerializer(user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            if new:
-                try:
-                    if request.data["is_validated"] == True:
-                        current_site = "127.0.0.1:8000"
-                        email_subject = "Account Validated"
-                        message = render_to_string("accounts/userValidated.html", {
-                            "user": user.first_name,
-                        })
-                        email_message = EmailMessage(
-                            email_subject,
-                            message,
-                            settings.EMAIL_HOST_USER,
-                            [user.email],
-                        )
-                        email_message.content_subtype = "html"
-                        email_message.send(fail_silently=False)
+        try:
+            user = Account.objects.get(pk=pk)
+            new = False
+            if not user.is_validated:
+                new = True
+            serializer = AdminUserSerializer(user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                if new:
+                    try:
+                        if request.data["is_validated"] == True:
+                            current_site = "127.0.0.1:8000"
+                            email_subject = "Account Validated"
+                            message = render_to_string("accounts/userValidated.html", {
+                                "user": user.first_name,
+                            })
+                            email_message = EmailMessage(
+                                email_subject,
+                                message,
+                                settings.EMAIL_HOST_USER,
+                                [user.email],
+                            )
+                            email_message.content_subtype = "html"
+                            email_message.send(fail_silently=False)
 
-                except KeyError:
-                    pass
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    except KeyError:
+                        pass
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Account.DoesNotExist:
+            return Response({"data": "User does not exist"})
 
 
 class PasswordResetRequestAPI(viewsets.ModelViewSet):

@@ -11,17 +11,21 @@ class EventSerializer(serializers.ModelSerializer):
     def validate(self, validated_data):
         try:
             int(validated_data["spots"])
-            int(validated_data["price"])
-            return  validated_data
+            try:
+                int(validated_data["price"])
+                return validated_data
+            except ValueError:
+                raise serializers.ValidationError(
+                    {"spots": "Please ensure that spots is a numerical value"})
         except ValueError:
             raise serializers.ValidationError(
-                {"Price / Spots": "Please ensure that price and spots are numerical values"})
+                {"price": "Please ensure that price is a numerical value"})
 
 
 class AttendantsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendants
-        fields = ("first_name", "last_name",
+        fields = ("id", "first_name", "last_name",
                   "email", "phone_number", "id_number", "event")
         validators = [
             UniqueTogetherValidator(
@@ -45,7 +49,7 @@ class AttendantsSerializer(serializers.ModelSerializer):
         try:
             int(validated_data["phone_number"])
             int(validated_data["id_number"])
-            return  validated_data
+            return validated_data
         except ValueError:
             raise serializers.ValidationError(
                 {"Phone number / Id number": "Please ensure that Phone number and Id number are numerical values"})

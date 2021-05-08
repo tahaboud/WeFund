@@ -4,9 +4,8 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 // Import Parts
 import Nav from "../content/Nav";
-import Part1 from "../content/signUp/Part1";
+import Part1 from "../content/signUp/Login";
 import Footer from "../content/Footer";
-import "../content/css/login.css";
 
 const SignInUp = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
