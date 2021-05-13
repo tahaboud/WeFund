@@ -320,7 +320,12 @@ const EditProfile = ({ onEdit, setOnEdit }) => {
           <DropzoneDialog
             open={cvDialogOpen}
             onSave={cvUpload}
-            acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+            acceptedFiles={[
+              "image/jpeg",
+              "image/png",
+              "image/bmp",
+              "application/pdf",
+            ]}
             showPreviews={true}
             maxFileSize={5000000}
             filesLimit={1}

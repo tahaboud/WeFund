@@ -127,7 +127,7 @@ const Users = () => {
     const pk = user.user.id;
     const token = encrypt(user.user.last_login, path, fileName);
     setImageUrl(
-      `admin/media/${pk}/researcher/${path}/${id}/${fileName}/${token}`
+      `admin/media/${pk}/researcher/${path}/${id}/${fileName}/${token}/`
     );
     setDialogOpen(true);
   };

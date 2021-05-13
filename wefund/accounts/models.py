@@ -7,17 +7,20 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.dispatch import receiver
 import os
+from time import time_ns
 
 
 def upload_location_id(instance, filename):
+    filename = filename.split(".")[-1]
     file_path = "researcher/id/{user_id}/{filename}".format(
-        user_id=str(instance.user.id), filename=filename)
+        user_id=str(instance.user.id), filename=str(time_ns())+"."+filename)
     return file_path
 
 
 def upload_location_cv(instance, filename):
+    filename = filename.split(".")[-1]
     file_path = "researcher/cv/{user_id}/{filename}".format(
-        user_id=str(instance.user.id), filename=filename)
+        user_id=str(instance.user.id), filename=str(time_ns())+"."+filename)
     return file_path
 
 

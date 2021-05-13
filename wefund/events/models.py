@@ -1,11 +1,13 @@
 from django.db import models
 from django.dispatch import receiver
 import os
+from time import time_ns
 
 
 def upload_location(instance, filename):
+    filename = filename.split(".")[-1]
     file_path = "events/{event_name}/{filename}".format(
-        event_name=str(instance.name), filename=filename)
+        event_name=str(instance.name), filename=str(time_ns())+"."+filename)
     return file_path
 
 

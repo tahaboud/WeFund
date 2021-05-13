@@ -305,7 +305,7 @@ const Researcher = () => {
               <DropzoneDialog
                 open={cvDialogOpen}
                 onSave={cvUpload}
-                acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+                acceptedFiles={["application/pdf"]}
                 showPreviews={true}
                 maxFileSize={5000000}
                 filesLimit={1}

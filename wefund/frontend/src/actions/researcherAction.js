@@ -138,6 +138,6 @@ export const getMedia = (path, id, fileName) => (dispatch, getState) => {
 
   dispatch({
     type: "MEDIA_URL",
-    payload: { url: `/media/researcher/${path}/${id}/${fileName}/${token}` },
+    payload: { url: `/media/researcher/${path}/${id}/${fileName}/${token}/` },
   });
 };

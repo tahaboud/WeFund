@@ -3,11 +3,13 @@ from accounts.models import Account, Researcher
 from .formatChecker import ContentTypeRestrictedFileField
 from django.dispatch import receiver
 import os
+from time import time_ns
 
 
 def upload_location_paper(instance, filename):
+    filename = filename.split(".")[-1]
     file_path = "researcher/research/{user_id}/{filename}".format(
-        user_id=str(instance.researcher.user.id), filename=filename)
+        user_id=str(instance.researcher.user.id), filename=str(time_ns())+"."+filename)
     return file_path
 
 

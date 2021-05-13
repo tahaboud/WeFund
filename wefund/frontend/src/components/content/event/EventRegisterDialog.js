@@ -70,6 +70,7 @@ const EventRegisterDialog = ({
   useEffect(() => {
     if (data && data.event === event.id) {
       setRegisterDialogOpen(false);
+      setAttendanceErrors("");
       setSnackbarOpen(true);
     }
     if (errors && errors.non_field_errors) {
@@ -263,7 +264,10 @@ const EventRegisterDialog = ({
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={() => setRegisterDialogOpen(false)}
+              onClick={() => {
+                setRegisterDialogOpen(false);
+                setAttendanceErrors("");
+              }}
               color="primary"
             >
               Cancel

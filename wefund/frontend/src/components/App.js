@@ -25,7 +25,9 @@ import { Redirect } from "react-router-dom";
 function App() {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
   useEffect(() => {
     if (token) {
       dispatch(loadUser());
@@ -70,6 +72,7 @@ function App() {
           <Route exact path="/admin">
             {isAuthenticated &&
               user &&
+              user.user &&
               (user.user.is_admin ? <Admin /> : <Redirect to="/" />)}
           </Route>
           <Route exact path="/register">

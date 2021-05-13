@@ -45,13 +45,13 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         data: action.payload,
       };
-    case "USER_UPDATE_SUCCESS":
+    case "ADMIN_USER_UPDATE_SUCCESS":
       return {
         ...state,
         data: action.payload,
         isLoading: false,
       };
-    case "USER_UPDATE_FAIL":
+    case "ADMIN_USER_UPDATE_FAIL":
       return {
         ...state,
         errors: action.payload,

@@ -11,7 +11,7 @@ import {
 const ResetPassword = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isLoading, user, errors } = useSelector((state) => state.auth);
+  const { isLoading, user, data, errors } = useSelector((state) => state.auth);
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [resetErrors, setResetErrors] = useState(null);
@@ -43,8 +43,8 @@ const ResetPassword = () => {
     }
   };
 
-  return user ? (
-    user.token === "Token is valid" ? (
+  return data ? (
+    data.token === "Token is valid" ? (
       <div>
         <form noValidate className="needs-validation" onSubmit={onSubmit}>
           <div className="input-group">

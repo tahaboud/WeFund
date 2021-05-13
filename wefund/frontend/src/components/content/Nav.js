@@ -31,6 +31,8 @@ import Badge from "@material-ui/core/Badge";
 import Alert from "@material-ui/lab/Alert";
 import { getMedia } from "../../actions/researcherAction";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import { animateScroll } from "react-scroll";
+import { Link as ScrollLink } from "react-scroll";
 
 const Nav = (props) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -55,7 +57,7 @@ const Nav = (props) => {
     {
       text: "Contact Us",
       icon: <ContactSupportIcon />,
-      onClick: () => history.push("/contact"),
+      onClick: () => {},
     },
   ];
   if (user && user.user && user.user.is_admin) {
@@ -68,6 +70,7 @@ const Nav = (props) => {
   const onSignOut = (e) => {
     e.preventDefault();
     dispatch(logout());
+    history.push("/");
   };
   const useStyles = makeStyles((theme) => ({
     root: {

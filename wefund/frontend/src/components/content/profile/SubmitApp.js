@@ -343,7 +343,7 @@ const SubmitApplication = () => {
               <DropzoneDialog
                 open={papersDialogOpen}
                 onSave={papersUpload}
-                acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+                acceptedFiles={["application/pdf"]}
                 showPreviews={true}
                 maxFileSize={5000000}
                 filesLimit={1}

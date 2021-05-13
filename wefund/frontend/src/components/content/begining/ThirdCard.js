@@ -31,10 +31,6 @@ const Part4 = () => {
     cardContent: {
       width: "50%",
     },
-    action: {
-      display: "flex",
-      justifyContent: "flex-end",
-    },
   }));
   const classes = useStyles();
   return (
@@ -48,7 +44,7 @@ const Part4 = () => {
           research supported by WeFund. Where you can enjoy our orientation
           services for researchers to find best oppertunities arounf the globe.
         </Typography>
-        <CardActions classeName={classes.action}>
+        <CardActions>
           <Button
             variant="contained"
             color="primary"

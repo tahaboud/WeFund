@@ -589,7 +589,7 @@ const Events = () => {
               name="price"
               label="Event Price"
               id="price"
-              value={free ? "Free" : price}
+              value={free ? "00" : price}
               onChange={onChange}
               error={eventErrors && eventErrors.price ? true : false}
               helperText={eventErrors ? eventErrors.price : ""}

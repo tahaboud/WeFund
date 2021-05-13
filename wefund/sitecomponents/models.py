@@ -1,9 +1,11 @@
 from django.db import models
+from time import time_ns
 
 
 def upload_location(instance, filename):
+    filename = filename.split(".")[-1]
     file_path = "addins/{add_id}/{filename}".format(
-        add_id=str(instance.id), filename=filename)
+        add_id=str(instance.id), filename=str(time_ns())+"."+filename)
     return file_path
 
 

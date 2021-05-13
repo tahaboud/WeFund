@@ -14,8 +14,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { Typography } from "@material-ui/core";
 import sddx from "../../../static/img/sddx.png";
+import { useHistory } from "react-router";
 
 const Home = () => {
+  const history = useHistory();
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -63,6 +65,7 @@ const Home = () => {
     },
   }));
   const classes = useStyles();
+
   return (
     <div className={classes.body}>
       <CssBaseline />
@@ -79,6 +82,7 @@ const Home = () => {
                 className={classes.applybutton}
                 color="primary"
                 size="large"
+                onClick={() => history.push("/signup")}
               >
                 Apply {">"}
               </Button>

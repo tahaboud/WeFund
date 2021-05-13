@@ -46,7 +46,7 @@ const Footer = () => {
   const classes = useStyles();
   const history = useHistory();
   return (
-    <Paper className={classes.footer} elevation={2} square>
+    <Paper className={classes.footer} elevation={2} square id="footer">
       <div className={classes.logo}>
         <Typography variant="h5" className={classes.logo}>
           WeFund
