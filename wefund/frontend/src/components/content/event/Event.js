@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${eventsBackground})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
-    padding: theme.spacing(8, 0, 6),
+    padding: theme.spacing(8, 10, 6),
+    height:300,
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -90,6 +91,7 @@ const Event = () => {
             align="center"
             color="textPrimary"
             gutterBottom
+            style={{color:'white'}}
           >
             Our Events
           </Typography>

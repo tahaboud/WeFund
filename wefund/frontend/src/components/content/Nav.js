@@ -22,6 +22,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import HomeIcon from "@material-ui/icons/Home";
+import DuoIcon from '@material-ui/icons/Duo';
 import EventIcon from "@material-ui/icons/Event";
 import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import { Grid } from "@material-ui/core";
@@ -55,10 +56,16 @@ const Nav = (props) => {
       onClick: () => history.push("/event"),
     },
     {
+      text: "Zoom",
+      icon: <DuoIcon />,
+      onClick: () => history.push("/zoom"),
+    },
+    {
       text: "Contact Us",
       icon: <ContactSupportIcon />,
-      onClick: () => {},
+      onClick: () => history.push("/contact"),
     },
+
   ];
   if (user && user.user && user.user.is_admin) {
     menuList.push({

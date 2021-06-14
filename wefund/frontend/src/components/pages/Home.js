@@ -16,6 +16,7 @@ import { Typography } from "@material-ui/core";
 import sddx from "../../../static/img/sddx.png";
 import { useHistory } from "react-router";
 
+
 const Home = () => {
   const history = useHistory();
   const useStyles = makeStyles((theme) => ({
@@ -23,14 +24,14 @@ const Home = () => {
       flexGrow: 1,
     },
     body: {
-      backgroundColor: "#212121",
+      backgroundColor: "#dee2e6",
     },
     paper: {
       padding: theme.spacing(2),
       textAlign: "left",
       color: "#ffffff",
       margin: 10,
-      backgroundColor: "#212121",
+      backgroundColor: "#dee2e6",
       height: "80vh",
       display: "flex",
       flexDirection: "column",
@@ -71,7 +72,7 @@ const Home = () => {
       <CssBaseline />
       <Grid container direction="column" justify="center" alignItems="stretch">
         <Nav />
-        <Grid item xs={12} justifyitems="center">
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,paddingTop:30,width:"97%",marginLeft:20}}>
           <Card className={classes.card} elevation={2}>
             <CardContent className={classes.cardContent}>
               <Typography gutterBottom variant="h2" component="h2">
@@ -97,12 +98,18 @@ const Home = () => {
             />
           </Card>
         </Grid>
-        <Grid item xs={12} justifyitems="center">
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20,height:400 }}>
           <Part2 />
         </Grid>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"96%",marginLeft:20 }}>
         <Part3 />
+        </Grid>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20 }}>
         <Part4 />
+        </Grid>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20 }}>
         <Part5 />
+        </Grid>
         <Footer />
       </Grid>
     </div>

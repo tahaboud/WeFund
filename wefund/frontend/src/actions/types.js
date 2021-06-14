@@ -1,0 +1,27 @@
+export const GET_LEADS = "GET_LEADS";
+export const GET_EVENTS = "GET_EVENTS";
+export const GET_EVENT_ATTENDANCES="GET_EVENT_ATTENDANCES";
+export const GET_USERS = "GET_USERS";
+export const DELETE_LEAD = "DELETE_LEAD";
+export const ADD_LEAD = "ADD_LEAD";
+export const ADD_EVENT = "ADD_EVENT";
+export const GET_ERRORS = "GET_ERRORS";
+export const CREATE_MESSAGE = "CREATE_MESSAGE";
+export const USER_LOADING = "USER_LOADING";
+export const USER_LOADED = "USER_LOADED";
+export const AUTH_ERROR = "AUTH_ERROR";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const CLEAR_LEADS = "CLEAR_LEADS";
+export const ADD_RESEARCHER="ADD_RESEARCHER";
+export const GET_RESEARCHER= "GET_RESEARCHER";
+export const ADD_SEARCH="ADD_SEARCH";
+export const GET_SEARCH= "GET_SEARCH";
+export const ADD_CONTACT="ADD_CONTACT";
+export const GET_CONTACT="GET_CONTACT";
+export const ADD_ABOUT="ADD_ABOUT";
+export const GET_ABOUT="GET_AOUT";
+

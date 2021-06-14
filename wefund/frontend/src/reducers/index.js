@@ -5,6 +5,7 @@ import researcher from "./researcherReducer";
 import research from "./researchReducer";
 import zoom from "./zoomReducer";
 import admin from "./adminReducer";
+import contact from "./contactReducer";
 
 export default combineReducers({
   auth,
@@ -13,5 +14,6 @@ export default combineReducers({
   researcher,
   research,
   zoom,
+  contact
 });
 //export type RootState = ReturnType<typeof rootReducer>

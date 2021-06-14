@@ -18,15 +18,15 @@ const Part4 = () => {
     root: {
       display: "flex",
       margin: 10,
-      minHeight: "40vh",
-      height: "40vh",
+      minHeight: "48vh",
+      height: "68vh",
       alignItems: "center",
     },
     media: {
       objectFit: "cover",
       maxWidth: "50%",
-      width: "100%",
-      height: "100%",
+      width: "50%",
+      height: "550px",
     },
     cardContent: {
       width: "50%",
@@ -36,10 +36,10 @@ const Part4 = () => {
   return (
     <Card className={classes.root} elevation={0}>
       <CardContent className={classes.cardContent}>
-        <Typography gutterBottom variant="h4" component="h2">
+        <Typography gutterBottom variant="h3" component="h2">
           Become a supporter, and enjoy our special benifits
         </Typography>
-        <Typography variant="body1" color="textSecondary" component="p">
+        <Typography variant="body1" color="textSecondary" component="h4">
           You can now donate to support a new raising business project or
           research supported by WeFund. Where you can enjoy our orientation
           services for researchers to find best oppertunities arounf the globe.
@@ -57,7 +57,7 @@ const Part4 = () => {
       <CardMedia
         component="img"
         alt="Contemplative Reptile"
-        height="140"
+        height="300"
         image={support}
         title="Contemplative Reptile"
         className={classes.media}

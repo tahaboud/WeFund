@@ -20,22 +20,19 @@ const Part4 = () => {
     root: {
       display: "flex",
       margin: 10,
-      minHeight: "40vh",
+      minHeight: "55vh",
       height: "40vh",
       alignItems: "center",
     },
     media: {
       objectFit: "cover",
       maxWidth: "50%",
-      width: "100%",
-      height: "100%",
+      width: "50%",
+      height: "490px",
     },
     cardContent: {
       width: "50%",
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
+  
     },
     viewAll: {
       width: "20%",
@@ -44,16 +41,8 @@ const Part4 = () => {
   const classes = useStyles();
   return (
     <Card className={classes.root} elevation={0}>
-      <CardMedia
-        component="img"
-        alt="Contemplative Reptile"
-        height="140"
-        image={event}
-        title="Contemplative Reptile"
-        className={classes.media}
-      />
-      <CardContent className={classes.cardContent}>
-        <Typography gutterBottom variant="h4" component="h2">
+       <CardContent className={classes.cardContent}  style={{paddingTop:10}}>
+        <Typography gutterBottom variant="h3" component="h2" >
           Our Events
         </Typography>
         <Typography variant="body1" color="textSecondary" component="p">
@@ -70,6 +59,15 @@ const Part4 = () => {
           View All
         </Button>
       </CardContent>
+      <CardMedia
+        component="img"
+        alt="Contemplative Reptile"
+        height="140"
+        image={event}
+        title="Contemplative Reptile"
+        className={classes.media}
+      />
+     
     </Card>
   );
 };

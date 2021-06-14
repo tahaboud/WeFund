@@ -13,6 +13,7 @@ import Events from "./pages/Events";
 import Profile from "./pages/Profile";
 import ThankYou from "./pages/ThankYou";
 import EmailConfirmed from "./pages/EmailConfirmed";
+import Contact from "./pages/Contact";
 import ResetPassword from "./pages/ResetPassword";
 import Zoom from "./pages/ZoomMeeting";
 import Register from "./pages/Register";
@@ -35,8 +36,18 @@ function App() {
   }, []);
   const theme = createMuiTheme({
     palette: {
-      type: "dark",
+      type: "light",
     },
+    spacing: value => value ** 2,
+    /*overrides: {
+      MuiGrid: {
+        root: {
+          margin: "10px",
+          padding: "10px"
+        }
+      }
+    }*/
+  
   });
   return (
     <BrowserRouter>
@@ -68,6 +79,9 @@ function App() {
           </Route>
           <Route exact path="/signup">
             {!isAuthenticated ? <Register /> : <Redirect to="/profile" />}
+          </Route>
+          <Route exact path="/contact">
+             <Contact />
           </Route>
           <Route exact path="/admin">
             {isAuthenticated &&
