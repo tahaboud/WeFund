@@ -84,7 +84,7 @@ const Nav = (props) => {
       flexGrow: 1,
     },
     appbar: {
-      backgroundColor: "#333333",
+      backgroundColor: "#333333", // Background color
     },
     menuButton: {
       marginRight: theme.spacing(2),

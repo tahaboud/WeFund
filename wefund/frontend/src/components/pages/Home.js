@@ -24,7 +24,7 @@ const Home = () => {
       flexGrow: 1,
     },
     body: {
-      backgroundColor: "#f8f9fa",
+      backgroundColor: "#f8f9fa", // Body grey
     },
     paper: {
       padding: theme.spacing(2),

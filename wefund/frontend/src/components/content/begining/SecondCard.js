@@ -2,7 +2,7 @@ import React from "react";
 // Import Images
 import book from "../../../../static/img/book.png";
 import presentation from "../../../../static/img/presentation.png";
-import appointment from "../../../../static/img/appointment.png";
+import appointment from "../../../../static/img/event256.png";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "40vh",
     alignItems: "center",
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   media: {
     objectFit: "contain",
-    maxWidth: "50%",
+    maxWidth: "100%",
   },
   content: {
     display: "flex",
@@ -40,7 +40,7 @@ export default function ImgMediaCard() {
   return (
     <Card className={classes.root} elevation={0} style={{boxShadow: "2px 2px 2px 2px #28A8E2" }}>
       <CardContent className={classes.content}>
-        <Typography variant="h4">Published Researches</Typography>
+        <Typography variant="h4">Researches</Typography>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
@@ -51,7 +51,7 @@ export default function ImgMediaCard() {
         />
       </CardContent>
       <CardContent className={classes.content}>
-        <Typography variant="h4">Projects We Support</Typography>
+        <Typography variant="h4">Our Projects</Typography>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
@@ -62,7 +62,7 @@ export default function ImgMediaCard() {
         />
       </CardContent>
       <CardContent className={classes.content}>
-        <Typography variant="h4">Events</Typography>
+        <Typography variant="h4">Our Events</Typography>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
