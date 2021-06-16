@@ -5,8 +5,38 @@ import {addContact} from '../../actions/contactAction';
 import PropTypes from "prop-types";
 import Nav from "../content/Nav";
 import Footer from "../content/Footer";
-
-
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import styled from "styled-components";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+  createStyles,
+} from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { useHistory } from "react-router";
+const StyledTextField = styled(TextField)`
+  label.Mui-focused {
+    color: white;
+  }
+  .MuiOutlinedInput-input {
+    &:focus {
+      outline: none !important;
+    }
+  }
+`;
 const Contact = () => {
   const init = {
     email: '',
@@ -43,62 +73,117 @@ const Contact = () => {
 
 
   };
+  const useStyles = makeStyles((theme) =>
+    createStyles({
+      paper: {
+        marginTop: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: theme.spacing(6),
+      },
+      avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+      },
+      form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+      },
+      submit: {
+        margin: theme.spacing(3, 0, 2),
+      },
+      link: {
+        color: "white",
+        cursor: "pointer",
+      },
+      buttonProgress: {
+        color: "#3F51B5",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: -12,
+        marginLeft: -12,
+      },
+      wrapper: {
+        position: "relative",
+      },
+      alert: {
+        marginTop: theme.spacing(2),
+        textAlign: "center",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    })
+  );
+  const classes = useStyles();
+  const history = useHistory();
   return (
     <div>
       <Nav/>
-       <center>
-       <div className="col-6 " style={{paddingTop:'50px'}}>
-          <form noValidate className="needs-validation" onSubmit={submit}>
-
-            <div id="login">
-              <div className="input-group mb-3">
-                <input
-                  type="email"
-                  name="email"
-                  className="form-control "
-                  placeholder="Email"
-                  value={values.email}
-                  onChange={onChange}/> 
-              </div>
-              <div className="input-group mb-3">
-                <input
- 
-                  name="head"
-                  className="form-control "
-                  placeholder="Head"
-                  value={values.head}
-                  onChange={onChange}/>
-              </div>
-              <div className="input-group mb-3">
-                <textarea
-                  name="content"
-                  className="form-control"
-                  placeholder="Type your demande"
-                  value={values.content}
-                  onChange={onChange}/>
-              </div>
-            </div>
-            <button
+      <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Contact us
+        </Typography>
+        <form className={classes.form} noValidate onSubmit={onsubmit}>
+          <StyledTextField
+            id="email"
+            type="email"
+            fullWidth
+            label="Email Address"
+            variant="outlined"
+            name="email"
+            required
+            autoFocus
+            onChange={onChange}
+          />
+           <StyledTextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="head"
+            label="head"
+            type="text"
+            id="head"
+            onChange={onChange}
+            autoComplete="current-password"
+          />
+          <StyledTextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="body"
+            label="body"
+            type="text"
+            id="body"
+            onChange={onChange}
+            autoComplete="current-password"
+          />
+          
+          <div className={classes.wrapper}>
+            <Button
               type="submit"
-              className="btn btn-danger"
-              id="in"
-              >
-              Contact US
-            </button>
-          </form>
-        </div>
-       </center>
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Contact us
+            </Button>
+           
+          </div>
+        </form>
+      </div>
+    </Container>
 
-      
-      <div style={{
-        visibility: 'hidden'
-      }}>s</div>
-      <div style={{
-        visibility: 'hidden'
-      }}>s</div>
       <Footer/>
     </div>
   );
 };
+
 
 export default Contact;

@@ -493,7 +493,7 @@ const Events = () => {
         onClose={() => setEditDialogOpen(false)}
       >
         <DialogTitle>Edit Event</DialogTitle>
-        <Grid container spacing={2}>
+        <Grid container spacing={0}>
           <Grid item xs={12} sm={6}>
             <StyledTextField
               variant="outlined"

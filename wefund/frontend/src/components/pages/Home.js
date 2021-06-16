@@ -24,14 +24,14 @@ const Home = () => {
       flexGrow: 1,
     },
     body: {
-      backgroundColor: "#dee2e6",
+      backgroundColor: "#f8f9fa",
     },
     paper: {
       padding: theme.spacing(2),
       textAlign: "left",
       color: "#ffffff",
       margin: 10,
-      backgroundColor: "#dee2e6",
+      backgroundColor: "#f8f9fa",
       height: "80vh",
       display: "flex",
       flexDirection: "column",
@@ -48,13 +48,13 @@ const Home = () => {
       margin: 10,
       padding: theme.spacing(2),
       Height: "60vh",
-      maxHeight: "60vh",
+      maxHeight: "78vh",
       alignItems: "center",
     },
     media: {
       objectFit: "cover",
       maxWidth: "50%",
-      height: "100%",
+      height: "650px",
     },
     applybutton: {
       display: "block",
@@ -72,8 +72,8 @@ const Home = () => {
       <CssBaseline />
       <Grid container direction="column" justify="center" alignItems="stretch">
         <Nav />
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,paddingTop:30,width:"97%",marginLeft:20}}>
-          <Card className={classes.card} elevation={2}>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,paddingTop:50,width:"97%",marginLeft:20}}>
+          <Card className={classes.card} elevation={2} style={{boxShadow: "2px 2px 2px 2px #28A8E2" }}> 
             <CardContent className={classes.cardContent}>
               <Typography gutterBottom variant="h2" component="h2">
                 We Support Scientific Research In North Africa
@@ -91,23 +91,23 @@ const Home = () => {
             <CardMedia
               component="img"
               alt="Contemplative Reptile"
-              height="140"
+              height="300"
               image={sddx}
               title="Contemplative Reptile"
               className={classes.media}
             />
           </Card>
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20,height:400 }}>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20,height:400}}>
           <Part2 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"96%",marginLeft:20 }}>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"96%",marginLeft:20}}>
         <Part3 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20 }}>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20}}>
         <Part4 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20 }}>
+        <Grid item xs={12} justifyitems="center" style={{ width:"97%",marginLeft:20}}>
         <Part5 />
         </Grid>
         <Footer />

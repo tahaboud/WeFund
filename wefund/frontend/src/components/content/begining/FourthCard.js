@@ -20,15 +20,15 @@ const Part4 = () => {
     root: {
       display: "flex",
       margin: 10,
-      minHeight: "55vh",
-      height: "40vh",
+      minHeight: "48vh",
+      height: "68vh",
       alignItems: "center",
     },
     media: {
       objectFit: "cover",
       maxWidth: "50%",
       width: "50%",
-      height: "490px",
+      height: "550px",
     },
     cardContent: {
       width: "50%",
@@ -40,7 +40,7 @@ const Part4 = () => {
   }));
   const classes = useStyles();
   return (
-    <Card className={classes.root} elevation={0}>
+    <Card className={classes.root} elevation={0} style={{boxShadow: "2px 2px 2px 2px #28A8E2" }}>
        <CardContent className={classes.cardContent}  style={{paddingTop:10}}>
         <Typography gutterBottom variant="h3" component="h2" >
           Our Events

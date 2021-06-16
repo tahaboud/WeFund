@@ -34,7 +34,7 @@ const Part4 = () => {
   }));
   const classes = useStyles();
   return (
-    <Card className={classes.root} elevation={0}>
+    <Card className={classes.root} elevation={0} style={{boxShadow: "2px 2px 2px 2px #28A8E2" }}>
       <CardContent className={classes.cardContent}>
         <Typography gutterBottom variant="h3" component="h2">
           Become a supporter, and enjoy our special benifits

@@ -38,9 +38,9 @@ export default function ImgMediaCard() {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root} elevation={0}>
+    <Card className={classes.root} elevation={0} style={{boxShadow: "2px 2px 2px 2px #28A8E2" }}>
       <CardContent className={classes.content}>
-        <Typography variant="h6">Published Researches</Typography>
+        <Typography variant="h4">Published Researches</Typography>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
@@ -51,7 +51,7 @@ export default function ImgMediaCard() {
         />
       </CardContent>
       <CardContent className={classes.content}>
-        <Typography variant="h6">Projects We Support</Typography>
+        <Typography variant="h4">Projects We Support</Typography>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
@@ -62,7 +62,7 @@ export default function ImgMediaCard() {
         />
       </CardContent>
       <CardContent className={classes.content}>
-        <Typography variant="h6">Events</Typography>
+        <Typography variant="h4">Events</Typography>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"

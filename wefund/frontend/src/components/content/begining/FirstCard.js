@@ -8,22 +8,23 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
-import appointment from "../../../../static/img/logoimage.png";
+import appointment from "../../../../static/img/logoW.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     margin: 10,
     padding: theme.spacing(2),
-    minHeight: "40vh",
-    height: "40vh",
+    minHeight: "45vh",
+    height: "65vh",
     alignItems: "center",
   },
   media: {
     objectFit: "contain",
     maxWidth: "50%",
     width: "100%",
-    height: "100%",
+    height: "600px",
+
   },
   cardContent: {
     width: "50%",
@@ -34,11 +35,11 @@ export default function ImgMediaCard() {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root} elevation={0}>
+    <Card className={classes.root} elevation={0} style={{boxShadow: "2px 2px 2px 2px #28A8E2" }}>
       <CardMedia
         component="img"
         alt="Contemplative Reptile"
-        height="140"
+        height="240"
         image={appointment}
         title="Contemplative Reptile"
         className={classes.media}
