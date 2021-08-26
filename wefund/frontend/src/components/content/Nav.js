@@ -139,7 +139,7 @@ const Nav = (props) => {
             className={classes.title}
             onClick={() => history.push("/")}
           >
-            WeFund
+                  We<span className="fw-bold text-yellow">Fund</span>
           </Typography>
           {!isAuthenticated && (
             <Button color="inherit" onClick={() => history.push("/login")}>

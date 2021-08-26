@@ -73,19 +73,19 @@ const Home = () => {
       <CssBaseline />
       <Grid container direction="column" justify="center" alignItems="stretch">
         <Nav />
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,paddingTop:50,width:"97%",marginLeft:20}}>
+        <Grid item xs={12} justifyitems="center" style={{}}>
           <Part1 classes={classes}/>
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20,height:400}}>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,height:400}}>
           <Part2 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"96%",marginLeft:20}}>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50}}>
         <Part3 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,width:"97%",marginLeft:20}}>
+        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50}}>
         <Part4 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ width:"97%",marginLeft:20}}>
+        <Grid item xs={12} justifyitems="center" style={{ width:"85%"}}>
         <Part5 />
         </Grid>
         <Footer />

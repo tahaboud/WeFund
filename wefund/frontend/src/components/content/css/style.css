@@ -1,0 +1,52 @@
+
+@import url(https://fonts.googleapis.com);
+@import url(https://fonts.gstatic.com);
+@import url(https://fonts.googleapis.com/css2?family=Montserrat&display=swap);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css);
+@import url(https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css);
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FAFAFA;
+  }
+  
+  .bg-yellow {
+    background: #FECE07;
+  }
+  
+  .text-yellow {
+    color: #FECE07;
+  }
+  
+  .bg-grey {
+    background: #FAFAFA;
+  }
+  
+  .bg-facebook {
+    background: #3d5c98;
+  }
+  
+  .bg-google {
+    background: #ED3739;
+  }
+  
+  .active {
+    color: #FECE07 !important;
+  }
+  
+  .btn-shadow {
+    -webkit-box-shadow: 10px 10px #FFE26C !important;
+            box-shadow: 10px 10px #FFE26C !important;
+  }
+  
+  .brd {
+    padding-left: 30px;
+    border-left: 10px solid #FECE07;
+  }
+  
+  .image {
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+  /*# sourceMappingURL=style.css.map */

@@ -1,75 +1,32 @@
 import React from "react";
-// Import Images
-import book from "../../../../static/img/book.png";
-import presentation from "../../../../static/img/presentation.png";
-import event from "../../../../static/img/event.jpg";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import { Grid, Paper } from "@material-ui/core";
-import { useHistory } from "react-router";
+import "../css/style.css";
 
-const Part4 = () => {
-  const history = useHistory();
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-      margin: 10,
-      minHeight: "48vh",
-      height: "68vh",
-      alignItems: "center",
-    },
-    media: {
-      objectFit: "cover",
-      maxWidth: "50%",
-      width: "50%",
-      height: "550px",
-    },
-    cardContent: {
-      width: "50%",
-  
-    },
-    viewAll: {
-      width: "20%",
-    },
-  }));
-  const classes = useStyles();
+const Part5 = (props) => {
+
   return (
-    <Card className={classes.root} elevation={0} style={{boxShadow: "2px 2px 2px 2px #28A8E2" }}>
-       <CardContent className={classes.cardContent}  style={{paddingTop:10}}>
-        <Typography gutterBottom variant="h3" component="h2" >
-          Our Events
-        </Typography>
-        <Typography variant="body1" color="textSecondary" component="p">
-          Application for events is now available. We encourage you to check
-          detailed constracture of our several events categories.
-        </Typography>
-        <Button
-          variant="contained"
-          className={classes.viewAll}
-          color="primary"
-          size="large"
-          onClick={() => history.push("/event")}
-        >
-          View All
-        </Button>
-      </CardContent>
-      <CardMedia
-        component="img"
-        alt="Contemplative Reptile"
-        height="140"
-        image={event}
-        title="Contemplative Reptile"
-        className={classes.media}
-      />
-     
-    </Card>
+    <section className="bg-grey py-5">
+      <div className="container text-end">
+        <div className="row align-items-center">
+          <div className="col-lg-5">
+            <img src="../../../../static/img/event.png" alt="group1" width="100%" />
+          </div>
+          <div className="col-lg-7">
+            <h1 className="text-capitalize mt-5 mt-lg-0 fw-bold display-4">Our <span className="text-yellow">Events</span></h1>
+            <h4 className="text-secondary mt-4" style={{ lineHeight: '150%' }}>
+              Application for events is now available. <br />
+              We encourage you to check detailed constracture of our several events categories.
+            </h4>
+            <div className="text-end">
+              <a href="javascript:void(0)" className="btn btn-dark px-5 py-3 mt-5 text-capitalize btn-shadow">
+                view all<i className="fas fa-arrow-right small ms-3" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   );
 };
 
-export default Part4;
+export default Part5;
