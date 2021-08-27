@@ -18,14 +18,7 @@ export function encrypt(msg, password, salt) {
 }
 
 // REGISTER RESEARCHER
-export const registerResearcher = ({
-  id_card_number,
-  id_card_copy,
-  date_of_birth,
-  degree,
-  organisation,
-  cv,
-}) => (dispatch, getState) => {
+export const registerResearcher = (formData) => (dispatch, getState) => {
   // Is Loading
   dispatch({ type: "RESEARCHER_LOADING" });
 
@@ -39,15 +32,6 @@ export const registerResearcher = ({
       Authorization: `Token ${token}`,
     },
   };
-
-  // Data
-  const formData = new FormData();
-  formData.append("id_card_number", id_card_number);
-  formData.append("id_card_copy", id_card_copy);
-  formData.append("date_of_birth", date_of_birth);
-  formData.append("degree", degree);
-  formData.append("organisation", organisation);
-  formData.append("cv", cv);
 
   axios
     .post("/api/account/researcher/", formData, config)

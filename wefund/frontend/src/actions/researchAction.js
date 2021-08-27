@@ -17,15 +17,7 @@ export const getResearch = () => (dispatch, getState) => {
 };
 // Register Search
 
-export const addResearch = ({
-  title,
-  user_type,
-  looking_for,
-  interested_in,
-  description,
-  organization,
-  papers,
-}) => (dispatch, getState) => {
+export const addResearch = (formData) => (dispatch, getState) => {
   dispatch({ type: "RESEARCH_LOADING" });
 
   // Get Token
@@ -39,15 +31,6 @@ export const addResearch = ({
     },
   };
 
-  // Data
-  const formData = new FormData();
-  formData.append("title", title);
-  formData.append("user_type", user_type);
-  formData.append("looking_for", looking_for);
-  formData.append("interested_in", interested_in);
-  formData.append("description", description);
-  formData.append("organization", organization);
-  formData.append("papers", papers);
 
   axios
     .post("/api/research/", formData, config)
