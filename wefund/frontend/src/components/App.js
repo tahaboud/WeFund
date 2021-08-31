@@ -21,7 +21,8 @@ import Admin from "./pages/Admin";
 import CompleteRegistration from "./pages/CompleteRegistration";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
-
+import Nav from "./content/Nav";
+import Footer from "./content/Footer";
 //Import css pagination
 function App() {
   const token = localStorage.getItem("token");
@@ -75,7 +76,7 @@ function App() {
             <Zoom />
           </Route>
           <Route exact path="/profile">
-            {isAuthenticated ? <Profile /> : <Redirect to="/login" />}
+            {isAuthenticated ?   (<div><Nav /><Profile /> <Footer /></div>) : <Redirect to="/login" />}
           </Route>
           <Route exact path="/signup">
             {!isAuthenticated ? <Register /> : <Redirect to="/profile" />}
