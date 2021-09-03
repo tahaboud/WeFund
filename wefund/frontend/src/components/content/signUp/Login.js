@@ -155,169 +155,175 @@ const Login = () => {
   const classes = useStyles();
   const history = useHistory();
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Container component="main">
+      <Container component="div" className="py-5">
+        <Container component="div" className="container">
+          <CssBaseline />
+          <div className="row d-flex justify-content-center">
+            <div className="col-lg-8">
+              <div className="card border-0 rounded-0 shadow-sm px-3 px-lg-4">
+                <div className="card-body">
+                  <div>
+                    <h2 className="text-center text-capitalize fw-bold py-2">
+                      Login to your account
+                    </h2>
+                    <hr />
+                  </div>
 
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert variant="filled" severity="success" className={classes.alert}>
-          Reset Password Was Sent Succefully
-        </Alert>
-      </Snackbar>
+                  <form className={classes.form} noValidate onSubmit={onsubmit}>
+                    <StyledTextField
+                      id="email"
+                      type="email"
+                      fullWidth
+                      label="Email Address"
+                      variant="outlined"
+                      name="email"
+                      className="form-control py-3"
+                      error={
+                        loginErrors &&
+                        (loginErrors.email || loginErrors.non_field_errors)
+                          ? true
+                          : false
+                      }
+                      helperText={
+                        loginErrors
+                          ? loginErrors.email || loginErrors.non_field_errors
+                          : ""
+                      }
+                      required
+                      autoFocus
+                      onChange={onChange}
+                    />
+                    <StyledTextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      className="form-control py-3"
+                      onChange={onChange}
+                      error={
+                        loginErrors &&
+                        (loginErrors.password || loginErrors.non_field_errors)
+                          ? true
+                          : false
+                      }
+                      helperText={
+                        loginErrors
+                          ? loginErrors.password || loginErrors.non_field_errors
+                          : ""
+                      }
+                      autoComplete="current-password"
+                    />
+                    <ReCAPTCHA
+                      sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
+                      ref={recaptchaRef}
+                      onChange={onRecaptcha}
+                      onExpired={onExpired}
+                      theme="dark"
+                    />
+                    <div className={classes.wrapper}>
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit +'btn   w-100 py-3 px-5'}
+                        disabled={!checked || isLoading}
+                      >
+                        Sign In
+                      </Button>
+                      {isLoading && (
+                        <CircularProgress
+                          size={24}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </div>
+                    <Grid container>
+                      <Grid item xs>
+                        <Link
+                          onClick={() => setDialogOpen(true)}
+                          variant="body2"
+                          className={classes.link}
+                        >
+                          Forgot password?
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <Link
+                          onClick={() => history.push("/signup")}
+                          variant="body2"
+                          className={classes.link}
+                        >
+                          {"Don't have an account? Sign Up"}
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
 
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={onsubmit}>
-          <StyledTextField
-            id="email"
-            type="email"
-            fullWidth
-            label="Email Address"
-            variant="outlined"
-            name="email"
-            error={
-              loginErrors && (loginErrors.email || loginErrors.non_field_errors)
-                ? true
-                : false
-            }
-            helperText={
-              loginErrors
-                ? loginErrors.email || loginErrors.non_field_errors
-                : ""
-            }
-            required
-            autoFocus
-            onChange={onChange}
-          />
-          <StyledTextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            onChange={onChange}
-            error={
-              loginErrors &&
-              (loginErrors.password || loginErrors.non_field_errors)
-                ? true
-                : false
-            }
-            helperText={
-              loginErrors
-                ? loginErrors.password || loginErrors.non_field_errors
-                : ""
-            }
-            autoComplete="current-password"
-          />
-          <ReCAPTCHA
-            sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
-            ref={recaptchaRef}
-            onChange={onRecaptcha}
-            onExpired={onExpired}
-            theme="dark"
-          />
-          <div className={classes.wrapper}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              disabled={!checked || isLoading}
-            >
-              Sign In
-            </Button>
-            {isLoading && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
+                  <Dialog
+                    open={dialogOpen}
+                    className={classes.dialog}
+                    fullWidth
+                    onClose={() => setDialogOpen(false)}
+                  >
+                    <DialogTitle>Reset Password</DialogTitle>
+                    <StyledTextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="resetEmail"
+                      label="Email"
+                      type="text"
+                      onChange={onChange}
+                      error={loginErrors && loginErrors.user ? true : false}
+                      helperText={loginErrors ? loginErrors.user : ""}
+                    />
+                    <ReCAPTCHA
+                      sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
+                      ref={recaptchaRef}
+                      onChange={onResetRecaptcha}
+                      onExpired={onResetExpired}
+                      theme="dark"
+                    />
+                    <DialogActions>
+                      <Button
+                        autoFocus
+                        onClick={() => setDialogOpen(false)}
+                        color="secondary"
+                        variant="contained"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        autoFocus
+                        onClick={onReset}
+                        color="primary"
+                        variant="contained"
+                        disabled={!resetChecked || isLoading}
+                      >
+                        Request Reset
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </div>
+              </div>
+            </div>
           </div>
-          <Grid container>
-            <Grid item xs>
-              <Link
-                onClick={() => setDialogOpen(true)}
-                variant="body2"
-                className={classes.link}
-              >
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link
-                onClick={() => history.push("/signup")}
-                variant="body2"
-                className={classes.link}
-              >
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Dialog
-        open={dialogOpen}
-        className={classes.dialog}
-        fullWidth
-        onClose={() => setDialogOpen(false)}
-      >
-        <DialogTitle>Reset Password</DialogTitle>
-        <StyledTextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="resetEmail"
-          label="Email"
-          type="text"
-          onChange={onChange}
-          error={loginErrors && loginErrors.user ? true : false}
-          helperText={loginErrors ? loginErrors.user : ""}
-        />
-        <ReCAPTCHA
-          sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
-          ref={recaptchaRef}
-          onChange={onResetRecaptcha}
-          onExpired={onResetExpired}
-          theme="dark"
-        />
-        <DialogActions>
-          <Button
-            autoFocus
-            onClick={() => setDialogOpen(false)}
-            color="secondary"
-            variant="contained"
-          >
-            Cancel
-          </Button>
-          <Button
-            autoFocus
-            onClick={onReset}
-            color="primary"
-            variant="contained"
-            disabled={!resetChecked || isLoading}
-          >
-            Request Reset
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Container>
+      </Container>
     </Container>
   );
 };
 
 const StyledTextField = styled(TextField)`
-  label.Mui-focused {
-    color: white;
+  label {
+    fontSize : 16px;
   }
   .MuiOutlinedInput-input {
     &:focus {

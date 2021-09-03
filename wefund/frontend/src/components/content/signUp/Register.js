@@ -22,7 +22,7 @@ import { registerValidator } from "../validators/authValidator";
 
 const StyledTextField = styled(TextField)`
   label.Mui-focused {
-    color: white;
+  
   }
   .MuiOutlinedInput-input {
     &:focus {
@@ -139,135 +139,189 @@ export default function SignUp() {
     }
   };
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <StyledTextField
-                variant="outlined"
-                label="First Name"
-                name="first_name"
-                required
-                fullWidth
-                onChange={onChange}
-                error={
-                  registerErrors && registerErrors.first_name ? true : false
-                }
-                helperText={registerErrors ? registerErrors.first_name : ""}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <StyledTextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="last_name"
-                autoComplete="lname"
-                onChange={onChange}
-                error={
-                  registerErrors && registerErrors.last_name ? true : false
-                }
-                helperText={registerErrors ? registerErrors.last_name : ""}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <StyledTextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={onChange}
-                error={registerErrors && registerErrors.email ? true : false}
-                helperText={registerErrors ? registerErrors.email : ""}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <StyledTextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={onChange}
-                error={registerErrors && registerErrors.password ? true : false}
-                helperText={registerErrors ? registerErrors.password : ""}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <StyledTextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password2"
-                label="Confirm Password"
-                type="password"
-                id="password2"
-                autoComplete="current-password"
-                onChange={onChange}
-                error={
-                  registerErrors && registerErrors.password2 ? true : false
-                }
-                helperText={registerErrors ? registerErrors.password2 : ""}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I agree to terms and services"
-              />
-            </Grid>
-          </Grid>
-          <ReCAPTCHA
-            sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
-            ref={recaptchaRef}
-            onChange={onRecaptcha}
-            onExpired={onExpired}
-            theme="dark"
-          />
-          <div className={classes.wrapper}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              disabled={!checked || isLoading}
-            >
-              Sign Up
-            </Button>
-            {isLoading && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
+    <Container component="main" >
+      <Container component="div" className="py-5">
+        <Container component="div" className="container">
+          <CssBaseline />
+          <div className="row d-flex justify-content-center">
+            <div className="col-lg-8">
+              <div className="card border-0 rounded-0 shadow-sm px-3 px-lg-4">
+                <div className="card-body">
+                  <div className="">
+                    <div>
+                      <h2 className="text-center text-capitalize py-2 fw-bold">
+                        Register for free
+                      </h2>
+                      <hr />
+                    </div>
+
+                    <form
+                      className={classes.form}
+                      noValidate
+                      onSubmit={onSubmit}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                          <StyledTextField
+                            className="form-control py-3"
+                            variant="outlined"
+                            label="First Name"
+                            name="first_name"
+                            required
+                            fullWidth
+                            onChange={onChange}
+                            error={
+                              registerErrors && registerErrors.first_name
+                                ? true
+                                : false
+                            }
+                            helperText={
+                              registerErrors ? registerErrors.first_name : ""
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <StyledTextField
+                            className="form-control py-3"
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="lastName"
+                            label="Last Name"
+                            name="last_name"
+                            autoComplete="lname"
+                            onChange={onChange}
+                            error={
+                              registerErrors && registerErrors.last_name
+                                ? true
+                                : false
+                            }
+                            helperText={
+                              registerErrors ? registerErrors.last_name : ""
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <StyledTextField
+                            className="form-control py-3"
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            onChange={onChange}
+                            error={
+                              registerErrors && registerErrors.email
+                                ? true
+                                : false
+                            }
+                            helperText={
+                              registerErrors ? registerErrors.email : ""
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <StyledTextField
+                            className="form-control py-3"
+                            variant="outlined"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            onChange={onChange}
+                            error={
+                              registerErrors && registerErrors.password
+                                ? true
+                                : false
+                            }
+                            helperText={
+                              registerErrors ? registerErrors.password : ""
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <StyledTextField
+                            className="form-control py-3"
+                            variant="outlined"
+                            required
+                            fullWidth
+                            name="password2"
+                            label="Confirm Password"
+                            type="password"
+                            id="password2"
+                            autoComplete="current-password"
+                            onChange={onChange}
+                            error={
+                              registerErrors && registerErrors.password2
+                                ? true
+                                : false
+                            }
+                            helperText={
+                              registerErrors ? registerErrors.password2 : ""
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                value="allowExtraEmails"
+                                color="primary"
+                              />
+                            }
+                            label="I agree to terms and services"
+                          />
+                        </Grid>
+                      </Grid>
+                      <ReCAPTCHA
+                        sitekey="6Lf2wyQaAAAAAHcL6BSdwWvjdIbx2Lvq1CH_jOc6"
+                        ref={recaptchaRef}
+                        onChange={onRecaptcha}
+                        onExpired={onExpired}
+                        theme="dark"
+                      />
+                      <div className={classes.wrapper}>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          disabled={!checked || isLoading}
+                        >
+                          Sign Up
+                        </Button>
+                        {isLoading && (
+                          <CircularProgress
+                            size={24}
+                            className={classes.buttonProgress}
+                          />
+                        )}
+                      </div>
+                      <Grid container justify="flex-end">
+                        <Grid item>
+                          <Link
+                            onClick={() => history.push("/login")}
+                            variant="body2"
+                            className={classes.link}
+                          >
+                            Already have an account? Sign in
+                          </Link>
+                        </Grid>
+                      </Grid>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link
-                onClick={() => history.push("/login")}
-                variant="body2"
-                className={classes.link}
-              >
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
+        </Container>
+      </Container>
     </Container>
   );
 }
