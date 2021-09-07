@@ -8,7 +8,7 @@ return (
       <div className="row justify-content-between">
         <div className="col-lg-4">
           <div className="h1">
-            We<span className="fw-bold text-yellow">Fund</span>
+            We<span className="fw-bold " style={{'color':'#28a8e2'}}>Fund</span>
           </div>
           <p className="mt-4">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -64,7 +64,7 @@ return (
       </div>
       <div className="row">
         <div className="col-12 text-center">
-          Copyright @ 2020 <span className="text-yellow">WeFund</span>. All rights reserved.
+          Copyright @ 2020 <span style={{'color':'#28a8e2'}}>WeFund</span>. All rights reserved.
         </div>
       </div>
     </div>
