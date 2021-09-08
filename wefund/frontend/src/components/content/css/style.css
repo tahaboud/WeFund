@@ -34,6 +34,10 @@ body {
     color: #28a8e2 !important;
   }
   
+  .btn-bc:hover {
+    background-color:#28a8e2 ;
+       
+  }
   .btn-shadow {
     -webkit-box-shadow: 10px 10px #28a8e2 !important;
             box-shadow: 10px 10px #28a8e2 !important;

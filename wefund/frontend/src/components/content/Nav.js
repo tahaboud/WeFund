@@ -79,6 +79,7 @@ const Nav = (props) => {
     dispatch(logout());
     history.push("/");
   };
+
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -89,9 +90,20 @@ const Nav = (props) => {
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    title: {
+    title1: {
       flexGrow: 1,
       cursor: "pointer",
+      color: '#000000'
+    },
+    title3: {
+      flexGrow: 1,
+      cursor: "pointer",
+      color: '#a9adb2'
+    },
+    title2: {
+      flexGrow: 1,
+      cursor: "pointer",
+      color: '#000000'
     },
     list: {
       width: 250,
@@ -122,8 +134,8 @@ const Nav = (props) => {
   }));
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <AppBar position="static" elevation={3} className={classes.appbar}>
+    <div className={classes.root + 'navbar-light bg-white shadow-sm'}>
+      <AppBar position="static" elevation={3} className='navbar-light bg-white shadow-sm'>
         <Toolbar>
           <IconButton
             edge="start"
@@ -135,27 +147,71 @@ const Nav = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
-            className={classes.title}
+            variant="h5"
+            className={classes.title1}
             onClick={() => history.push("/")}
           >
-                  We<span className="fw-bold text-yellow">Fund</span>
+            We<span className="fw-bold text-yellow">Fund</span>
           </Typography>
+
+          <Typography
+            variant="h6"
+            className={classes.title3}
+            onClick={() => history.push("/")}
+          >
+            Home
+          </Typography>
+          <Typography
+            variant="h6"
+            className={classes.title3}
+            onClick={() => history.push("/about")}
+          >
+
+            About us
+          </Typography>
+          <Typography
+            variant="h6"
+            className={classes.title3}
+            onClick={() => history.push("/event")}
+          >
+            Events
+          </Typography>
+          <Typography
+            variant="h6"
+            className={classes.title3}
+            onClick={() => history.push("/contact")}
+          >
+            Contact Us
+          </Typography>
+
+
           {!isAuthenticated && (
-            <Button color="inherit" onClick={() => history.push("/login")}>
-              Login
+            <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/login")}>
+              <Typography
+                variant="h6"
+                className={classes.title2}
+
+              >
+                Login
+              </Typography>
             </Button>
           )}
           {!isAuthenticated && (
-            <Button color="inherit" onClick={() => history.push("/signup")}>
-              SignUp
+            <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/signup")}>
+                          <Typography
+                variant="h6"
+                className={classes.title2}
+
+              >
+                Sign Up
+              </Typography>
             </Button>
           )}
-          {isAuthenticated && <Typography variant="body1">Hi </Typography>}
+          {isAuthenticated && <Typography variant="body1" className={classes.title2}>Hi </Typography>}
           {isAuthenticated &&
             user &&
             (user.is_researcher ? (
-              <Button color="inherit" onClick={() => history.push("/profile")}>
+              <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/profile")}>
                 {user && user.user ? user.user.first_name : ""}
               </Button>
             ) : (

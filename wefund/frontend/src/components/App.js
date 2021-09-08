@@ -38,6 +38,7 @@ function App() {
   const theme = createMuiTheme({
     palette: {
       type: "light",
+      
     },
     spacing: value => value ** 2,
     /*overrides: {
