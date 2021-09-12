@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Zoom from "../content/zoom-meetings/Zoom.js";
 import Form from "../content/zoom-meetings/Form.js";
+import Nav from "../content/Nav";
+
+import Footer from "../content/Footer";
 
 const ZoomMeeting = () => {
   const [username, setUsername] = useState("");
@@ -16,8 +19,10 @@ const ZoomMeeting = () => {
   return submitted ? (
     <Zoom username={username} submitted={submitted} />
   ) : (
-    <div className="container">
+    <div>
+      <Nav />
       <Form setSubmitted={setSubmitted} setUsername={setUsername} />
+      <Footer />
     </div>
   );
 };

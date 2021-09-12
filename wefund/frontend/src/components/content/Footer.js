@@ -6,7 +6,7 @@ return (
   <footer className="bg-black text-light py-5 text-center text-lg-start">
     <div className="container">
       <div className="row justify-content-between">
-        <div className="col-lg-4">
+        <div className="col-lg-4 ">
           <div className="h1">
             We<span className="fw-bold " style={{'color':'#28a8e2'}}>Fund</span>
           </div>
@@ -19,12 +19,6 @@ return (
           <div className="mt-4">
             <a href="javascript:void(0)" className="text-decoration-none text-light me-3">
               <i className="fab fa-facebook-square fa-2x" />
-            </a>
-            <a href="javascript:void(0)" className="text-decoration-none text-light me-3">
-              <i className="fab fa-twitter-square fa-2x" />
-            </a>
-            <a href="javascript:void(0)" className="text-decoration-none text-light me-3">
-              <i className="fab fa-instagram fa-2x" />
             </a>
             <a href="javascript:void(0)" className="text-decoration-none text-light">
               <i className="fab fa-linkedin fa-2x" />

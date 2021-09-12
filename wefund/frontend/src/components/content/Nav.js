@@ -34,6 +34,8 @@ import { getMedia } from "../../actions/researcherAction";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import { animateScroll } from "react-scroll";
 import { Link as ScrollLink } from "react-scroll";
+import Hidden from '@material-ui/core/Hidden';
+
 
 const Nav = (props) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -134,133 +136,149 @@ const Nav = (props) => {
   }));
   const classes = useStyles();
   return (
-    <div className={classes.root + 'navbar-light bg-white shadow-sm'}>
-      <AppBar position="static" elevation={3} className='navbar-light bg-white shadow-sm'>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={() => toggleDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h5"
-            className={classes.title1}
-            onClick={() => history.push("/")}
-          >
-            We<span className="fw-bold text-yellow">Fund</span>
-          </Typography>
 
-          <Typography
-            variant="h6"
-            className={classes.title3}
-            onClick={() => history.push("/")}
-          >
-            Home
-          </Typography>
-          <Typography
-            variant="h6"
-            className={classes.title3}
-            onClick={() => history.push("/about")}
-          >
+    <div className={classes.root + 'navbar navbar-light navbar-expand-lg  bg-white shadow-sm'}>
+      <div class="container py-2">
+    
+          <Toolbar>
+          <Hidden smUp>
+            <IconButton
+              edge="start"
+              className="navbar-toggler"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => toggleDrawer(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            </Hidden >
+            <Typography
+              variant="h5"
+              className={classes.title1}
+              onClick={() => history.push("/")}
+            >
+              We<span className="fw-bold text-yellow">Fund</span>
+            </Typography>
 
-            About us
-          </Typography>
-          <Typography
-            variant="h6"
-            className={classes.title3}
-            onClick={() => history.push("/event")}
-          >
-            Events
-          </Typography>
-          <Typography
-            variant="h6"
-            className={classes.title3}
-            onClick={() => history.push("/contact")}
-          >
-            Contact Us
-          </Typography>
-
-
-          {!isAuthenticated && (
-            <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/login")}>
+            <div className='collapse navbar-collapse' id="navbarSupportedContent">
               <Typography
                 variant="h6"
-                className={classes.title2}
-
+                className={classes.title3}
+                onClick={() => history.push("/")}
               >
-                Login
+                Home
               </Typography>
-            </Button>
-          )}
-          {!isAuthenticated && (
-            <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/signup")}>
-                          <Typography
+              <Typography
                 variant="h6"
-                className={classes.title2}
-
+                className={classes.title3}
+                onClick={() => history.push("/about")}
               >
-                Sign Up
+
+                About us
               </Typography>
-            </Button>
-          )}
-          {isAuthenticated && <Typography variant="body1" className={classes.title2}>Hi </Typography>}
-          {isAuthenticated &&
-            user &&
-            (user.is_researcher ? (
-              <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/profile")}>
-                {user && user.user ? user.user.first_name : ""}
-              </Button>
-            ) : (
-              <Badge color="error" badgeContent="!">
-                <Button
-                  color="inherit"
-                  onClick={() => history.push("/profile")}
-                >
-                  {user && user.user ? user.user.first_name : ""}
+              <Typography
+                variant="h6"
+                className={classes.title3}
+                onClick={() => history.push("/event")}
+              >
+                Events
+              </Typography>
+              <Typography
+                variant="h6"
+                className={classes.title3}
+                onClick={() => history.push("/zoom")}
+              >
+                Zoom
+              </Typography>
+              <Typography
+                variant="h6"
+                className={classes.title3}
+                onClick={() => history.push("/contact")}
+              >
+                Contact Us
+              </Typography>
+
+
+
+
+              {!isAuthenticated && (
+                <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/login")}>
+                  <Typography
+                    variant="h6"
+                    className={classes.title2}
+
+                  >
+                    Login
+                  </Typography>
                 </Button>
-              </Badge>
-            ))}
-          {isAuthenticated && (
-            <IconButton onClick={onSignOut}>
-              <ExitToAppIcon />
-            </IconButton>
-          )}
-        </Toolbar>
-      </AppBar>
-      {isAuthenticated && user && !user.is_researcher ? (
-        <Alert variant="filled" severity="error" className={classes.alert}>
-          You should finish you registration{" "}
-          <Button color="inherit" onClick={() => history.push("/register")}>
-            HERE
-          </Button>
-        </Alert>
-      ) : (
-        ""
-      )}
-      <Drawer
-        anchor={"left"}
-        open={open}
-        onClose={() => toggleDrawer(false)}
-        className={classes.drawer}
-      >
-        <List onClick={() => toggleDrawer(false)} className={classes.list}>
-          <div className={classes.drawerHeader} />
-          <Divider />
-          {menuList.map((item, index) => {
-            const { text, icon, onClick } = item;
-            return (
-              <ListItem key={index} button onClick={onClick}>
-                {icon && <ListItemIcon>{icon}</ListItemIcon>}
-                <ListItemText primary={text} />
-              </ListItem>
-            );
-          })}
-        </List>
-      </Drawer>
+              )}
+              {!isAuthenticated && (
+                <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/signup")}>
+                  <Typography
+                    variant="h6"
+                    className={classes.title2}
+
+                  >
+                    Sign Up
+                  </Typography>
+                </Button>
+              )}
+              {isAuthenticated && <Typography variant="body1" className={classes.title2}>Hi </Typography>}
+              {isAuthenticated &&
+                user &&
+                (user.is_researcher ? (
+                  <Button className={classes.title2 + "btn btn-bc"} onClick={() => history.push("/profile")}>
+                    {user && user.user ? user.user.first_name : ""}
+                  </Button>
+                ) : (
+                  <Badge color="error" badgeContent="!">
+                    <Button
+                      color="inherit"
+                      onClick={() => history.push("/profile")}
+                    >
+                      {user && user.user ? user.user.first_name : ""}
+                    </Button>
+                  </Badge>
+                ))}
+              {isAuthenticated && (
+                <IconButton onClick={onSignOut}>
+                  <ExitToAppIcon />
+                </IconButton>
+              )}
+            </div>
+          </Toolbar>
+    
+        {isAuthenticated && user && !user.is_researcher ? (
+          <Alert variant="filled" severity="error" className={classes.alert}>
+            You should finish you registration{" "}
+            <Button color="inherit" onClick={() => history.push("/register")}>
+              HERE
+            </Button>
+          </Alert>
+        ) : (
+          ""
+        )}
+        <Drawer
+          anchor={"left"}
+          open={open}
+          onClose={() => toggleDrawer(false)}
+          className={classes.drawer}
+        >
+          <List onClick={() => toggleDrawer(false)} className={classes.list}>
+            <div className={classes.drawerHeader} />
+            <Divider />
+            {menuList.map((item, index) => {
+              const { text, icon, onClick } = item;
+              return (
+                <ListItem key={index} button onClick={onClick}>
+                  {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                  <ListItemText primary={text} />
+                </ListItem>
+              );
+            })}
+          </List>
+        </Drawer>
+      </div>
     </div>
   );
 };

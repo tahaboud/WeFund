@@ -1,3 +1,4 @@
+
 import React from "react";
 import Nav from "../content/Nav";
 import Part1 from "../content/begining/ZeroCard";
@@ -72,23 +73,27 @@ const Home = () => {
     <div className={classes.body}>
       <CssBaseline />
       <Grid container direction="column" justify="center" alignItems="stretch">
-        <Nav />
-        <Grid item xs={12} justifyitems="center" style={{}}>
-          <Part1 classes={classes}/>
+        <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+          <Nav />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50,height:400}}>
+        <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+          <Part1 classes={classes} />
+        </Grid>
+        <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
           <Part2 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50}}>
-        <Part3 />
+        <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+          <Part3 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ paddingBottom: 50}}>
-        <Part4 />
+        <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+          <Part4 />
         </Grid>
-        <Grid item xs={12} justifyitems="center" style={{ width:"85%"}}>
-        <Part5 />
+        <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+          <Part5 />
         </Grid>
+        <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
         <Footer />
+        </Grid>
       </Grid>
     </div>
   );

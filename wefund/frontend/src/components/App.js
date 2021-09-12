@@ -16,6 +16,7 @@ import EmailConfirmed from "./pages/EmailConfirmed";
 import Contact from "./pages/Contact";
 import ResetPassword from "./pages/ResetPassword";
 import Zoom from "./pages/ZoomMeeting";
+import AboutUs from "./pages/About";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import CompleteRegistration from "./pages/CompleteRegistration";
@@ -63,6 +64,9 @@ function App() {
           </Route>
           <Route exact path="/event">
             <Events />
+          </Route>
+          <Route exact path="/about">
+            <AboutUs />
           </Route>
           <Route exact path="/thankyou">
             <ThankYou />

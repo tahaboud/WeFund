@@ -181,7 +181,7 @@ const Login = () => {
                       className="form-control py-3"
                       error={
                         loginErrors &&
-                        (loginErrors.email || loginErrors.non_field_errors)
+                          (loginErrors.email || loginErrors.non_field_errors)
                           ? true
                           : false
                       }
@@ -207,7 +207,7 @@ const Login = () => {
                       onChange={onChange}
                       error={
                         loginErrors &&
-                        (loginErrors.password || loginErrors.non_field_errors)
+                          (loginErrors.password || loginErrors.non_field_errors)
                           ? true
                           : false
                       }
@@ -231,7 +231,7 @@ const Login = () => {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        className={classes.submit +'btn   w-100 py-3 px-5'}
+                        className={classes.submit + 'btn   w-100 py-3 px-5'}
                         disabled={!checked || isLoading}
                       >
                         Sign In
