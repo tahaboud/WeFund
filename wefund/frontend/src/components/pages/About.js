@@ -10,7 +10,7 @@ import { Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
+import Grid from "@material-ui/core/Grid";
 const AboutUs = () => {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,29 +28,16 @@ const AboutUs = () => {
   const classes = useStyles();
   const { user } = useSelector((state) => state.auth);
   return (
-    <div className={classes.root}>
-      <Nav />
+    <div >
+      <Grid item item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+        <Nav />
+      </Grid>
       <CssBaseline />
-      <Card className={classes.card} elevation={2}>
-        <CardContent className={classes.cardContent}>
-          <Typography gutterBottom variant="h3" component="h3" align="center">
-            Thank You For Signing Up To WeFund
-          </Typography>
-          <Typography gutterBottom variant="h4" align="center">
-            A verification email has been sent to {user ? user.email : "you"}
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="h5"
-            color="textSecondary"
-            align="center"
-          >
-            Please note that until you verify your email you will not be able to
-            Sign In
-          </Typography>
-        </CardContent>
-      </Card>
-      <Footer />
+     
+      <Grid item item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+        <Footer />
+      </Grid>
+
     </div>
   );
 };

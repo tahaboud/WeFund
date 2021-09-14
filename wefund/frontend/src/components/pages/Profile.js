@@ -7,7 +7,7 @@ import Footer from "../content/Footer";
 import { getResearch } from "../../actions/researchAction";
 import Edit from "../content/profile/Profile";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
+import Grid from "@material-ui/core/Grid";
 const Profile = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -22,8 +22,9 @@ const Profile = () => {
     </div>
   ) : 
   <div>
+ <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
         <MultiStepFormProfile />
- 
+    </Grid>
         </div>
       
   

@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { getEvents } from "../../../actions/eventsAction";
 import eventsBackground from "../../../../static/img/eventsBackground.jpg";
-
+import CardMedia from "@material-ui/core/CardMedia";
 import EventDialog from "./EventDialog";
 import EventRegisterDialog from "./EventRegisterDialog";
 
@@ -79,57 +79,62 @@ const Event = () => {
         <section className="py-5">
           <div className="container">
             <div className="row">
-            {events.map((event) => (
-              <div className="col-lg-12 mb-3">
-                <div className="card border-0 rounded-0 shadow-sm">
-                  <div className="row align-items-center">
-                    <div className="col-lg-4">
-                      <div
-                        className="ratio ratio-4x3 image"
-                        style={{ backgroundImage: event.image }}
-                      />
-                    </div>
-                    <div className="col-lg-8 text-center text-lg-start py-3">
-                      <h2 className="text-capitalize fw-bold"> {event.name}</h2>
-                      <div className="small text-secondary">
-                        <span>
-                          <i className="fas fa-calendar-alt me-1" />
-                          23-08-2021
-                        </span>
-                        <span className="mx-3">
-                          <i className="fas fa-clock me-1" />
-                          10:30
-                        </span>
-                        <span>
-                          <i className="fas fa-users me-1" />
-                          250
-                        </span>
+              {events.map((event) => (
+                <div className="col-lg-12 mb-3">
+                  <div className="card border-0 rounded-0 shadow-sm">
+                    <div className="row align-items-center">
+                      <div className="col-lg-4">
+                        <div
+                          className="ratio ratio-4x3 image"
+                          style={{ backgroundImage: event.image }}
+                        />
                       </div>
-                      <p className="text-dark mt-3">{event.description}</p>
-                      <button
-                        className="btn btn-dark px-5 py-3 mb-3 mb-lg-0 text-capitalize btn-shadow"
-                        onClick={() => onViewMore(event)}
-                      >
-                        Register
-                        <i className="fas fa-arrow-right small ms-3" />
-                      </button>
+                      <div className="col-lg-8 text-center text-lg-start py-3">
+                        <h2 className="text-capitalize fw-bold"> {event.name}</h2>
+                        <div className="small text-secondary">
+                          <span>
+                            <i className="fas fa-calendar-alt me-1" />
+                            23-08-2021
+                          </span>
+                          <span className="mx-3">
+                            <i className="fas fa-clock me-1" />
+                            10:30
+                          </span>
+                          <span>
+                            <i className="fas fa-users me-1" />
+                            250
+                          </span>
+                        </div>
+                        <CardMedia
+                          className={classes.cardMedia}
+                          image={event.image}
+                          title="Image title"
+                        />
+                        <p className="text-dark mt-3">{event.description}</p>
+                        <button
+                          className="btn btn-dark px-5 py-3 mb-3 mb-lg-0 text-capitalize btn-shadow"
+                          onClick={() => onViewMore(event)}
+                        >
+                          Register
+                          <i className="fas fa-arrow-right small ms-3" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-            <EventDialog
-              dialogOpen={dialogOpen}
-              setDialogOpen={setDialogOpen}
-              event={currentEvent}
-              setRegisterDialogOpen={setRegisterDialogOpen}
-            />
-            <EventRegisterDialog
-              registerDialogOpen={registerDialogOpen}
-              setRegisterDialogOpen={setRegisterDialogOpen}
-              event={currentEvent}
-            />
-          </div>
+              ))}
+              <EventDialog
+                dialogOpen={dialogOpen}
+                setDialogOpen={setDialogOpen}
+                event={currentEvent}
+                setRegisterDialogOpen={setRegisterDialogOpen}
+              />
+              <EventRegisterDialog
+                registerDialogOpen={registerDialogOpen}
+                setRegisterDialogOpen={setRegisterDialogOpen}
+                event={currentEvent}
+              />
+            </div>
           </div>
         </section>
       </main>

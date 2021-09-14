@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import Grid from "@material-ui/core/Grid";
 // Import Router
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 // Import Redux
@@ -39,7 +40,7 @@ function App() {
   const theme = createMuiTheme({
     palette: {
       type: "light",
-      
+
     },
     spacing: value => value ** 2,
     /*overrides: {
@@ -50,7 +51,7 @@ function App() {
         }
       }
     }*/
-  
+
   });
   return (
     <BrowserRouter>
@@ -81,13 +82,16 @@ function App() {
             <Zoom />
           </Route>
           <Route exact path="/profile">
-            {isAuthenticated ?   (<div><Nav /><Profile /> <Footer /></div>) : <Redirect to="/login" />}
+            {isAuthenticated ? (<div><Nav /><Profile />  <Grid item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}> <Footer /></Grid></div>) : <Redirect to="/login" />}
           </Route>
           <Route exact path="/signup">
             {!isAuthenticated ? <Register /> : <Redirect to="/profile" />}
           </Route>
           <Route exact path="/contact">
-             <Contact />
+            <Grid item item xs={4} sm={4} md={12} lg={6} xl={4} justifyitems="center" style={{}}>
+              <Contact />
+            </Grid>
+
           </Route>
           <Route exact path="/admin">
             {isAuthenticated &&
