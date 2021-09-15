@@ -72,10 +72,7 @@ const Step1 = (props) => {
                             defaultValue={values.date_of_birth}
                             placeholder="Birth Date"
                           />
-                          <div className="form-text text-danger samll">
-                            <i className="fas fa-exclamation-circle me-1" />
-                            Birth Date errors.
-                          </div>
+                         
                         </div>
                         <div className="col-lg-6 mb-3">
                           
@@ -83,7 +80,7 @@ const Step1 = (props) => {
                             htmlFor="card_id"
                             className="small text-secondary"
                           >
-                            National Card ID Number{" "}
+                            National Card  Number{" "}
                             <span className="text-danger">*</span>
                           </label>
                            <input
@@ -96,10 +93,7 @@ const Step1 = (props) => {
                             defaultValue={values.id_card_number}
                             aria-describedby="basic-addon1"
                             id="s1"/>
-                          <div className="form-text text-danger samll">
-                            <i className="fas fa-exclamation-circle me-1" />
-                            ID number errors.
-                          </div>
+                          
 
                         </div>
                         <div className="col-12">
@@ -114,10 +108,7 @@ const Step1 = (props) => {
                             onChange={IdCardSelectedHandler}
                             defaultValue={values.id_card_copy}
                           />
-                          <div className="form-text text-danger samll">
-                            <i className="fas fa-exclamation-circle me-1" />
-                            CV errors.
-                          </div>
+                          
                         </div>
                         <div className="col-12 mb-3">
                           <label
@@ -135,10 +126,7 @@ const Step1 = (props) => {
                             defaultValue={values.degree}
                             placeholder="Organisation"
                           />
-                          <div className="form-text text-danger samll">
-                            <i className="fas fa-exclamation-circle me-1" />
-                            Degree address errors.
-                          </div>
+                          
                         </div>
                         <div className="col-12 mb-3">
                           <label htmlFor="organisation" className="form-label">
@@ -153,10 +141,7 @@ const Step1 = (props) => {
                             defaultValue={values.organisation}
                             placeholder="Organisation"
                           />
-                          <div className="form-text text-danger samll">
-                            <i className="fas fa-exclamation-circle me-1" />
-                            Organisation errors.
-                          </div>
+                        
                         </div>
                         <div className="col-12 mb-3">
                           <label htmlFor="search" className="form-label">
@@ -171,10 +156,7 @@ const Step1 = (props) => {
                             defaultValue={values.searchtype}
                             placeholder="Search Type"
                           />
-                          <div className="form-text text-danger samll">
-                            <i className="fas fa-exclamation-circle me-1" />
-                            Search type errors.
-                          </div>
+                          
                         </div>
                         <div className="col-12">
                           <label htmlFor="search" className="form-label">
@@ -188,10 +170,7 @@ const Step1 = (props) => {
                             onChange={CvSelectedHandler}
                             defaultValue={values.cv}
                           />
-                          <div className="form-text text-danger samll">
-                            <i className="fas fa-exclamation-circle me-1" />
-                            CV errors.
-                          </div>
+                          
                         </div>
                         <div className="mt-5 text-center text-lg-end">
                           <button
