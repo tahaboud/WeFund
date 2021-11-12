@@ -1,78 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import Typography from "@material-ui/core/Typography";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import styled from "styled-components";
-import Grid from "@material-ui/core/Grid";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import Backdrop from "@material-ui/core/Backdrop";
-import Switch from "@material-ui/core/Switch";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import {
-  addEvent,
-  deleteEvent,
-  EditEvent,
-  getAttendants,
-  getEvents,
-} from "../../../actions/adminAction";
-import { AddPhotoAlternateRounded } from "@material-ui/icons";
-import { DropzoneDialog } from "material-ui-dropzone";
-import Button from "@material-ui/core/Button";
-import CancelIcon from "@material-ui/icons/Cancel";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { green, red } from "@material-ui/core/colors";
-import {
-  editEventValidator,
-  addEventValidator,
-} from "../validators/adminValidator";
-import Toolbar from "@material-ui/core/Toolbar";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Select from "@material-ui/core/Select";
+import { makeStyles } from "@mui/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Backdrop from "@mui/material/Backdrop";
+import FormControl from "@mui/material/FormControl";
+import { getAttendants, getEvents } from "../../../actions/adminAction";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green, red } from "@mui/material/colors";
+import Toolbar from "@mui/material/Toolbar";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import usePagination from "./Pagination";
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  body: {
+  [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
-}))(TableCell);
+}));
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
   },
-}))(TableRow);
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 700,
   },
   backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: 50,
     color: "#fff",
   },
   card: {
@@ -92,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "10em",
   },
   wrapper: {
-    margin: theme.spacing(1),
     position: "relative",
   },
   buttonValidated: {
@@ -125,202 +100,41 @@ const useStyles = makeStyles((theme) => ({
   toolbarTitle: {
     flex: "1 1 100%",
   },
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
+  root: {},
   formControl: {
-    margin: theme.spacing(1),
+    margin: "1em",
     minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: "3em",
   },
 }));
 
 const Attendants = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {
-    users,
-    events,
-    researchers,
-    attendants,
-    data,
-    isLoading,
-    errors,
-  } = useSelector((state) => state.admin);
+  const { events, attendants, isLoading } = useSelector((state) => state.admin);
   const [theEvent, setTheEvent] = useState("");
-  const [imageDialogOpen, setImageDialogOpen] = useState(false);
-  const [descriptionDialogOpen, setDescriptionDialogOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [imageUrl, setImageURl] = useState("");
-  const [eventId, setEventId] = useState("");
-  const [onEdit, setOnEdit] = useState(false);
-  const [name, setName] = useState("");
-  const [image, setImage] = useState(null);
-  const [imageName, setImageName] = useState("");
-  const [description, setDescription] = useState("");
-  const [spots, setSpots] = useState("");
-  const [free, setFree] = useState(false);
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-  const [online, setOnline] = useState(false);
-  const [location, setLocation] = useState("");
-  const [imageDropZoneOpen, setImageDropZoneOpen] = useState(false);
-  const [eventErrors, setEventErrors] = useState("");
+  const [page, setPage] = useState(1);
+  const [attend, setAttend] = useState([]);
+  const PER_PAGE = 10;
+
+  useEffect(() => {
+    if (attendants) {
+      setAttend(attendants);
+    }
+  }, [attendants]);
+
+  const count = Math.ceil(attend.length / PER_PAGE);
+  const _DATA = usePagination(attend, PER_PAGE);
+
+  const handleChange2 = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
   useEffect(() => {
     dispatch(getEvents());
   }, []);
-  useEffect(() => {
-    setEventErrors(errors);
-  }, [errors]);
-  const onImageDialog = (imageUrl) => {
-    setImageURl(imageUrl);
-    setImageDialogOpen(true);
-  };
-  const onDescriptionDialog = (description) => {
-    setDescription(description);
-    setDescriptionDialogOpen(true);
-  };
-  const onEditDialog = (
-    id,
-    name,
-    image,
-    description,
-    spots,
-    free,
-    price,
-    category,
-    online,
-    location
-  ) => {
-    setOnEdit(true);
-    setEventId(id);
-    setName(name);
-    setImageName(image.split("/")[4]);
-    setDescription(description);
-    setSpots(spots);
-    setFree(free);
-    setPrice(price);
-    setCategory(category);
-    setOnline(online);
-    setLocation(location);
-    setEventErrors("");
-    setEditDialogOpen(true);
-  };
-  const onAddDialog = () => {
-    setOnEdit(false);
-    setEventId("");
-    setName("");
-    setImageName("");
-    setDescription("");
-    setSpots("");
-    setFree(false);
-    setPrice("");
-    setCategory("");
-    setOnline(false);
-    setLocation("");
-    setEventErrors("");
-    setEditDialogOpen(true);
-  };
-  const onEditSave = () => {
-    const { isValid, validationErrors } = editEventValidator(
-      name,
-      description,
-      spots,
-      price,
-      category,
-      location
-    );
-    if (isValid) {
-      dispatch(
-        EditEvent(
-          eventId,
-          name,
-          image,
-          description,
-          spots,
-          free,
-          price,
-          category,
-          online,
-          location
-        )
-      );
-      setEditDialogOpen(false);
-    } else {
-      setEventErrors(validationErrors);
-    }
-  };
-  const onAddSave = () => {
-    const { isValid, validationErrors } = addEventValidator(
-      name,
-      description,
-      image,
-      spots,
-      price,
-      category,
-      location
-    );
-    if (isValid) {
-      dispatch(
-        addEvent(
-          name,
-          image,
-          description,
-          spots,
-          free,
-          price,
-          category,
-          online,
-          location
-        )
-      );
-      setEditDialogOpen(false);
-    } else {
-      setEventErrors(validationErrors);
-    }
-  };
-  const onDelete = (eventId) => {
-    dispatch(deleteEvent(eventId));
-  };
-  const imageUpload = (File) => {
-    setImage(File[0]);
-    setImageDropZoneOpen(false);
-  };
-  const onChange = (e) => {
-    switch (e.target.name) {
-      case "name":
-        setName(e.target.value);
-        break;
-      case "description":
-        setDescription(e.target.value);
-        break;
-      case "spots":
-        setSpots(e.target.value);
-        break;
-      case "free":
-        setFree(e.target.checked);
-        break;
-      case "price":
-        setPrice(e.target.value);
-        break;
-      case "category":
-        setCategory(e.target.value);
-        break;
-      case "online":
-        setLocation("Online");
-        setOnline(e.target.checked);
-        break;
-      case "location":
-        setLocation(e.target.value);
-        break;
-
-      default:
-        break;
-    }
-  };
   const handleChange = (e) => {
     const chosenEvent = events.find((thisEvent) => {
       return thisEvent.id === e.target.value;
@@ -330,76 +144,91 @@ const Attendants = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Toolbar className={classes.root}>
-        <Typography
-          className={classes.toolbarTitle}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          {theEvent !== ""
-            ? `${theEvent.name} Attendants`
-            : "Please Choose An Event"}
-        </Typography>
-        <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Event</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={theEvent !== "" ? theEvent.id : ""}
-            onChange={handleChange}
+    <>
+      <TableContainer component={Paper}>
+        <Toolbar className={classes.root}>
+          <Typography
+            className={classes.toolbarTitle}
+            variant="h6"
+            id="tableTitle"
+            component="div"
           >
-            {events &&
-              events.map((thisEvent) => (
-                <MenuItem key={thisEvent.id} value={thisEvent.id}>
-                  {thisEvent.name}
-                </MenuItem>
+            {theEvent !== ""
+              ? `${theEvent.name} Attendants`
+              : "Please Choose An Event"}
+          </Typography>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Event</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={theEvent !== "" ? theEvent.id : ""}
+              onChange={handleChange}
+            >
+              {events &&
+                events.map((thisEvent) => (
+                  <MenuItem key={thisEvent.id} value={thisEvent.id}>
+                    {thisEvent.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Toolbar>
+        <Table
+          className={classes.table}
+          aria-label="customized table"
+          stickyHeader
+        >
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">First Name</StyledTableCell>
+              <StyledTableCell align="center">Last Name</StyledTableCell>
+              <StyledTableCell align="center">Email</StyledTableCell>
+              <StyledTableCell align="center">Phone Number</StyledTableCell>
+              <StyledTableCell align="center">ID Number</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {attendants &&
+              _DATA &&
+              _DATA.currentData().map((attendant) => (
+                <StyledTableRow key={attendant.id}>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {attendant.first_name}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {attendant.last_name}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {attendant.email}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {attendant.phone_number}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {attendant.id_number}
+                  </StyledTableCell>
+                </StyledTableRow>
               ))}
-          </Select>
-        </FormControl>
-      </Toolbar>
-      <Table
-        className={classes.table}
-        aria-label="customized table"
-        stickyHeader
+          </TableBody>
+        </Table>
+        <Backdrop className={classes.backdrop} open={isLoading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </TableContainer>
+      <Stack
+        spacing={2}
+        margin="1em 0"
+        sx={{ display: "flex", alignItems: "center" }}
       >
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">First Name</StyledTableCell>
-            <StyledTableCell align="center">Last Name</StyledTableCell>
-            <StyledTableCell align="center">Email</StyledTableCell>
-            <StyledTableCell align="center">Phone Number</StyledTableCell>
-            <StyledTableCell align="center">ID Number</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {attendants &&
-            attendants.map((attendant) => (
-              <StyledTableRow key={attendant.id}>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {attendant.first_name}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {attendant.last_name}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {attendant.email}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {attendant.phone_number}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {attendant.id_number}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-        </TableBody>
-      </Table>
-      <Backdrop className={classes.backdrop} open={isLoading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    </TableContainer>
+        <Pagination
+          count={count}
+          page={page}
+          onChange={handleChange2}
+          color="primary"
+        />
+      </Stack>
+    </>
   );
 };
 

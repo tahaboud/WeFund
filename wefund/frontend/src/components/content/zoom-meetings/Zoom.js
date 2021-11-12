@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ZoomMtg } from "@zoomus/websdk";
+// import { ZoomMtg } from "@zoomus/websdk";
 import {
   getUserSignature,
   getAdminSignature,
@@ -11,9 +11,9 @@ const Zoom = ({ username, submitted }) => {
   const dispatch = useDispatch();
   const role = 1;
   useEffect(() => {
-   // dispatch(getAdminSignature({role:true}));
+    // dispatch(getAdminSignature({role:true}));
     dispatch(getUserSignature());
-    console.log(0)
+    console.log(0);
     ZoomMtg.setZoomJSLib("https://source.zoom.us/1.8.6/lib", "/av");
     ZoomMtg.preLoadWasm();
     ZoomMtg.prepareJssdk();
@@ -26,14 +26,14 @@ const Zoom = ({ username, submitted }) => {
           leaveUrl: "http://127.0.0.1:8000/done",
           isSupportAV: true,
           success: function () {
-            console.log(2)
+            console.log(2);
             ZoomMtg.join({
               signature: signature,
               meetingNumber: "2715966816",
               userName: `${username}`,
               apiKey: "Pvr06z3zRNueKolA69kBCA",
               passWord: `${meetingPass}`,
-             disableCallOut: false,
+              disableCallOut: false,
               error: (error) => {
                 error.errorMessage
                   ? alert(error.errorMessage)
@@ -46,7 +46,6 @@ const Zoom = ({ username, submitted }) => {
           },
         });
       }
-      
     }
   }, [submitted, signature]);
 

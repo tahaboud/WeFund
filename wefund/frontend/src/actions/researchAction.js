@@ -1,4 +1,5 @@
 import axios from "axios";
+import { multipartTokenConfig, tokenConfig } from "./config";
 
 // GET Search
 export const getResearch = () => (dispatch, getState) => {
@@ -17,108 +18,67 @@ export const getResearch = () => (dispatch, getState) => {
 };
 // Register Search
 
-export const addResearch = (formData) => (dispatch, getState) => {
-  dispatch({ type: "RESEARCH_LOADING" });
+export const addResearch =
+  ({
+    title,
+    user_type,
+    looking_for,
+    interested_in,
+    description,
+    organization,
+    papers,
+  }) =>
+  (dispatch, getState) => {
+    dispatch({ type: "RESEARCH_LOADING" });
 
-  // Get Token
-  const token = getState().auth.token;
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("user_type", user_type);
+    formData.append("looking_for", looking_for);
+    formData.append("interested_in", interested_in);
+    formData.append("description", description);
+    formData.append("organization", organization);
+    formData.append("papers", papers);
 
-  // Headers
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Token ${token}`,
-    },
+    axios
+      .post("/api/research/", formData, multipartTokenConfig(getState))
+      .then((res) => {
+        dispatch({ type: "RESEARCH_ADD_SUCCESS", payload: res.data });
+      })
+      .catch((err) =>
+        dispatch({ type: "RESEARCH_ADD_FAIL", payload: err.response.data })
+      );
   };
 
+export const editResearch =
+  ({
+    title,
+    user_type,
+    looking_for,
+    interested_in,
+    description,
+    organization,
+    papers,
+  }) =>
+  (dispatch, getState) => {
+    dispatch({ type: "RESEARCH_LOADING" });
 
-  axios
-    .post("/api/research/", formData, config)
-    .then((res) => {
-      dispatch({ type: "RESEARCH_ADDED_SUCCESS", payload: res.data });
-    })
-    .catch((err) =>
-      dispatch({ type: "RESEARCH_ADDED_FAIL", payload: err.response.data })
-    );
-};
+    // Data
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("user_type", user_type);
+    formData.append("looking_for", looking_for);
+    formData.append("interested_in", interested_in);
+    formData.append("description", description);
+    formData.append("organization", organization);
+    papers !== "" && formData.append("papers", papers);
 
-export const editResearch = ({
-  title,
-  user_type,
-  looking_for,
-  interested_in,
-  description,
-  organization,
-  papers,
-}) => (dispatch, getState) => {
-  dispatch({ type: "RESEARCH_LOADING" });
-
-  // Get Token
-  const token = getState().auth.token;
-
-  // Headers
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Token ${token}`,
-    },
+    axios
+      .put("/api/research/", formData, multipartTokenConfig(getState))
+      .then((res) => {
+        dispatch({ type: "RESEARCH_EDIT_SUCCESS", payload: res.data });
+      })
+      .catch((err) =>
+        dispatch({ type: "RESEARCH_EDIT_FAIL", payload: err.response.data })
+      );
   };
-
-  // Data
-  const formData = new FormData();
-  formData.append("title", title);
-  formData.append("user_type", user_type);
-  formData.append("looking_for", looking_for);
-  formData.append("interested_in", interested_in);
-  formData.append("description", description);
-  formData.append("organization", organization);
-  papers !== "" && formData.append("papers", papers);
-
-  axios
-    .put("/api/research/", formData, config)
-    .then((res) => {
-      dispatch({ type: "RESEARCH_EDITED_SUCCESS", payload: res.data });
-    })
-    .catch((err) =>
-      dispatch({ type: "RESEARCH_EDITED_FAIL", payload: err.response.data })
-    );
-};
-
-//TokenConfiguration Part
-export const tokenConfig1 = (getState) => {
-  // Get token from state
-  const token = getState().auth.token;
-
-  // Headers
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
-
-  // If token, add to headers config
-  if (token) {
-    config.headers["Authorization"] = `Token ${token}`;
-  }
-
-  return config;
-};
-// Setup config with token - helper function
-export const tokenConfig = (getState) => {
-  // Get token from state
-  const token = getState().auth.token;
-
-  // Headers
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  // If token, add to headers config
-  if (token) {
-    config.headers["Authorization"] = `Token ${token}`;
-  }
-
-  return config;
-};

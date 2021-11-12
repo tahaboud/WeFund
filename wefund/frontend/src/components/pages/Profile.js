@@ -1,32 +1,38 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Nav from "../content/Nav";
-import MultiStepFormProfile from "./MultiStepFormProfile";
 import Footer from "../content/Footer";
-import { getResearch } from "../../actions/researchAction";
-import Edit from "../content/profile/Profile";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import ProfileComponent from "../content/profile/Profile";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Redirect } from "react-router";
+import { useSelector } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
 
 const Profile = () => {
-  const dispatch = useDispatch();
+  const { errors, isLoading } = useSelector((state) => state.researcher);
+  const [isResearcher, setIsResearcher] = useState(true);
   useEffect(() => {
-    dispatch(getResearch());
-  }, []);
-  const { research, isLoading } = useSelector((state) => state.research);
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-  return isAuthenticated && user && user.is_researcher && research  ? (
-    <div>
-    
-      <Edit/>
-    </div>
-  ) : 
-  <div>
-        <MultiStepFormProfile />
- 
-        </div>
-      
-  
+    if (errors && errors.User === "This user is not a researcher") {
+      setIsResearcher(false);
+    }
+  }, [errors]);
+  return isLoading ? (
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={isLoading}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  ) : isResearcher ? (
+    <>
+      <CssBaseline />
+      <Nav />
+      <ProfileComponent />
+      <Footer />
+    </>
+  ) : (
+    <Redirect to="/researcher" />
+  );
 };
 
 export default Profile;

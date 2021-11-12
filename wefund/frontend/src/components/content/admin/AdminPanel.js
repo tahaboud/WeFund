@@ -1,46 +1,68 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../../actions/adminAction";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { makeStyles } from "@mui/styles";
+import { useDispatch } from "react-redux";
+import {
+  getEvents,
+  getResearches,
+  getUsers,
+} from "../../../actions/adminAction";
 import Dashboard from "./Dashboard";
 import Users from "./Users";
 import Researches from "./Researches";
 import Events from "./Events";
 import Attendants from "./Attendants";
 
-const StyledDiv = styled.div`
-  width: 90%;
-`;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    display: "flex",
+    minHeight: "80vh",
+  },
+  tabs: {
+    borderRight: `2px solid black`,
+    minWidth: "10em",
+  },
+  flexContainerVertical: {
+    display: "flex",
+    alignItems: "center",
+    minWidth: "80em",
+  },
+  div: {
+    width: "90%",
+  },
+}));
 
 function TabPanel(props) {
+  const classes = useStyles();
   const { children, value, index, ...other } = props;
+
   return (
-    <StyledDiv
+    <div
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
+      className={classes.div}
     >
       {value === index && (
-        <Box p={3} component="div">
+        <Box sx={{ p: 3 }} component={"div"}>
           <Typography component="div">{children}</Typography>
         </Box>
       )}
-    </StyledDiv>
+    </div>
   );
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 function a11yProps(index) {
@@ -50,30 +72,13 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: "flex",
-    minHeight: "80vh",
-  },
-  tabs: {
-    borderRight: `2px solid ${theme.palette.divider}`,
-    minWidth: "10em",
-  },
-  flexContainerVertical: {
-    display: "flex",
-    alignItems: "center",
-    minWidth: "80em",
-  },
-}));
-
 const AdminPanel = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(getEvents());
+    dispatch(getResearches());
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -81,15 +86,22 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.paper",
+        display: "flex",
+        minHeight: "80vh",
+        margin: "3em 0",
+      }}
+    >
       <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        className={classes.tabs}
-        component="div"
+        sx={{ borderRight: 1, borderColor: "divider" }}
       >
         <Tab label="Dashboard" {...a11yProps(0)} />
         <Tab label="Users" {...a11yProps(1)} />
@@ -112,7 +124,7 @@ const AdminPanel = () => {
       <TabPanel value={value} index={4}>
         <Attendants />
       </TabPanel>
-    </div>
+    </Box>
   );
 };
 

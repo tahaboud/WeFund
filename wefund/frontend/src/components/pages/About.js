@@ -1,57 +1,43 @@
 import React from "react";
-// Import Redux
-import { useDispatch, useSelector } from "react-redux";
-import { freeAuth } from "../../actions/authAction";
-import { makeStyles } from "@material-ui/core/styles";
 // Import Parts
 import Nav from "../content/Nav";
 import Footer from "../content/Footer";
-import { Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
+import { makeStyles } from "@mui/styles";
 
 const AboutUs = () => {
   const useStyles = makeStyles((theme) => ({
-    root: {
-      minHeight: "100vh",
-      height: "130vh",
+    div: {
+      margin: "3em 0",
+      minHeight: "70vh",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "space-around",
+      justifyContent: "center",
     },
-    card: {
-      marginTop: "auto",
-      marginBottom: "80px",
+    hr: {
+      width: "100%",
+    },
+    title: {
+      textAlign: "center",
     },
   }));
   const classes = useStyles();
-  const { user } = useSelector((state) => state.auth);
   return (
-    <div className={classes.root}>
-      <Nav />
+    <>
       <CssBaseline />
-      <Card className={classes.card} elevation={2}>
-        <CardContent className={classes.cardContent}>
-          <Typography gutterBottom variant="h3" component="h3" align="center">
-            Thank You For Signing Up To WeFund
-          </Typography>
-          <Typography gutterBottom variant="h4" align="center">
-            A verification email has been sent to {user ? user.email : "you"}
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="h5"
-            color="textSecondary"
-            align="center"
-          >
-            Please note that until you verify your email you will not be able to
-            Sign In
-          </Typography>
-        </CardContent>
-      </Card>
+      <Nav />
+      <Container>
+        <div className={classes.div}>
+          <hr className={classes.hr} />
+          <h1 className={classes.title}>
+            Sorry, but this page is under construction
+          </h1>
+          <hr className={classes.hr} />
+        </div>
+      </Container>
       <Footer />
-    </div>
+    </>
   );
 };
 

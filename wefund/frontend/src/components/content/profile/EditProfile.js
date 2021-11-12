@@ -1,331 +1,334 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Fab from "@material-ui/core/Fab";
-import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
-import { Button, Grid } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { DropzoneDialog } from "material-ui-dropzone";
-import Alert from "@material-ui/lab/Alert";
-import Avatar from "@material-ui/core/Avatar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import { Redirect, useHistory } from "react-router";
-import ReCAPTCHA from "react-google-recaptcha";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import { makeStyles } from "@mui/styles";
 import styled from "styled-components";
-import { registerValidator } from "../validators/authValidator";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import { getResearcher } from "../../../actions/researcherAction";
-import EditIcon from "@material-ui/icons/Edit";
-import CancelIcon from "@material-ui/icons/Cancel";
-import SaveIcon from "@material-ui/icons/Save";
+import Button from "@mui/material/Button";
+import { useDispatch, useSelector } from "react-redux";
+import Container from "@mui/material/Container";
+import { useHistory } from "react-router";
+import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import InputAdornment from "@mui/material/InputAdornment";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import { DropzoneDialog } from "material-ui-dropzone";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { profileEditValidator } from "../validators/authValidator";
 import { updateUser } from "../../../actions/authAction";
 import { updateResearcher } from "../../../actions/researcherAction";
-import {
-  registerEditValidator,
-  researcherEditValidator,
-} from "../validators/authValidator";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import { AddPhotoAlternateRounded } from "@material-ui/icons";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
   button: {
-    margin: 10,
-  },
-  input: {
-    display: "none",
-  },
-
-  inputFocused: {
-    border: "none",
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  link: {
-    color: "white",
+    margin: "2em 0 !important",
+    boxShadow: "10px 10px #28a8e2 !important",
+    background: "#212529 !important",
+    borderColor: "#212529 !important",
+    padding: "0.5rem 2.5rem !important",
     cursor: "pointer",
-  },
-  buttonProgress: {
-    color: "#3F51B5",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12,
-  },
-  wrapper: {
-    position: "relative",
-  },
-  date: {
-    marginTop: theme.spacing(1),
-  },
-  alert: {
-    width: "100%",
-    marginTop: theme.spacing(2),
+    fontFamily: "'Montserrat', sans-serif !important",
+    fontWeight: "700 !important",
+    fontSize: "1rem !important",
+    letterSpacing: "0.1rem !important",
+    borderRadius: ".25rem",
+    color: "#ffffff !important",
+    "&:hover": {
+      boxShadow: "none !important",
+      background: "#28a8e2 !important",
+      borderColor: "#28a8e2 !important",
+    },
+    "&:disabled": {
+      boxShadow: "none !important",
+      background: "#283543 !important",
+      borderColor: "#283543 !important",
+      color: "#65727C !important",
+    },
   },
 }));
 
-const EditProfile = ({ onEdit, setOnEdit }) => {
+const EditProfile = () => {
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
-  const { user, isLoading: userIsLoading } = useSelector((state) => state.auth);
-  const { researcher, isLoading: researcherIsLoading } = useSelector(
-    (state) => state.researcher
-  );
+  const {
+    user,
+    isLoading: userIsLoading,
+    errors: userErrors,
+    data: userData,
+  } = useSelector((state) => state.auth);
+  const {
+    researcher,
+    isLoading: researcherIsLoading,
+    errors: researcherErrors,
+    data: researcherData,
+  } = useSelector((state) => state.researcher);
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [idNumber, setIdNumber] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("2020-11-11");
-  const [email, setEmail] = useState("");
-  const [organisation, setOrganisation] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [IdNumber, setIdNumber] = useState("");
   const [degree, setDegree] = useState("");
-  const [userErrors, setUserErrors] = useState("");
-  const [researcherErrors, setResearcherErrors] = useState("");
-  const [isValidated, setIsValidated] = useState(false);
-  const [idDialogOpen, setIdDialogOpen] = useState(false);
+  const [organisation, setOrganisation] = useState("");
+  const [cv, setCv] = useState("");
+  const [cvIsModified, setCvIsModified] = useState(false);
   const [cvDialogOpen, setCvDialogOpen] = useState(false);
   const [idCopy, setIdCopy] = useState("");
-  const [cv, setCv] = useState("");
+  const [idIsModified, setIdIsModified] = useState(false);
+  const [idDialogOpen, setIdDialogOpen] = useState(false);
+  const [editErrors, setEditErrors] = useState({});
+  const [finished, setFinished] = useState(false);
 
-  useEffect(() => {
-    if (researcher) {
-      setIdNumber(researcher.id_card_number);
-      setDateOfBirth(researcher.date_of_birth);
-      setOrganisation(researcher.organisation);
-      setDegree(researcher.degree);
-    }
-  }, [researcher]);
   useEffect(() => {
     if (user && user.user) {
       setFirstName(user.user.first_name);
       setLastName(user.user.last_name);
-      setEmail(user.user.email);
-      setIsValidated(user.user.is_validated);
     }
-  }, [user]);
+    if (researcher) {
+      setBirthDate(researcher.date_of_birth);
+      setDegree(researcher.degree);
+      setOrganisation(researcher.organisation);
+      setIdNumber(researcher.id_card_number);
+    }
+  }, [user, researcher]);
 
-  const onsubmit = (e) => {
-    e.preventDefault();
-    const { userIsValid, userValidationErrors } = registerEditValidator(
-      firstName,
-      lastName,
-      email
-    );
-    const {
-      researcherIsValid,
-      researcherValidationErrors,
-    } = researcherEditValidator(idNumber, dateOfBirth, degree, organisation);
-    if (userIsValid && researcherIsValid) {
-      dispatch(
-        updateResearcher({
-          id_card_number: idNumber,
-          id_card_copy: idCopy,
-          organisation,
-          date_of_birth: dateOfBirth,
-          degree,
-          cv: cv,
-        })
-      );
-      dispatch(updateUser({ first_name: firstName, last_name: lastName }));
-      setOnEdit(false);
-    } else {
-      setUserErrors(userValidationErrors);
-      setResearcherErrors(researcherValidationErrors);
+  useEffect(() => {
+    if (
+      userData === "User updated successfully" &&
+      researcherData === "Researcher updated successfully"
+    ) {
+      setFinished(true);
+      setTimeout(() => {
+        history.push("/profile");
+      }, 2000);
+    }
+  }, [userData, researcherData]);
+
+  useEffect(() => {
+    if (userErrors) {
+      setEditErrors({ ...editErrors, ...userErrors });
+    }
+    if (researcherErrors) {
+      setEditErrors({ ...editErrors, ...researcherErrors });
+    }
+  }, [userErrors, researcherErrors]);
+
+  const handleChange = (e) => {
+    switch (e.target.name) {
+      case "first_name":
+        setFirstName(e.target.value);
+        break;
+      case "last_name":
+        setLastName(e.target.value);
+        break;
+      case "id_card_number":
+        setIdNumber(e.target.value);
+        break;
+      case "degree":
+        setDegree(e.target.value);
+        break;
+      case "organisation":
+        setOrganisation(e.target.value);
+        break;
+
+      default:
+        break;
     }
   };
 
-  const idCopyUpload = (File) => {
+  const idUpload = (File) => {
     setIdCopy(File[0]);
     setIdDialogOpen(false);
+    setIdIsModified(true);
   };
+
   const cvUpload = (File) => {
     setCv(File[0]);
     setCvDialogOpen(false);
+    setCvIsModified(true);
+  };
+
+  const onSave = (e) => {
+    e.preventDefault();
+    const { isValid, validationErrors } = profileEditValidator(
+      firstName,
+      lastName,
+      IdNumber,
+      birthDate,
+      degree,
+      organisation
+    );
+    if (isValid) {
+      dispatch(updateUser({ first_name: firstName, last_name: lastName }));
+      dispatch(
+        updateResearcher({
+          id_card_number: IdNumber,
+          id_card_copy: idCopy,
+          organisation: organisation,
+          date_of_birth: birthDate,
+          degree,
+          cv,
+        })
+      );
+    } else {
+      setEditErrors(validationErrors);
+    }
   };
 
   return (
-    <form className={classes.form} noValidate>
-      <div className={classes.alert}>
-        <Alert variant="filled" severity="warning">
-          Your Application Hasn't Been Reviewed Yet Therefor You Can Still
-          Edit It.
-        </Alert>
-      </div>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+    <Container sx={{ marginTop: "3em", marginBottom: "3em" }}>
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={12} sx={{ fontSize: "2rem" }}>
+          Edit Profile
+        </Grid>
+        <Grid item xs={12}>
+          <hr />
+        </Grid>
+        <Grid item xs={12} sm={10} md={6}>
           <StyledTextField
-            variant="filled"
+            variant="outlined"
             label="First Name"
             name="first_name"
             fullWidth
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
             InputProps={{
-              readOnly: !onEdit || isValidated,
+              readOnly:
+                user && user.user && user.user.is_validated ? true : false,
             }}
-            error={userErrors && userErrors.first_name ? true : false}
-            helperText={userErrors ? userErrors.first_name : ""}
+            onChange={handleChange}
+            error={editErrors && editErrors.first_name ? true : false}
+            helperText={editErrors ? editErrors.first_name : ""}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={10} md={6}>
           <StyledTextField
-            variant="filled"
-            fullWidth
-            id="lastName"
+            variant="outlined"
             label="Last Name"
             name="last_name"
-            autoComplete="lname"
+            fullWidth
             value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
             InputProps={{
-              readOnly: !onEdit || isValidated,
+              readOnly:
+                user && user.user && user.user.is_validated ? true : false,
             }}
-            error={userErrors && userErrors.last_name ? true : false}
-            helperText={userErrors ? userErrors.last_name : ""}
+            onChange={handleChange}
+            error={editErrors && editErrors.last_name ? true : false}
+            helperText={editErrors ? editErrors.last_name : ""}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={10} md={6}>
           <StyledTextField
-            variant="filled"
-            fullWidth
-            id="email"
-            label="Email Address"
+            variant="outlined"
+            label="Email"
             name="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            fullWidth
+            value={user && user.user ? user.user.email : ""}
             InputProps={{
               readOnly: true,
             }}
-            error={userErrors && userErrors.email ? true : false}
-            helperText={userErrors ? userErrors.email : ""}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <StyledDatePicker
-              variant="filled"
-              margin="normal"
-              id="date_of_birth"
-              name="date_of_birth"
-              label="Date Of Birth"
-              className={classes.date}
-              format="yyyy-MM-dd"
-              onChange={(date) => {
-                date
-                  ? setDateOfBirth(date.toISOString().split("T")[0])
-                  : setDateOfBirth("");
-              }}
-              value={dateOfBirth}
-              InputProps={{ readOnly: !onEdit || isValidated }}
-              error={
-                researcherErrors && researcherErrors.date_of_birth
-                  ? true
-                  : false
-              }
-              helperText={
-                researcherErrors ? researcherErrors.date_of_birth : ""
-              }
-            />
-          </MuiPickersUtilsProvider>
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={10} md={6}>
           <StyledTextField
-            variant="filled"
+            variant="outlined"
+            label="Are you a validated user?"
+            name="is_validated"
+            fullWidth
+            value={user && user.user && user.user.is_validated ? "Yes" : "No"}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={10} md={6}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="Birth Date"
+              inputFormat="MM/dd/yyyy"
+              name="birth_date"
+              required
+              fullWidth
+              value={birthDate}
+              onChange={(newValue) => {
+                newValue != "Invalid Date" && newValue !== null
+                  ? setBirthDate(newValue.toISOString().split("T")[0])
+                  : "";
+              }}
+              error={editErrors && editErrors.date_of_birth ? true : false}
+              helperText={editErrors ? editErrors.date_of_birth : ""}
+              readOnly={
+                user && user.user && user.user.is_validated ? true : false
+              }
+              renderInput={(params) => (
+                <StyledTextField fullWidth {...params} />
+              )}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={12} sm={10} md={6}>
+          <StyledTextField
+            variant="outlined"
             label="ID Number"
             name="id_card_number"
             fullWidth
-            value={idNumber}
-            onChange={(e) => setIdNumber(e.target.value)}
+            value={IdNumber}
             InputProps={{
-              readOnly: !onEdit || isValidated,
+              readOnly:
+                user && user.user && user.user.is_validated ? true : false,
             }}
-            error={
-              researcherErrors && researcherErrors.id_card_number ? true : false
-            }
-            helperText={researcherErrors ? researcherErrors.id_card_number : ""}
+            onChange={handleChange}
+            error={editErrors && editErrors.id_card_number ? true : false}
+            helperText={editErrors ? editErrors.id_card_number : ""}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={10} md={6}>
           <StyledTextField
-            variant="filled"
-            label="Organisation"
-            name="organisation"
-            fullWidth
-            value={organisation}
-            onChange={(e) => setOrganisation(e.target.value)}
-            InputProps={{
-              readOnly: !onEdit,
-            }}
-            error={
-              researcherErrors && researcherErrors.organisation ? true : false
-            }
-            helperText={researcherErrors ? researcherErrors.organisation : ""}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <StyledTextField
-            variant="filled"
+            variant="outlined"
             label="Degree"
             name="degree"
             fullWidth
             value={degree}
-            onChange={(e) => setDegree(e.target.value)}
-            InputProps={{
-              readOnly: !onEdit,
-            }}
-            error={researcherErrors && researcherErrors.degree ? true : false}
-            helperText={researcherErrors ? researcherErrors.degree : ""}
+            onChange={handleChange}
+            error={editErrors && editErrors.degree ? true : false}
+            helperText={editErrors ? editErrors.degree : ""}
           />
         </Grid>
-        <Grid item xs={12}>
-          <StyledFileUpload
+        <Grid item xs={12} sm={10} md={6}>
+          <StyledTextField
+            variant="outlined"
+            label="Organisation"
+            name="organisation"
+            fullWidth
+            value={organisation}
+            onChange={handleChange}
+            error={editErrors && editErrors.organisation ? true : false}
+            helperText={editErrors ? editErrors.organisation : ""}
+          />
+        </Grid>
+        <Grid item xs={12} sm={10} md={6}>
+          <StyledTextField
             variant="outlined"
             required
             fullWidth
-            id="cv"
-            label="Upload Your CV"
+            label="CV"
             name="cv"
-            value={
-              cv === "" && researcher && researcher.cv
-                ? researcher.cv.split("/")[5]
-                : cv === ""
-                  ? cv
-                  : cv.name
-            }
+            value={cvIsModified && cv ? cv.name : ""}
             onClick={() => setCvDialogOpen(true)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <AddPhotoAlternateRounded />
+                  <NoteAddIcon />
                 </InputAdornment>
               ),
               readOnly: true,
+              sx: { cursor: "pointer" },
             }}
+            inputProps={{
+              style: { cursor: "pointer" },
+            }}
+            error={editErrors && editErrors.cv ? true : false}
+            helperText={editErrors ? editErrors.cv : ""}
           />
           <DropzoneDialog
             open={cvDialogOpen}
@@ -337,122 +340,99 @@ const EditProfile = ({ onEdit, setOnEdit }) => {
               "application/pdf",
             ]}
             showPreviews={true}
-            maxFileSize={5000000}
+            maxFileSize={10000000}
             filesLimit={1}
             onClose={() => setCvDialogOpen(false)}
           />
         </Grid>
-        <Grid item xs={12}>
-          <StyledFileUpload
+        <Grid item xs={12} sm={10} md={6}>
+          <StyledTextField
             variant="outlined"
             required
             fullWidth
-            id="idCopy"
-            label="ID Card Copy"
+            label="ID Copy"
             name="id_card_copy"
-            disabled={isValidated}
-            value={
-              idCopy === "" && researcher && researcher.id_card_copy
-                ? researcher.id_card_copy.split("/")[5]
-                : idCopy === ""
-                  ? idCopy
-                  : idCopy.name
-            }
+            value={idIsModified && idCopy ? idCopy.name : ""}
             onClick={() => setIdDialogOpen(true)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <AddPhotoAlternateRounded />
+                  <AddPhotoAlternateIcon />
                 </InputAdornment>
               ),
               readOnly: true,
+              sx: { cursor: "pointer" },
             }}
+            inputProps={{
+              style: { cursor: "pointer" },
+            }}
+            error={editErrors && editErrors.id_card_copy ? true : false}
+            helperText={editErrors ? editErrors.id_card_copy : ""}
           />
           <DropzoneDialog
             open={idDialogOpen}
-            onSave={idCopyUpload}
+            onSave={idUpload}
             acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
             showPreviews={true}
-            maxFileSize={5000000}
+            maxFileSize={10000000}
             filesLimit={1}
             onClose={() => setIdDialogOpen(false)}
-            dropzoneProps={{
-              disabled: isValidated,
-            }}
           />
         </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <div className={classes.wrapper}>
+        <Grid
+          container
+          item
+          xs={12}
+          sm={10}
+          md={12}
+          justifyContent="flex-end"
+          spacing={2}
+        >
+          <Grid item>
             <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<CancelIcon />}
-              fullWidth
-              onClick={() => setOnEdit(false)}
-              disabled={userIsLoading || researcherIsLoading}
+              className={classes.button}
+              onClick={() => history.push("/profile")}
             >
               Cancel
             </Button>
-            {(userIsLoading || researcherIsLoading) && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <div className={classes.wrapper}>
+          </Grid>
+          <Grid item>
             <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              startIcon={<SaveIcon />}
-              onClick={onsubmit}
-              disabled={userIsLoading || researcherIsLoading}
+              className={classes.button}
+              onClick={onSave}
+              disabled={userIsLoading || researcherIsLoading || finished}
             >
               Save
             </Button>
-            {(userIsLoading || researcherIsLoading) && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
-          </div>
+          </Grid>
         </Grid>
       </Grid>
-    </form>
+      <Snackbar open={finished} autoHideDuration={2000}>
+        <MuiAlert
+          severity="success"
+          variant="filled"
+          elevation={6}
+          sx={{ width: "100%" }}
+        >
+          Profile Edited Successfully
+        </MuiAlert>
+      </Snackbar>
+    </Container>
   );
 };
 
 const StyledTextField = styled(TextField)`
   label.Mui-focused {
-    color: white;
+    color: #28a8e2;
   }
   .MuiOutlinedInput-input {
     &:focus {
       outline: none !important;
     }
   }
-`;
-
-const StyledDatePicker = styled(KeyboardDatePicker)`
-  label.Mui-focused {
-    color: white;
-  }
-  input.MuiInput-input {
-    &:focus {
-      outline: none !important;
-    }
-  }
-`;
-const StyledFileUpload = styled(TextField)`
-  label.Mui-focused {
-    color: white;
-  }
-  .MuiOutlinedInput-input {
-    &:focus {
-      outline: none !important;
-    }
-    &:hover {
-      cursor: pointer;
+  .MuiOutlinedInput-root.Mui-focused {
+    .MuiOutlinedInput-notchedOutline {
+      border-color: #28a8e2;
     }
   }
 `;

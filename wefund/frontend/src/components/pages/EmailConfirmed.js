@@ -7,7 +7,11 @@ import { confirmEmail } from "../../actions/authAction";
 // Import Components
 import Nav from "../content/Nav";
 import Footer from "../content/Footer";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
+import Box from "@mui/system/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
 
 const EmailConfirmed = () => {
   const dispatch = useDispatch();
@@ -20,28 +24,51 @@ const EmailConfirmed = () => {
     dispatch(confirmEmail({ id, token }));
   }, []);
   return isLoading ? (
-    <div className="mt-5 mb-5">
+    <>
       <CssBaseline />
-      <h1 className="text-center">Please wait ...</h1>
-    </div>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </>
   ) : errors ? (
     <>
       <Nav />
       <CssBaseline />
-      <div className="mt-5 mb-5">
-        <h1 className="text-center">{errors.user}</h1>
-      </div>
+      <Container>
+        <Box
+          sx={{
+            minHeight: "70vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "3em 0",
+          }}
+        >
+          <h2>{errors.user}</h2>
+        </Box>
+      </Container>
       <Footer />
     </>
   ) : (
     <>
       <Nav />
       <CssBaseline />
-      <div className="mt-5 mb-5">
-        <h1 className="text-center">
+      <Box
+        sx={{
+          minHeight: "70vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "3em 0",
+        }}
+      >
+        <h2>
           Email Confirmed, Please Sign in <Link to="/login">here</Link>
-        </h1>
-      </div>
+        </h2>
+      </Box>
       <Footer />
     </>
   );

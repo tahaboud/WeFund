@@ -16,6 +16,7 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.payload,
+        data: null,
         errors: null,
         isLoading: false,
       };
@@ -30,6 +31,7 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         researches: action.payload,
+        data: null,
         errors: null,
         isLoading: false,
       };
@@ -61,6 +63,7 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         events: action.payload,
+        data: null,
         isLoading: false,
         errors: null,
       };
@@ -74,11 +77,25 @@ const adminReducer = (state = initialState, action) => {
     case "EVENT_UPDATE_SUCCESS":
       return {
         ...state,
-        data: action.payload,
+        data: action.payload.response,
         errors: null,
         isLoading: false,
       };
     case "EVENT_UPDATE_FAIL":
+      return {
+        ...state,
+        errors: action.payload,
+        data: null,
+        isLoading: false,
+      };
+    case "EVENT_ADD_SUCCESS":
+      return {
+        ...state,
+        data: action.payload.response,
+        errors: null,
+        isLoading: false,
+      };
+    case "EVENT_ADD_FAIL":
       return {
         ...state,
         errors: action.payload,
@@ -103,6 +120,7 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         attendants: action.payload,
+        data: null,
         errors: null,
         isLoading: false,
       };

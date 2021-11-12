@@ -11,9 +11,8 @@ export default combineReducers({
   auth,
   admin,
   events,
-  researcher,
   research,
+  researcher,
   zoom,
-  contact
+  contact,
 });
-//export type RootState = ReturnType<typeof rootReducer>

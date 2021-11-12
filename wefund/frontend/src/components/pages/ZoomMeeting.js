@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Zoom from "../content/zoom-meetings/Zoom.js";
 import Form from "../content/zoom-meetings/Form.js";
 import Nav from "../content/Nav";
-
+import Grid from "@mui/material/Grid";
 import Footer from "../content/Footer";
 
 const ZoomMeeting = () => {
@@ -20,9 +20,42 @@ const ZoomMeeting = () => {
     <Zoom username={username} submitted={submitted} />
   ) : (
     <div>
-      <Nav />
-      <Form setSubmitted={setSubmitted} setUsername={setUsername} />
-      <Footer />
+      <Grid
+        item
+        xs={4}
+        sm={4}
+        md={12}
+        lg={6}
+        xl={4}
+        justifyitems="center"
+        style={{}}
+      >
+        <Nav />
+      </Grid>
+      <Grid
+        item
+        xs={4}
+        sm={4}
+        md={12}
+        lg={6}
+        xl={4}
+        justifyitems="center"
+        style={{}}
+      >
+        <Form setSubmitted={setSubmitted} setUsername={setUsername} />
+      </Grid>
+      <Grid
+        item
+        xs={4}
+        sm={4}
+        md={12}
+        lg={6}
+        xl={4}
+        justifyitems="center"
+        style={{}}
+      >
+        <Footer />
+      </Grid>
     </div>
   );
 };

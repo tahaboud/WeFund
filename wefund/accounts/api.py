@@ -108,7 +108,7 @@ class UserAPI(viewsets.ModelViewSet):
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"user": serializer.data, "is_researcher": hasattr(request.user, "researcher")})
+            return Response({"user":{"user": serializer.data, "is_researcher": hasattr(request.user, "researcher")}, "response": "User updated successfully"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request):
@@ -145,11 +145,16 @@ class ResearcherAPI(viewsets.ModelViewSet):
         serializer = ResearcherSerializer(researcher)
         return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        if hasattr(self.request.user, "researcher"):
+    def create(self, request, *args, **kwargs):
+        if hasattr(request.user, "researcher"):
             raise serializers.ValidationError(
                 {"User": "This user is already a researcher"})
-        serializer.save(user=self.request.user)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        researcher = serializer.save(user=self.request.user) 
+        return Response({
+            "response": "researcher add successfull",
+        })
 
     def update(self, request):
         researcher = Researcher.objects.get(user=request.user)
@@ -158,13 +163,13 @@ class ResearcherAPI(viewsets.ModelViewSet):
                 researcher, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                return Response({"user": serializer.data, "response": "Researcher updated successfully"})
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer = ResearcherSerializer(
             researcher, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response({"user": serializer.data, "response":"Researcher updated successfully"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -287,12 +292,12 @@ class UserPasswordUpdateAPI(viewsets.ModelViewSet):
             serializer = self.get_serializer(user, data=request.data)
             if serializer.is_valid():
                 if request.data["password1"] != request.data["password2"]:
-                    raise serializers.ValidationError("Password do not match")
+                    raise serializers.ValidationError("Passwords do not match")
                 else:
                     user.set_password(request.data["password1"])
                     user.last_login = timezone.now()
                     user.save()
-                    return Response({"Activation": "Password reset is succesful"})
+                    return Response({"response": "Password reset is successfull"})
             return Response(serializer.errors)
 
         return Response({"user": "Account password failed to reset"}, status=status.HTTP_400_BAD_REQUEST)

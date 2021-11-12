@@ -1,63 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
-import PersonIcon from "@material-ui/icons/Person";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
-import { blue } from "@material-ui/core/colors";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { subscribeToEventValidator } from "../validators/eventValidator";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import styled from "styled-components";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { addAttendant } from "../../../actions/eventsAction";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-
-const useStyles = makeStyles({
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  title: {
-    fontWeight: "bold",
-    display: "flex",
-    marginRight: "10em",
-  },
-});
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const EventRegisterDialog = ({
   registerDialogOpen,
   setRegisterDialogOpen,
   event,
 }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -272,7 +233,7 @@ const EventRegisterDialog = ({
             >
               Cancel
             </Button>
-            <Button type="submit" color="primary">
+            <Button type="submit" color="primary" variant="outlined">
               Subscribe
             </Button>
           </DialogActions>
@@ -283,26 +244,18 @@ const EventRegisterDialog = ({
 };
 const StyledTextField = styled(TextField)`
   label.Mui-focused {
-    color: white;
+    color: #28a8e2;
   }
   .MuiOutlinedInput-input {
     &:focus {
       outline: none !important;
+    }
+  }
+  .MuiOutlinedInput-root.Mui-focused {
+    .MuiOutlinedInput-notchedOutline {
+      border-color: #28a8e2;
     }
   }
 `;
 
-const StyledFileUpload = styled(TextField)`
-  label.Mui-focused {
-    color: white;
-  }
-  .MuiOutlinedInput-input {
-    &:focus {
-      outline: none !important;
-    }
-    &:hover {
-      cursor: pointer;
-    }
-  }
-`;
 export default EventRegisterDialog;

@@ -77,6 +77,7 @@ export const EditEvent =
     name,
     image,
     description,
+    date,
     spots,
     free,
     price,
@@ -90,6 +91,7 @@ export const EditEvent =
     formData.append("name", name);
     image && formData.append("image", image);
     formData.append("description", description);
+    formData.append("date_and_time", date);
     formData.append("spots", spots);
     formData.append("is_free", free);
     free ? formData.append("price", "0") : formData.append("price", price);
@@ -108,13 +110,25 @@ export const EditEvent =
   };
 
 export const addEvent =
-  (name, image, description, spots, free, price, category, online, location) =>
+  (
+    name,
+    image,
+    description,
+    date,
+    spots,
+    free,
+    price,
+    category,
+    online,
+    location
+  ) =>
   (dispatch, getState) => {
     dispatch({ type: "ADMIN_LOADING" });
     const formData = new FormData();
     formData.append("name", name);
     formData.append("image", image);
     formData.append("description", description);
+    formData.append("date_and_time", date);
     formData.append("spots", spots);
     formData.append("is_free", free);
     free ? formData.append("price", "0") : formData.append("price", price);
@@ -124,11 +138,11 @@ export const addEvent =
     axios
       .post(`/api/events/`, formData, multipartTokenConfig(getState))
       .then((res) => {
-        dispatch({ type: "EVENT_ADDED_SUCCESS", payload: res.data });
+        dispatch({ type: "EVENT_ADD_SUCCESS", payload: res.data });
         dispatch(getEvents());
       })
       .catch((err) => {
-        dispatch({ type: "EVENT_ADDED_FAIL", payload: err.response.data });
+        dispatch({ type: "EVENT_ADD_FAIL", payload: err.response.data });
       });
   };
 

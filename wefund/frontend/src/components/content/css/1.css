@@ -3,4 +3,9 @@
 }
 body {
   overflow-y: scroll !important;
+  font-family: "Montserrat", sans-serif;
+}
+.active {
+  color: #28a8e2 !important;
+  font-weight: 700;
 }

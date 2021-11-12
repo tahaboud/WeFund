@@ -1,9 +1,6 @@
 import validator from "validator";
 
 export const addResearchValidator = (
-  userType,
-  lookingFor,
-  interestedIn,
   title,
   organization,
   description,
@@ -11,27 +8,6 @@ export const addResearchValidator = (
 ) => {
   let isValid = true;
   let validationErrors = {};
-  if (validator.isEmpty(userType)) {
-    isValid = false;
-    validationErrors = {
-      ...validationErrors,
-      userType: "This field is required",
-    };
-  }
-  if (validator.isEmpty(lookingFor)) {
-    isValid = false;
-    validationErrors = {
-      ...validationErrors,
-      lookingFor: "This field is required",
-    };
-  }
-  if (validator.isEmpty(interestedIn)) {
-    isValid = false;
-    validationErrors = {
-      ...validationErrors,
-      interestedIn: "This field is required",
-    };
-  }
   if (validator.isEmpty(title)) {
     isValid = false;
     validationErrors = {
@@ -63,14 +39,14 @@ export const addResearchValidator = (
   return { isValid, validationErrors };
 };
 
-export const editResearchValidator = (
+export const editResearchValidator = ({
   userType,
   lookingFor,
   interestedIn,
   title,
   organization,
-  description
-) => {
+  description,
+}) => {
   let isValid = true;
   let validationErrors = {};
   if (validator.isEmpty(userType)) {

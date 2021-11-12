@@ -1,50 +1,99 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "../css/style.css";
-import { makeStyles } from "@material-ui/core/styles";
-
+import { makeStyles } from "@mui/styles";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
 import { getEvents } from "../../../actions/eventsAction";
-import eventsBackground from "../../../../static/img/eventsBackground.jpg";
-
 import EventDialog from "./EventDialog";
 import EventRegisterDialog from "./EventRegisterDialog";
+import Button from "@mui/material/Button";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+
+function usePagination(data, itemsPerPage) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const maxPage = Math.ceil(data.length / itemsPerPage);
+
+  function currentData() {
+    const begin = (currentPage - 1) * itemsPerPage;
+    const end = begin + itemsPerPage;
+    return data.slice(begin, end);
+  }
+
+  function next() {
+    setCurrentPage((currentPage) => Math.min(currentPage + 1, maxPage));
+  }
+
+  function prev() {
+    setCurrentPage((currentPage) => Math.max(currentPage - 1, 1));
+  }
+
+  function jump(page) {
+    const pageNumber = Math.max(1, page);
+    setCurrentPage((currentPage) => Math.min(pageNumber, maxPage));
+  }
+
+  return { next, prev, jump, currentData, currentPage, maxPage };
+}
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
-    marginRight: theme.spacing(2),
+  root: {
+    minHeight: "80vh",
+    margin: "3em 0",
+    fontFamily: "'Montserrat', sans-serif",
   },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    backgroundImage: `url(${eventsBackground})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    padding: theme.spacing(8, 10, 6),
-    height: 300,
+  image: {
+    maxWidth: "100%",
+    height: "auto",
   },
-  heroButtons: {
-    marginTop: theme.spacing(4),
+  btnShadow: {
+    margin: "2em 0 !important",
+    boxShadow: "10px 10px #28a8e2 !important",
+    background: "#212529 !important",
+    borderColor: "#212529 !important",
+    padding: ".5rem 1.5rem !important",
+    cursor: "pointer",
+    fontFamily: "'Montserrat', sans-serif !important",
+    fontWeight: "700 !important",
+    fontSize: "1rem !important",
+    letterSpacing: "0.1rem !important",
+    borderRadius: ".25rem",
+    color: "#ffffff !important",
+    "&:hover": {
+      boxShadow: "none !important",
+      background: "#28a8e2 !important",
+      borderColor: "#28a8e2 !important",
+    },
   },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+  description: {
+    fontSize: "1rem",
+    letterSpacing: "1px",
+    textTransform: "capitalize",
   },
-  card: {
-    height: "100%",
+  imageContainer: {
+    minWidth: "100%",
+    minHeight: "100%",
     display: "flex",
-    flexDirection: "column",
+    alignItems: "center",
   },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
+  eventTitle: {
+    fontWeight: "700",
+    fontSize: "2rem",
+    textTransform: "capitalize",
   },
-  cardContent: {
-    flexGrow: 1,
+  icon: {
+    margin: "0 .5em 0 0",
   },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
+  icon2: {
+    margin: "0 .5em",
   },
-  container: {
-    backgroundColor: "rgba(0, 0, 0, 0.65)",
+  buttonIcon: {
+    margin: "0 0 0 1em !important",
+  },
+  pagination: {
+    display: "flex",
+    justifyContent: "center",
   },
 }));
 
@@ -57,12 +106,14 @@ const Event = () => {
     errors,
     isLoading: eventIsLoading,
   } = useSelector((state) => state.events);
-  useEffect(() => {
-    dispatch(getEvents());
-  }, []);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState("");
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  useEffect(() => {
+    dispatch(getEvents());
+  }, []);
+
   const onRegister = (event) => {
     setDialogOpen(false);
     setRegisterDialogOpen(true);
@@ -73,66 +124,97 @@ const Event = () => {
     setDialogOpen(true);
     setCurrentEvent(event);
   };
+  const PER_PAGE = 4;
+
+  const count = Math.ceil(events.length / PER_PAGE);
+  const _DATA = usePagination(events, PER_PAGE);
+
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <div>
-      <main>
-        <section className="py-5">
-          <div className="container">
-            <div className="row">
-            {events.map((event) => (
-              <div className="col-lg-12 mb-3">
-                <div className="card border-0 rounded-0 shadow-sm">
-                  <div className="row align-items-center">
-                    <div className="col-lg-4">
-                      <div
-                        className="ratio ratio-4x3 image"
-                        style={{ backgroundImage: event.image }}
-                      />
-                    </div>
-                    <div className="col-lg-8 text-center text-lg-start py-3">
-                      <h2 className="text-capitalize fw-bold"> {event.name}</h2>
-                      <div className="small text-secondary">
+    <div className={classes.root}>
+      <Container>
+        <Grid container>
+          <Stack spacing={2}>
+            {_DATA.currentData().map((event) => (
+              <Grid item xs={12} key={event.id}>
+                <Card>
+                  <Grid container spacing={4}>
+                    <Grid item xs={12} sm={10} md={4}>
+                      <div className={classes.imageContainer}>
+                        <img
+                          src={event.image}
+                          alt="Event Image"
+                          className={classes.image}
+                        />
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} sm={10} md={8}>
+                      <h2 className={classes.eventTitle}>{event.name}</h2>
+                      <div className={classes.eventDetails}>
                         <span>
-                          <i className="fas fa-calendar-alt me-1" />
-                          23-08-2021
-                        </span>
-                        <span className="mx-3">
-                          <i className="fas fa-clock me-1" />
-                          10:30
+                          <i
+                            className={
+                              classes.icon + " fas fa-calendar-alt me-1"
+                            }
+                          />
+                          {event.date_and_time.split("T")[0]}
                         </span>
                         <span>
-                          <i className="fas fa-users me-1" />
-                          250
+                          <i className={classes.icon2 + " fas fa-clock me-1"} />
+                          {event.date_and_time.split("T")[1].split(":")[0] +
+                            ":" +
+                            event.date_and_time.split("T")[1].split(":")[1]}
+                        </span>
+                        <span>
+                          <i className={classes.icon2 + " fas fa-users me-1"} />
+                          {event.spots}
                         </span>
                       </div>
-                      <p className="text-dark mt-3">{event.description}</p>
-                      <button
-                        className="btn btn-dark px-5 py-3 mb-3 mb-lg-0 text-capitalize btn-shadow"
+                      <p className={classes.description}>{event.description}</p>
+                      <Button
+                        className={classes.btnShadow}
                         onClick={() => onViewMore(event)}
                       >
                         Register
-                        <i className="fas fa-arrow-right small ms-3" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                        <i
+                          className={
+                            classes.buttonIcon +
+                            " fas fa-arrow-right small ms-3"
+                          }
+                        />
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Card>
+              </Grid>
             ))}
-            <EventDialog
-              dialogOpen={dialogOpen}
-              setDialogOpen={setDialogOpen}
-              event={currentEvent}
-              setRegisterDialogOpen={setRegisterDialogOpen}
-            />
-            <EventRegisterDialog
-              registerDialogOpen={registerDialogOpen}
-              setRegisterDialogOpen={setRegisterDialogOpen}
-              event={currentEvent}
-            />
-          </div>
-          </div>
-        </section>
-      </main>
+            <div className={classes.pagination}>
+              <Pagination
+                count={count}
+                page={page}
+                onChange={handleChange}
+                color="primary"
+              />
+            </div>
+          </Stack>
+        </Grid>
+        <EventDialog
+          dialogOpen={dialogOpen}
+          setDialogOpen={setDialogOpen}
+          event={currentEvent}
+          setRegisterDialogOpen={setRegisterDialogOpen}
+        />
+        <EventRegisterDialog
+          registerDialogOpen={registerDialogOpen}
+          setRegisterDialogOpen={setRegisterDialogOpen}
+          event={currentEvent}
+        />
+      </Container>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import Nav from "../content/Nav";
 import Footer from "../content/Footer";
 import AdminPanel from "../content/admin/AdminPanel";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const Admin = () => {
   return (

@@ -12,15 +12,15 @@ const researcherReducer = (state = initialState, action) => {
         ...state,
         isLoading: true,
       };
-    case "RESEARCHER_SUCCESS":
+    case "RESEARCHER_ADD_SUCCESS":
       return {
         ...state,
         researcher: null,
-        data: action.payload,
+        data: action.payload.response,
         errors: null,
         isLoading: false,
       };
-    case "RESEARCHER_FAIL":
+    case "RESEARCHER_ADD_FAIL":
       return {
         ...state,
         researcher: null,
@@ -47,8 +47,8 @@ const researcherReducer = (state = initialState, action) => {
     case "RESEARCHER_UPDATE_SUCCESS":
       return {
         ...state,
-        researcher: action.payload,
-        data: null,
+        researcher: action.payload.user,
+        data: action.payload.response,
         errors: null,
         isLoading: false,
       };
@@ -57,6 +57,7 @@ const researcherReducer = (state = initialState, action) => {
         ...state,
         errors: action.payload,
         isLoading: false,
+        data: null,
       };
     case "MEDIA_URL":
       return {

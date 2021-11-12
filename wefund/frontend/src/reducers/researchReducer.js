@@ -1,5 +1,6 @@
 const initialState = {
   research: null,
+  data: null,
   errors: null,
   isLoading: false,
 };
@@ -14,6 +15,7 @@ const researchReducer = (state = initialState, action) => {
     case "GET_RESEARCH_SUCCESS":
       return {
         ...state,
+        data: action.payload,
         research: action.payload,
         errors: null,
         isLoading: false,
@@ -22,27 +24,38 @@ const researchReducer = (state = initialState, action) => {
     case "GET_RESEARCH_FAIL":
       return {
         ...state,
+        data: action.payload,
         research: null,
+        errors: null,
+        isLoading: false,
+      };
+    case "RESEARCH_ADD_SUCCESS":
+      return {
+        ...state,
+        research: action.payload.research,
+        data: action.payload.response,
+        errors: null,
+        isLoading: false,
+      };
+    case "RESEARCH_EDIT_SUCCESS":
+      return {
+        ...state,
+        research: action.payload.research,
+        data: action.payload.response,
+        errors: null,
+        isLoading: false,
+      };
+    case "RESEARCH_EDIT_FAIL":
+      return {
+        ...state,
+        data: null,
         errors: action.payload,
         isLoading: false,
       };
-    case "RESEARCH_ADDED_SUCCESS":
+    case "RESEARCH_ADD_FAIL":
       return {
         ...state,
-        research: action.payload,
-        errors: null,
-        isLoading: false,
-      };
-    case "RESEARCH_EDITED_SUCCESS":
-      return {
-        ...state,
-        research: action.payload,
-        errors: null,
-        isLoading: false,
-      };
-    case "RESEARCH_EDITED_FAIL":
-      return {
-        ...state,
+        data: null,
         errors: action.payload,
         isLoading: false,
       };

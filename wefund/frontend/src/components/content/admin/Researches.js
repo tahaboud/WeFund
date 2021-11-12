@@ -1,39 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@mui/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
 import { getResearches } from "../../../actions/adminAction";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { encrypt } from "../../../actions/researcherAction";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import { green, red } from "@material-ui/core/colors";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import { green, red } from "@mui/material/colors";
+import { styled } from "@mui/material/styles";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import usePagination from "./Pagination";
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  body: {
+  [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
-}))(TableCell);
+}));
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
   },
-}))(TableRow);
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -60,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "10em",
   },
   wrapper: {
-    margin: theme.spacing(1),
     position: "relative",
   },
   buttonValidated: {
@@ -106,6 +111,16 @@ const Researches = () => {
     (state) => state.admin
   );
   const { user } = useSelector((state) => state.auth);
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 10;
+
+  const count = Math.ceil(researches.length / PER_PAGE);
+  const _DATA = usePagination(researches, PER_PAGE);
+
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
   useEffect(() => {
     dispatch(getResearches());
   }, []);
@@ -116,7 +131,7 @@ const Researches = () => {
     const pk = user.user.id;
     const token = encrypt(user.user.last_login, path, fileName);
     setImageUrl(
-      `admin/media/${pk}/researcher/${path}/${id}/${fileName}/${token}`
+      `admin/media/${pk}/researcher/${path}/${id}/${fileName}/${token}/`
     );
     window.open(imageUrl);
   };
@@ -135,128 +150,144 @@ const Researches = () => {
     setAppointement(admin_appointment);
   };
   return (
-    <TableContainer component={Paper}>
-      <Table
-        className={classes.table}
-        aria-label="customized table"
-        stickyHeader
+    <>
+      <TableContainer component={Paper}>
+        <Table
+          className={classes.table}
+          aria-label="customized table"
+          stickyHeader
+        >
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">Research ID</StyledTableCell>
+              <StyledTableCell align="center">Username</StyledTableCell>
+              <StyledTableCell align="center">Type</StyledTableCell>
+              <StyledTableCell align="center">Looking For</StyledTableCell>
+              <StyledTableCell align="center">Interested In</StyledTableCell>
+              <StyledTableCell align="center">Title</StyledTableCell>
+              <StyledTableCell align="center">Organization</StyledTableCell>
+              <StyledTableCell align="center">Papers</StyledTableCell>
+              <StyledTableCell align="center">Description</StyledTableCell>
+              <StyledTableCell align="center">Admin Review</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {researches &&
+              _DATA.currentData().map((research) => (
+                <StyledTableRow key={research.id}>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    {research.id}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {research.researcher}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {research.user_type}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {research.looking_for}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {research.interested_in}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {research.title}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {research.organization}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => onClick(research.papers)}
+                    >
+                      Download
+                    </Button>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => onDialogOpen(research.description)}
+                    >
+                      View
+                    </Button>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    Coming Soon...
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+          </TableBody>
+        </Table>
+        <Dialog
+          open={dialogOpen}
+          className={classes.dialog}
+          fullWidth
+          onClose={() => setDialogOpen(false)}
+        >
+          <DialogTitle>Research Description</DialogTitle>
+          <TextField
+            id="standard-multiline-flexible"
+            label="Description"
+            multiline
+            maxRows={4}
+            value={description}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <DialogActions>
+            <Button
+              autoFocus
+              onClick={() => setDialogOpen(false)}
+              color="primary"
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={adminDialogOpen}
+          className={classes.dialog}
+          fullWidth
+          onClose={() => setAdminDialogOpen(false)}
+        >
+          <DialogTitle>Admin Review</DialogTitle>
+          <TextField
+            label="Appointment"
+            type="datetime-local"
+            defaultValue={appointment}
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <DialogActions>
+            <Button
+              autoFocus
+              onClick={() => setAdminDialogOpen(false)}
+              color="primary"
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </TableContainer>
+      <Stack
+        spacing={2}
+        margin="1em 0"
+        sx={{ display: "flex", alignItems: "center" }}
       >
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">Research ID</StyledTableCell>
-            <StyledTableCell align="center">Username</StyledTableCell>
-            <StyledTableCell align="center">Type</StyledTableCell>
-            <StyledTableCell align="center">Looking For</StyledTableCell>
-            <StyledTableCell align="center">Interested In</StyledTableCell>
-            <StyledTableCell align="center">Title</StyledTableCell>
-            <StyledTableCell align="center">Organization</StyledTableCell>
-            <StyledTableCell align="center">Papers</StyledTableCell>
-            <StyledTableCell align="center">Description</StyledTableCell>
-            <StyledTableCell align="center">Admin Review</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {researches &&
-            researches.map((research) => (
-              <StyledTableRow key={research.id}>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {research.id}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {research.researcher}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {research.user_type}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {research.looking_for}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {research.interested_in}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {research.title}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {research.organization}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    onClick={() => onClick(research.papers)}
-                  >
-                    Download
-                  </Button>
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    onClick={() => onDialogOpen(research.description)}
-                  >
-                    View
-                  </Button>
-                </StyledTableCell>
-                <StyledTableCell align="center">Coming Soon...</StyledTableCell>
-              </StyledTableRow>
-            ))}
-        </TableBody>
-      </Table>
-      <Dialog
-        open={dialogOpen}
-        className={classes.dialog}
-        fullWidth
-        onClose={() => setDialogOpen(false)}
-      >
-        <DialogTitle>Research Description</DialogTitle>
-        <TextField
-          id="standard-multiline-flexible"
-          label="Description"
-          multiline
-          rowsMax={4}
-          value={description}
-          InputProps={{
-            readOnly: true,
-          }}
+        <Pagination
+          count={count}
+          page={page}
+          onChange={handleChange}
+          color="primary"
         />
-        <DialogActions>
-          <Button
-            autoFocus
-            onClick={() => setDialogOpen(false)}
-            color="primary"
-          >
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog
-        open={adminDialogOpen}
-        className={classes.dialog}
-        fullWidth
-        onClose={() => setAdminDialogOpen(false)}
-      >
-        <DialogTitle>Admin Review</DialogTitle>
-        <TextField
-          label="Appointment"
-          type="datetime-local"
-          defaultValue={appointment}
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <DialogActions>
-          <Button
-            autoFocus
-            onClick={() => setAdminDialogOpen(false)}
-            color="primary"
-          >
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </TableContainer>
+      </Stack>
+    </>
   );
 };
 

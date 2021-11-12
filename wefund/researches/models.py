@@ -4,6 +4,8 @@ from .formatChecker import ContentTypeRestrictedFileField
 from django.dispatch import receiver
 import os
 from time import time_ns
+from datetime import datetime
+import pytz
 
 
 def upload_location_paper(instance, filename):
@@ -45,7 +47,7 @@ class Research(models.Model):
         max_length=200, default='Not reviewed yet', blank=False, null=False)
     admin_decision = models.BooleanField(default=False)
     admin_appointment = models.DateTimeField(
-        blank=True, null=False, default="1111-11-11 11:11")
+        blank=True, null=False, default=datetime(1111, 11, 11, 11, 11, tzinfo=pytz.UTC))
 
     def __str__(self):
         return self.title

@@ -13,7 +13,7 @@ urlpatterns = [
     path('api/addins/', include("sitecomponents.urls")),
     path('media/researcher/<str:path>/<str:id>/<str:file>/<str:token>/',
          ResearcherFileAPI.as_view({"get": "list"})),
-    path('media/events/<eventName>/<file>/',
+    path('media/events/<eventName>/<file>',
          EventsFileAPI.as_view({"get": "list"})),
     path('admin/media/<str:pk>/researcher/<str:path>/<str:id>/<str:file>/<str:token>/',
          AdminResearcherFileAPI.as_view({"get": "list"})),

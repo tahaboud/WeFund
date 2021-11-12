@@ -23,6 +23,7 @@ class Events(models.Model):
     category = models.CharField(max_length=100, blank=False, null=False)
     is_online = models.BooleanField()
     location = models.CharField(max_length=100, blank=False, null=False)
+    date_and_time = models.DateTimeField(blank=False, null=False)
 
     def __str__(self):
         return self.name

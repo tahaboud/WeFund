@@ -25,13 +25,16 @@ class UserResearchAPI(viewsets.ModelViewSet):
         raise serializers.ValidationError(
             {"data": "this user is not a researcher"})
 
-    def perform_create(self, serializer):
-        if hasattr(self.request.user, "researcher"):
-            if hasattr(self.request.user.researcher, "research"):
+    def create(self, request):
+        if hasattr(request.user, "researcher"):
+            if hasattr(request.user.researcher, "research"):
                 raise serializers.ValidationError(
                     {"user": "this user already have a research"})
-            serializer.save(researcher=self.request.user.researcher)
-            return Response(serializer.data)
+            serializer = UserResearchSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(researcher=request.user.researcher)
+                return Response(data={"research":serializer.data,"response":"research created successfully"})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         raise serializers.ValidationError(
             {"user": "this user is not a researcher"})
 
@@ -41,7 +44,7 @@ class UserResearchAPI(viewsets.ModelViewSet):
             research, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response({"research": serializer.data, "response": "research updated successfully"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

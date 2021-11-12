@@ -74,7 +74,7 @@ const authReducer = (state = initialState, action) => {
     case "PASSWORD_RESET_SUCCESS":
       return {
         ...state,
-        data: action.payload,
+        data: action.payload.response,
         isLoading: false,
         errors: null,
       };
@@ -100,6 +100,7 @@ const authReducer = (state = initialState, action) => {
         data: null,
         isLoading: false,
         errors: action.payload,
+        data: null,
       };
     case "LOGIN_FAILED":
     case "LOGOUT_SUCCESS":
@@ -112,6 +113,7 @@ const authReducer = (state = initialState, action) => {
         isAuthenticated: false,
         errors: action.payload,
         token: null,
+        data: null,
       };
     case "AUTH_ERROR":
       localStorage.removeItem("token");
@@ -120,13 +122,15 @@ const authReducer = (state = initialState, action) => {
         isLoading: false,
         token: null,
         user: null,
+        data: null,
         isAuthenticated: false,
       };
     case "USER_UPDATE_SUCCESS":
       return {
         ...state,
         isLoading: false,
-        user: action.payload,
+        user: action.payload.user,
+        data: action.payload.response,
         errors: null,
       };
     case "USER_UPDATE_FAIL":
@@ -134,6 +138,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         errors: action.payload,
+        data: null,
       };
     default:
       return { ...state };

@@ -20,7 +20,7 @@ class EventAPI(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | ReadOnly]
 
     def list(self, request):
-        queryset = Events.objects.all()
+        queryset = Events.objects.all().order_by("-date_and_time")
         serializer = EventSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -29,7 +29,7 @@ class EventAPI(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         event = serializer.save()
         return Response({
-            "Event": EventSerializer(event, context=self.get_serializer_context()).data,
+            "response": "event add successfull",
         })
 
 
@@ -58,7 +58,7 @@ class EventDetailAPI(viewsets.ModelViewSet):
         serializer = EventSerializer(event, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response({"response": "event updated successfully"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

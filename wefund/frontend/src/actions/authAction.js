@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getResearcher } from "./researcherAction";
+import { getResearch } from "./researchAction";
 
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
@@ -13,6 +14,8 @@ export const loadUser = () => (dispatch, getState) => {
         type: "USER_LOADED",
         payload: res.data,
       });
+      dispatch(getResearcher());
+      dispatch(getResearch());
     })
     .catch((err) => {
       dispatch({
@@ -44,9 +47,8 @@ export const login = (email, password, recaptcha) => (dispatch) => {
         type: "LOGIN_SUCCESS",
         payload: res.data,
       });
-      if (res.data.user.is_researcher) {
-        dispatch(getResearcher());
-      }
+      dispatch(getResearcher());
+      dispatch(getResearch());
     })
     .catch((err) => {
       dispatch({
@@ -57,69 +59,67 @@ export const login = (email, password, recaptcha) => (dispatch) => {
 };
 
 // REGISTER USER
-export const register = ({
-  first_name,
-  last_name,
-  password,
-  email,
-  recaptcha,
-}) => (dispatch) => {
-  // User Loading
-  dispatch({ type: "USER_LOADING" });
+export const register =
+  ({ first_name, last_name, password, email, recaptcha }) =>
+  (dispatch) => {
+    // User Loading
+    dispatch({ type: "USER_LOADING" });
 
-  // Headers
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
+    // Headers
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    // Request Body
+
+    const body = JSON.stringify({
+      first_name,
+      last_name,
+      email,
+      password,
+      recaptcha,
+    });
+
+    axios
+      .post("/api/account/user/register/", body, config)
+      .then((res) => {
+        dispatch({
+          type: "REGISTER_SUCCESS",
+          payload: res.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "REGISTER_FAIL",
+          payload: err.response.data,
+        });
+      });
   };
 
-  // Request Body
-
-  const body = JSON.stringify({
-    first_name,
-    last_name,
-    email,
-    password,
-    recaptcha,
-  });
-
-  axios
-    .post("/api/account/user/register/", body, config)
-    .then((res) => {
-      dispatch({
-        type: "REGISTER_SUCCESS",
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: "REGISTER_FAIL",
-        payload: err.response.data,
-      });
-    });
-};
-
 // CONFIRM EMAIL
-export const confirmEmail = ({ id, token }) => (dispatch) => {
-  // User Loading
-  dispatch({ type: "USER_LOADING" });
+export const confirmEmail =
+  ({ id, token }) =>
+  (dispatch) => {
+    // User Loading
+    dispatch({ type: "USER_LOADING" });
 
-  axios
-    .post(`/api/account/user/activate/${id}/${token}/`)
-    .then((res) => {
-      dispatch({
-        type: "EMAIL_CONFIRMED",
-        payload: res.data,
+    axios
+      .post(`/api/account/user/activate/${id}/${token}/`)
+      .then((res) => {
+        dispatch({
+          type: "EMAIL_CONFIRMED",
+          payload: res.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "EMAIL_FAILED",
+          payload: err.response.data,
+        });
       });
-    })
-    .catch((err) => {
-      dispatch({
-        type: "EMAIL_FAILED",
-        payload: err.response.data,
-      });
-    });
-};
+  };
 
 // LOGOUT USER
 export const logout = () => (dispatch, getState) => {
@@ -197,49 +197,48 @@ export const checkResetPasswordToken = (pk, token) => (dispatch) => {
 };
 
 // Reset Password
-export const resetPassword = ({ password1, password2, pk, token }) => (
-  dispatch
-) => {
-  // Is Loading
-  dispatch({ type: "USER_LOADING" });
+export const resetPassword =
+  ({ password1, password2, pk, token }) =>
+  (dispatch) => {
+    // Is Loading
+    dispatch({ type: "USER_LOADING" });
 
-  // Headers
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
+    // Headers
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    // Request Body
+    const body = JSON.stringify({ password1, password2 });
+
+    axios
+      .post(`/api/account/password-reset/${pk}/${token}/`, body, config)
+      .then((res) => {
+        dispatch({ type: "PASSWORD_RESET_SUCCESS", payload: res.data });
+      })
+      .catch((err) => {
+        dispatch({ type: "PASSWORD_RESET_FAIL", payload: err.response.data });
+      });
   };
 
-  // Request Body
-  const body = JSON.stringify({ password1, password2 });
+export const updateUser =
+  ({ first_name, last_name }) =>
+  (dispatch, getState) => {
+    dispatch({ type: "USER_LOADING" });
 
-  axios
-    .post(`/api/account/password-reset/${pk}/${token}/`, body, config)
-    .then((res) => {
-      dispatch({ type: "PASSWORD_RESET_SUCCESS", payload: res.data });
-    })
-    .catch((err) => {
-      dispatch({ type: "PASSWORD_RESET_FAIL", payload: err.response.data });
-    });
-};
+    const body = JSON.stringify({ first_name, last_name });
 
-export const updateUser = ({ first_name, last_name }) => (
-  dispatch,
-  getState
-) => {
-  dispatch({ type: "USER_LOADING" });
-
-  const body = JSON.stringify({ first_name, last_name });
-
-  axios
-    .post("/api/account/user/", body, tokenConfig(getState))
-    .then((res) => {
-      dispatch({ type: "USER_UPDATE_SUCCESS", payload: res.data });
-    })
-    .catch((err) => {
-      dispatch({ type: "USER_UPDATE_FAIL", payload: err.response.data });
-    });
-};
+    axios
+      .post("/api/account/user/", body, tokenConfig(getState))
+      .then((res) => {
+        dispatch({ type: "USER_UPDATE_SUCCESS", payload: res.data });
+      })
+      .catch((err) => {
+        dispatch({ type: "USER_UPDATE_FAIL", payload: err.response.data });
+      });
+  };
 
 // Setup config with token - helper function
 export const tokenConfig = (getState) => {
